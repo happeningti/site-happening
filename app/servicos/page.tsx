@@ -68,7 +68,7 @@ const SERVICOS = [
       "Organização e controle operacional",
       "Atendimento e suporte durante a operação",
     ],
-    img: "/servicos/agronegocio.jpg",
+    img: "/servicos/agronegocio-2026.jpg",
     reverse: false,
   },
 ];
