@@ -1,7 +1,18 @@
-// app/servicos/operacao-cana/page.tsx
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 export default function OperacaoCanaPage() {
+  const fotos = [
+    "/servicos/cana-01.jpg",
+    "/servicos/cana-02.jpg",
+    "/servicos/cana-03.jpg",
+    "/servicos/cana-04.jpg",
+  ];
+
+  const [fotoAberta, setFotoAberta] = useState<string | null>(null);
+
   return (
     <main className="operacaoCana">
       {/* HERO */}
@@ -60,7 +71,7 @@ export default function OperacaoCanaPage() {
                   preload="metadata"
                 >
                   <source src="/videos/cana.mp4" type="video/mp4" />
-                </video>                
+                </video>
               </div>
             </div>
           </div>
@@ -70,14 +81,46 @@ export default function OperacaoCanaPage() {
             <h2>Fotos da Operação</h2>
 
             <div className="operacaoCanaGaleriaGrid">
-              <img src="/servicos/cana-01.jpg" alt="Operação de Cana 1" />
-              <img src="/servicos/cana-02.jpg" alt="Operação de Cana 2" />
-              <img src="/servicos/cana-03.jpg" alt="Operação de Cana 3" />
-              <img src="/servicos/cana-04.jpg" alt="Operação de Cana 4" />
+              {fotos.map((src) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt="Operação de Cana"
+                  style={{ cursor: "zoom-in" }}
+                  onClick={() => setFotoAberta(src)}
+                />
+              ))}
             </div>
           </div>
         </div>
       </section>
+
+      {/* MODAL */}
+      {fotoAberta && (
+        <div
+          onClick={() => setFotoAberta(null)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.8)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+            padding: "20px",
+          }}
+        >
+          <img
+            src={fotoAberta}
+            alt="Foto ampliada"
+            style={{
+              maxWidth: "100%",
+              maxHeight: "90vh",
+              borderRadius: "16px",
+            }}
+          />
+        </div>
+      )}
     </main>
   );
 }
