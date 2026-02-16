@@ -61,14 +61,11 @@ export default function ContatoPage() {
         <div className="servicosHeroContent">
           <div className="badge">Contato</div>
           <h1>Fale com a Happening</h1>
-          <p>
+          
             <p>
   Entre em contato com a unidade mais próxima para dúvidas, atendimento e suporte.
-</p>
- <strong>Trabalhe Conosco</strong>.
-          </p>
-
-          <div
+            </p>
+           <div
             style={{
               marginTop: 18,
               display: "flex",
