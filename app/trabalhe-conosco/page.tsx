@@ -5,10 +5,12 @@ import { useMemo, useState } from "react";
 type Vaga = {
   id: string;
   titulo: string;
-  local?: string; // ex: "Sertãozinho/SP"
-  pcd?: boolean; // se a vaga também é para PCD
-  descricao: string;
-  requisitos?: string[];
+  local: string;        // ex: "Sertãozinho/SP"
+  descricao: string;    // texto livre
+  imagem?: string;      // "/vagas/arquivo.jpg"
+  requisitos?: string[]; // lista (opcional)
+  pcd?: boolean;        // se aceita PCD (opcional)
+  ativa?: boolean;      // pra histórico (opcional)
 };
 
 const UNIDADES = [
@@ -21,20 +23,27 @@ const UNIDADES = [
 
 // ✅ VAGAS: quando não tiver vaga, deixe vazio mesmo: []
 // Quando tiver, é só adicionar aqui que aparece no site automaticamente.
-const VAGAS = [
+const VAGAS: Vaga[] = [
   {
     id: "operador-empilhadeira-2026",
     titulo: "Operador de Empilhadeira",
     local: "Sertãozinho/SP",
-    descricao: `
-Experiência com empilhadeira e entregas de fracionados.
-CNH categoria B.
-Vaga disponível também para PCD.
-    `,
-    imagem: "/vagas/operador-empilhadeira.jpg", // coloque a imagem na pasta public/vagas
+    descricao:
+      "Atuação com empilhadeira e entregas de fracionados. Vaga disponível também para PCD.",
+    imagem: "/vagas/operador-empilhadeira.jpg",
+    requisitos: [
+      "Experiência com empilhadeira e entregas de fracionados",
+      "CNH categoria B",
+    ],
+    pcd: true,
+    ativa: true,
   },
-
 ];
+
+// Se você quiser esconder vagas encerradas, use isso na hora de renderizar:
+// const VAGAS_ATIVAS = VAGAS.filter(v => v.ativa !== false);
+//////////////////
+
 
 type FormState = {
   unidade: string;
