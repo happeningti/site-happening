@@ -64,23 +64,7 @@ export default function ContatoPage() {
           
             <p>
   Entre em contato com a unidade mais próxima para dúvidas, atendimento e suporte.
-            </p>
-           <div
-            style={{
-              marginTop: 18,
-              display: "flex",
-              gap: 10,
-              flexWrap: "wrap",
-            }}
-          >
-            <Link className="btn btnPrimary" href="/trabalhe-conosco">
-              Trabalhe Conosco
-            </Link>
-
-            <Link className="btn btnOutline" href="/cotacao">
-              Cotação
-            </Link>
-          </div>
+            </p>           
         </div>
       </section>
 
