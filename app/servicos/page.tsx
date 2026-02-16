@@ -1,4 +1,5 @@
 // app/servicos/page.tsx
+import Link from "next/link";
 
 const SERVICOS = [
   {
@@ -145,6 +146,18 @@ export default function ServicosPage() {
                         <li key={b}>{b}</li>
                       ))}
                     </ul>
+
+                    {/* BOTÃO EXTRA: só no Agronegócio */}
+                    {s.id === "agronegocio" && (
+                      <div style={{ marginTop: 20 }}>
+                        <Link
+                          href="/servicos/operacao-cana"
+                          className="servicosBtn"
+                        >
+                          Ver Operação da Cana
+                        </Link>
+                      </div>
+                    )}
 
                     {/* REMOVIDO: botões por serviço */}
                     {/* <div className="servicosActions">...</div> */}
