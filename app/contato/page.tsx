@@ -62,7 +62,8 @@ export default function ContatoPage() {
           <div className="badge">Contato</div>
           <h1>Fale com a Happening</h1>
           <p>
-            Entre em contato com a unidade mais próxima ou envie seu currículo para oportunidades.
+            Entre em contato com a unidade mais próxima. Para vagas e envio de
+            currículo, acesse <strong>Trabalhe Conosco</strong>.
           </p>
 
           <div
@@ -74,7 +75,11 @@ export default function ContatoPage() {
             }}
           >
             <Link className="btn btnPrimary" href="/trabalhe-conosco">
-              Enviar currículo
+              Trabalhe Conosco
+            </Link>
+
+            <Link className="btn btnOutline" href="/cotacao">
+              Cotação
             </Link>
           </div>
         </div>
@@ -83,9 +88,7 @@ export default function ContatoPage() {
       {/* UNIDADES */}
       <section className="section">
         <div className="container">
-          <h2 className="sectionTitle">
-            Telefones e WhatsApp por unidade
-          </h2>
+          <h2 className="sectionTitle">Telefones e WhatsApp por unidade</h2>
           <p className="sectionDesc">
             Atendimento direto por WhatsApp em cada filial/base. Matriz com
             telefone principal.
@@ -129,7 +132,6 @@ export default function ContatoPage() {
       </section>
 
       {/* MAPA MATRIZ */}
-      {/* MAPA MATRIZ */}
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="contatoMapWrapper">
@@ -148,7 +150,6 @@ export default function ContatoPage() {
           </div>
         </div>
       </section>
-
     </main>
   );
 }

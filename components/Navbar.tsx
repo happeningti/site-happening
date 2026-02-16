@@ -23,6 +23,9 @@ export default function Navbar() {
         <Link href="/unidades">Unidades</Link>
         <Link href="/cotacao">Cotação</Link>
         <Link href="/contato">Contato</Link>
+        <Link href="/transparencia">Transparência</Link>
+        <Link href="/trabalhe-conosco">Trabalhe Conosco</Link>
+
       </nav>
     </header>
   );

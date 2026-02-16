@@ -1,79 +1,75 @@
+// app/transparencia/page.tsx
 import Link from "next/link";
-
-type Relatorio = {
-  id: string; // "2025-2"
-  titulo: string;
-  descricao: string;
-  arquivoPdf: string; // em /public/transparencia/...
-  publicadoEm: string; // "2026-02-16"
-};
-
-const RELATORIOS: Relatorio[] = [
-  {
-    id: "2025-2",
-    titulo: "Relatório de Transparência e Igualdade Salarial — 2025/2",
-    descricao:
-      "Divulgação conforme Lei 14.611/2023, reforçando o compromisso da Happening Logística com equidade, diversidade e inclusão.",
-    arquivoPdf: "/transparencia/relatorio-2025-2.pdf",
-    publicadoEm: "2026-02-16",
-  },
-  // Adicione outros aqui:
-  // { id:"2025-1", titulo:"...", descricao:"...", arquivoPdf:"/transparencia/relatorio-2025-1.pdf", publicadoEm:"2025-09-01" }
-];
-
-function formatBRDate(iso: string) {
-  const [y, m, d] = iso.split("-");
-  return `${d}/${m}/${y}`;
-}
 
 export default function TransparenciaPage() {
   return (
-    <main className="transp">
-      <section className="transpHero">
-        <div className="transpHeroBg" />
-        <div className="transpHeroContent">
+    <main className="transparencia">
+      <section className="transparenciaHero">
+        <div className="transparenciaHeroBg" />
+        <div className="transparenciaHeroContent">
           <div className="badge">Transparência</div>
-          <h1>Relatórios de Transparência e Igualdade Salarial</h1>
+          <h1>Relatório de Transparência e Igualdade Salarial</h1>
           <p>
-            Publicações oficiais conforme legislação vigente, reforçando nosso
-            compromisso com equidade, diversidade e inclusão.
+            Em conformidade com a Lei 14.611/2023, disponibilizamos nossos
+            relatórios de transparência e igualdade salarial.
           </p>
 
-          <div className="transpHeroActions">
-            <Link className="btnSec" href="/trabalhe-conosco">
-              Ver Vagas e Enviar Currículo
+          <div className="transparenciaHeroActions">
+            <a className="btnPrim" href="#relatorios">
+              Ver relatórios
+            </a>
+            <Link className="btnSec" href="/contato">
+              Falar com a Happening
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="transpWrap">
-        <div className="transpContainer">
-          <div className="transpGrid">
-            {RELATORIOS.map((r) => (
-              <article key={r.id} className="transpCard">
-                <h2>{r.titulo}</h2>
-                <div className="transpMeta">
-                  Publicado em {formatBRDate(r.publicadoEm)}
-                </div>
-                <p>{r.descricao}</p>
+      <section className="transparenciaWrap" id="relatorios">
+        <div className="transparenciaContainer">
+          <div className="transparenciaCard">
+            <h2>Relatórios publicados</h2>
+            <p className="transparenciaHint">
+              Dica: coloque os PDFs em <code>/public/transparencia/</code>.
+            </p>
 
-                <div className="transpActions">
-                  <a className="btnPrim" href={r.arquivoPdf} target="_blank" rel="noreferrer">
+            {/* EXEMPLO: ajuste o nome do arquivo conforme você subir no /public */}
+            <div className="transparenciaList">
+              <div className="transparenciaItem">
+                <div className="transparenciaItemTitle">
+                  Relatório 2025/2
+                </div>
+                <div className="transparenciaItemActions">
+                  <a
+                    className="btnPrim"
+                    href="/transparencia/relatorio-2025-2.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Abrir PDF
                   </a>
-                  <a className="btnSec" href={r.arquivoPdf} download>
+                  <a
+                    className="btnSec"
+                    href="/transparencia/relatorio-2025-2.pdf"
+                    download
+                  >
                     Baixar
                   </a>
                 </div>
-              </article>
-            ))}
+              </div>
+
+              {/* Se quiser histórico, é só duplicar o bloco acima e mudar o nome */}
+              {/* <div className="transparenciaItem">...</div> */}
+            </div>
           </div>
 
-          <div className="transpNote">
-            <b>Observação:</b> para publicar um novo relatório, basta colocar o PDF
-            em <code>public/transparencia/</code> e adicionar um item no array{" "}
-            <code>RELATORIOS</code>.
+          <div className="transparenciaCard">
+            <h2>Sobre a publicação</h2>
+            <p>
+              A Happening Logística reforça o compromisso com equidade,
+              transparência e inclusão, seguindo as diretrizes legais e boas
+              práticas de gestão de pessoas.
+            </p>
           </div>
         </div>
       </section>

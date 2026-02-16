@@ -180,6 +180,7 @@ export default function HomePage() {
 
         /* ✅ DESCE O CARD AQUI */
         .infoCard {
+        
           margin-top: 40px; /* <-- aumenta se quiser descer mais (ex: 32px) */
           width: min(820px, 100%);
           border-radius: 16px;
