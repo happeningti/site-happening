@@ -2,6 +2,20 @@
 
 const SERVICOS = [
   {
+    id: "agronegocio",
+    titulo: "Agronegócio",
+    subtitulo: "Atendimento a operações do setor com foco em performance.",
+    texto:
+      "Apoio logístico para operações do agronegócio, com organização, capacidade operacional e foco em eficiência e segurança.",
+    bullets: [
+      "Operação alinhada a janelas e demandas",
+      "Organização e controle operacional",
+      "Atendimento e suporte durante a operação",
+    ],
+    img: "/servicos/agronegocio-2026.jpg",
+    reverse: false,
+  },
+  {
     id: "crossdocking",
     titulo: "Crossdocking | Distribuição",
     subtitulo: "Agilidade e precisão na reposição e entrega.",
@@ -13,7 +27,7 @@ const SERVICOS = [
       "Controle operacional e padronização",
     ],
     img: "/servicos/crossdocking.jpg",
-    reverse: false,
+    reverse: true,
   },
   {
     id: "supply-chain",
@@ -27,7 +41,7 @@ const SERVICOS = [
       "Estratégias Just in Time (conforme operação)",
     ],
     img: "/servicos/supply-chain.jpg",
-    reverse: true,
+    reverse: false,
   },
   {
     id: "cargas-especiais",
@@ -41,7 +55,7 @@ const SERVICOS = [
       "Suporte e comunicação durante o percurso",
     ],
     img: "/servicos/cargas-especiais.jpg",
-    reverse: false,
+    reverse: true,
   },
   {
     id: "consultoria",
@@ -55,20 +69,6 @@ const SERVICOS = [
       "Acompanhamento de implementação",
     ],
     img: "/servicos/consultoria.jpg",
-    reverse: true,
-  },
-  {
-    id: "agronegocio",
-    titulo: "Agronegócio",
-    subtitulo: "Atendimento a operações do setor com foco em performance.",
-    texto:
-      "Apoio logístico para operações do agronegócio, com organização, capacidade operacional e foco em eficiência e segurança.",
-    bullets: [
-      "Operação alinhada a janelas e demandas",
-      "Organização e controle operacional",
-      "Atendimento e suporte durante a operação",
-    ],
-    img: "/servicos/agronegocio-2026.jpg",
     reverse: false,
   },
 ];
