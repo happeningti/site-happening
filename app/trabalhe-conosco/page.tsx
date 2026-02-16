@@ -34,6 +34,7 @@ const VAGAS: Vaga[] = [
     requisitos: [
       "Experiência com empilhadeira e entregas de fracionados",
       "CNH categoria B",
+      "Ensino médio completo"
     ],
     pcd: true,
     ativa: true,
