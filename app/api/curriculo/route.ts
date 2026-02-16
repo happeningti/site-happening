@@ -6,14 +6,6 @@ function missingEnv(keys: string[]) {
   return keys.filter((k) => !process.env[k] || String(process.env[k]).trim() === "");
 }
 
-function pickFirst(fd: FormData, keys: string[]) {
-  for (const k of keys) {
-    const v = fd.get(k);
-    if (v !== null && String(v).trim() !== "") return String(v).trim();
-  }
-  return "";
-}
-
 export async function POST(req: Request) {
   try {
     const required = [
@@ -37,31 +29,18 @@ export async function POST(req: Request) {
 
     const fd = await req.formData();
 
-    // ✅ Compatibilidade: aceita campos novos e antigos
-    const nome = pickFirst(fd, ["nome"]);
-    const telefone = pickFirst(fd, ["telefone"]);
-    const email = pickFirst(fd, ["email"]);
-    const unidade = pickFirst(fd, ["unidade"]);
-    const mensagem = pickFirst(fd, ["mensagem"]);
+    const tipo = String(fd.get("tipo") || "espontaneo"); // vaga | espontaneo | pcd
+    const nome = String(fd.get("nome") || "").trim();
+    const telefone = String(fd.get("telefone") || "").trim();
+    const email = String(fd.get("email") || "").trim();
+    const unidade = String(fd.get("unidade") || "").trim();
+    const mensagem = String(fd.get("mensagem") || "").trim();
 
-    // ✅ NOVO: cargo pretendido (front novo manda "cargo")
-    const cargo = pickFirst(fd, ["cargo", "cargoPretendido", "cargo_pretendido"]);
+    // ✅ NOVO
+    const cargoPretendido = String(fd.get("cargoPretendido") || "").trim();
 
-    // ✅ NOVO: pcd (front novo manda "pcd" = "1"/"0")
-    const pcdFlag = pickFirst(fd, ["pcd"]);
-    const isPCD = pcdFlag === "1" || pcdFlag.toLowerCase() === "true";
-
-    // ✅ Vaga (novo) + compatibilidade (antigo)
-    const vagaTitulo = pickFirst(fd, ["vaga_titulo", "vagaTitulo"]);
-    const vagaLocal = pickFirst(fd, ["vaga_local", "vagaUnidade"]);
-    const vagaId = pickFirst(fd, ["vaga_id", "vagaId"]);
-
-    // ✅ Tipo: aceita o antigo "tipo" se vier, senão deduz
-    // tipos possíveis: vaga | espontaneo | pcd
-    const tipoIncoming = pickFirst(fd, ["tipo"]);
-    const tipo =
-      tipoIncoming ||
-      (vagaTitulo ? "vaga" : isPCD ? "pcd" : "espontaneo");
+    const vagaTitulo = String(fd.get("vagaTitulo") || "").trim();
+    const vagaUnidade = String(fd.get("vagaUnidade") || "").trim();
 
     const arquivo = fd.get("arquivo");
 
@@ -72,9 +51,9 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!cargo) {
+    if (!cargoPretendido) {
       return Response.json(
-        { ok: false, message: "Informe o cargo pretendido." },
+        { ok: false, message: "Preencha o cargo pretendido." },
         { status: 400 }
       );
     }
@@ -86,7 +65,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // valida PDF simples
     if (arquivo.type !== "application/pdf") {
       return Response.json(
         { ok: false, message: "O currículo deve ser um arquivo PDF." },
@@ -106,28 +84,16 @@ export async function POST(req: Request) {
       },
     });
 
-    const tipoLabel =
-      tipo === "vaga"
-        ? "Vaga"
-        : tipo === "pcd"
-        ? "Programa de Inclusão PCD"
-        : "Banco de Talentos";
-
-    // ✅ Assunto: claro e útil pro RH
-    // Ex: "Currículo (Vaga) - Operador de Empilhadeira - João Silva"
-    // Ex: "Currículo (PCD) - Analista de Sistemas - Maria"
     const assuntoBase =
       tipo === "vaga"
-        ? `Currículo (Vaga) - ${vagaTitulo || cargo}`
-        : tipo === "pcd" || isPCD
-        ? `Currículo (PCD) - ${cargo}`
-        : `Currículo (Banco) - ${cargo}`;
-
-    const subject = `${assuntoBase} - ${nome}`;
+        ? `Currículo - ${vagaTitulo || "Vaga"}`
+        : tipo === "pcd"
+        ? "Currículo - Programa de Inclusão PCD"
+        : "Currículo - Banco de Talentos";
 
     const html = `
       <div style="font-family:Arial, sans-serif; line-height:1.4">
-        <h2 style="margin:0 0 8px">${escapeHtml(subject)}</h2>
+        <h2 style="margin:0 0 8px">${assuntoBase}</h2>
         <p style="margin:0 0 12px;color:#444">
           Recebido pelo site Happening Logística.
         </p>
@@ -137,22 +103,20 @@ export async function POST(req: Request) {
           <tr><td><b>Telefone:</b></td><td>${escapeHtml(telefone)}</td></tr>
           <tr><td><b>E-mail:</b></td><td>${escapeHtml(email)}</td></tr>
 
+          <tr><td><b>Cargo pretendido:</b></td><td>${escapeHtml(cargoPretendido)}</td></tr>
+
           ${unidade ? `<tr><td><b>Unidade desejada:</b></td><td>${escapeHtml(unidade)}</td></tr>` : ""}
 
-          <tr><td><b>Cargo pretendido:</b></td><td>${escapeHtml(cargo)}</td></tr>
-          <tr><td><b>PCD:</b></td><td>${isPCD ? "Sim" : "Não"}</td></tr>
-
-          <tr><td><b>Canal:</b></td><td>${escapeHtml(tipoLabel)}</td></tr>
-
           ${
-            vagaTitulo
+            tipo === "vaga"
               ? `
-                <tr><td><b>Vaga:</b></td><td>${escapeHtml(vagaTitulo)}</td></tr>
-                ${vagaLocal ? `<tr><td><b>Local/Unidade da vaga:</b></td><td>${escapeHtml(vagaLocal)}</td></tr>` : ""}
-                ${vagaId ? `<tr><td><b>ID da vaga:</b></td><td>${escapeHtml(vagaId)}</td></tr>` : ""}
+                <tr><td><b>Vaga:</b></td><td>${escapeHtml(vagaTitulo || "-")}</td></tr>
+                <tr><td><b>Unidade da vaga:</b></td><td>${escapeHtml(vagaUnidade || "-")}</td></tr>
               `
-              : `<tr><td><b>Vaga:</b></td><td>(Banco de Talentos)</td></tr>`
+              : ""
           }
+
+          <tr><td><b>Tipo:</b></td><td>${escapeHtml(tipo)}</td></tr>
         </table>
 
         ${
@@ -164,10 +128,10 @@ export async function POST(req: Request) {
     `;
 
     await transport.sendMail({
-      from: process.env.CURRICULO_USER, // remetente autenticado
-      to: process.env.CURRICULO_TO, // RH
-      replyTo: email, // responder pro candidato
-      subject,
+      from: process.env.CURRICULO_USER,
+      to: process.env.CURRICULO_TO,
+      replyTo: email,
+      subject: assuntoBase,
       html,
       attachments: [
         {
