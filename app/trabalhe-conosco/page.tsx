@@ -21,17 +21,19 @@ const UNIDADES = [
 
 // ✅ VAGAS: quando não tiver vaga, deixe vazio mesmo: []
 // Quando tiver, é só adicionar aqui que aparece no site automaticamente.
-const VAGAS: Vaga[] = [
-  // EXEMPLO (apague/edite quando quiser):
-  // {
-  //   id: "operador-empilhadeira",
-  //   titulo: "Operador de Empilhadeira",
-  //   local: "Sertãozinho/SP",
-  //   pcd: true,
-  //   descricao:
-  //     "Atuação na operação com empilhadeira e apoio em entregas fracionadas, seguindo normas de segurança.",
-  //   requisitos: ["Experiência com empilhadeira", "CNH categoria B"],
-  // },
+const VAGAS = [
+  {
+    id: "operador-empilhadeira-2026",
+    titulo: "Operador de Empilhadeira",
+    local: "Sertãozinho/SP",
+    descricao: `
+Experiência com empilhadeira e entregas de fracionados.
+CNH categoria B.
+Vaga disponível também para PCD.
+    `,
+    imagem: "/vagas/operador-empilhadeira.jpg", // coloque a imagem na pasta public/vagas
+  },
+
 ];
 
 type FormState = {
