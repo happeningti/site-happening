@@ -1,4 +1,3 @@
-// app/trabalhe-conosco/page.tsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -6,388 +5,412 @@ import { useMemo, useState } from "react";
 type Vaga = {
   id: string;
   titulo: string;
-  local?: string;
-  pcd?: boolean;
-  ativa: boolean;
-  imagem?: string; // ex: "/vagas/operador-empilhadeira.jpg"
-  descricao?: string; // texto curto
-  data?: string; // ex: "2025/2"
+  local?: string; // ex: "Sertãozinho/SP"
+  pcd?: boolean; // se a vaga também é para PCD
+  descricao: string;
+  requisitos?: string[];
 };
 
-// >>>>>> CADASTRE SUAS VAGAS AQUI <<<<<<
-// - Para “subir imagem”: coloque em /public/vagas/ e referencie como "/vagas/arquivo.jpg"
-// - Para ativar/desativar: ativa: true/false
+const UNIDADES = [
+  "Matriz — Sertãozinho/SP",
+  "Filial — São Paulo/SP",
+  "Filial — Aroeira/MG",
+  "Filial — Santa Juliana/MG",
+  "Filial — Tropical/GO",
+];
+
+// ✅ VAGAS: quando não tiver vaga, deixe vazio mesmo: []
+// Quando tiver, é só adicionar aqui que aparece no site automaticamente.
 const VAGAS: Vaga[] = [
-  {
-    id: "operador-empilhadeira",
-    titulo: "Operador de Empilhadeira",
-    local: "Sertãozinho/SP",
-    pcd: true,
-    ativa: true,
-    imagem: "/vagas/operador-empilhadeira.jpg",
-    descricao:
-      "Experiência com empilhadeira e entregas fracionadas. CNH categoria B.",
-    data: "2025/2",
-  },
+  // EXEMPLO (apague/edite quando quiser):
   // {
-  //   id: "auxiliar-logistica",
-  //   titulo: "Auxiliar de Logística",
-  //   local: "São Paulo/SP",
-  //   pcd: false,
-  //   ativa: false,
-  //   imagem: "/vagas/auxiliar-logistica.jpg",
-  //   descricao: "Separação, conferência e apoio operacional.",
-  //   data: "2025/1",
+  //   id: "operador-empilhadeira",
+  //   titulo: "Operador de Empilhadeira",
+  //   local: "Sertãozinho/SP",
+  //   pcd: true,
+  //   descricao:
+  //     "Atuação na operação com empilhadeira e apoio em entregas fracionadas, seguindo normas de segurança.",
+  //   requisitos: ["Experiência com empilhadeira", "CNH categoria B"],
   // },
 ];
 
+type FormState = {
+  unidade: string;
+  cargo: string;
+  nome: string;
+  telefone: string;
+  email: string;
+  mensagem: string;
+  arquivo?: File | null;
+};
+
+const initialForm = (cargoDefault = ""): FormState => ({
+  unidade: UNIDADES[0],
+  cargo: cargoDefault,
+  nome: "",
+  telefone: "",
+  email: "",
+  mensagem: "",
+  arquivo: null,
+});
+
 export default function TrabalheConoscoPage() {
-  const vagasAtivas = useMemo(() => VAGAS.filter((v) => v.ativa), []);
-  const vagasHistorico = useMemo(() => VAGAS.filter((v) => !v.ativa), []);
+  const [open, setOpen] = useState(false);
+  const [vagaSelecionada, setVagaSelecionada] = useState<Vaga | null>(null);
+  const [isPCD, setIsPCD] = useState(false);
 
-  const [vagaSelecionada, setVagaSelecionada] = useState<string>(() => {
-    if (vagasAtivas.length > 0) return vagasAtivas[0].id;
-    return "banco-talentos";
-  });
+  const [form, setForm] = useState<FormState>(initialForm());
+  const [status, setStatus] = useState<
+    | { type: "idle" }
+    | { type: "sending" }
+    | { type: "ok"; msg: string }
+    | { type: "err"; msg: string }
+  >({ type: "idle" });
 
-  const [enviando, setEnviando] = useState(false);
-  const [msg, setMsg] = useState<{ type: "ok" | "err"; text: string } | null>(
-    null
-  );
+  const hasVagas = useMemo(() => VAGAS.length > 0, []);
 
-  const vagaAtual = useMemo(() => {
-    return VAGAS.find((v) => v.id === vagaSelecionada);
-  }, [vagaSelecionada]);
+  function abrirModalBancoTalentos(pcd: boolean) {
+    setIsPCD(pcd);
+    setVagaSelecionada(null);
+    setForm(initialForm(""));
+    setStatus({ type: "idle" });
+    setOpen(true);
+  }
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function abrirModalParaVaga(v: Vaga) {
+    setIsPCD(false); // a vaga pode ser pcd também, mas aqui é candidatura normal
+    setVagaSelecionada(v);
+    setForm(initialForm(v.titulo)); // ✅ cargo pretendido vem preenchido com o título da vaga
+    setStatus({ type: "idle" });
+    setOpen(true);
+  }
+
+  function closeModal() {
+    setOpen(false);
+    setVagaSelecionada(null);
+    setIsPCD(false);
+    setStatus({ type: "idle" });
+  }
+
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setMsg(null);
-    setEnviando(true);
+    setStatus({ type: "sending" });
 
     try {
-      const form = e.currentTarget;
-      const fd = new FormData(form);
-
-      // campo extra pro backend entender o contexto
-      fd.set("vaga", vagaSelecionada);
-      fd.set("vaga_titulo", vagaAtual?.titulo ?? "");
-
-      // >>> IMPORTANTE:
-      // Este POST usa seu endpoint atual de currículo.
-      // Se no seu projeto o endpoint for outro, troque aqui.
-      const res = await fetch("/api/curriculo", { method: "POST", body: fd });
-
-      if (!res.ok) {
-        const t = await res.text().catch(() => "");
-        throw new Error(t || "Falha ao enviar currículo.");
+      if (!form.arquivo) {
+        setStatus({ type: "err", msg: "Por favor, anexe o currículo em PDF." });
+        return;
       }
 
-      setMsg({ type: "ok", text: "Currículo enviado com sucesso! ✅" });
-      form.reset();
-    } catch (err: any) {
-      setMsg({
-        type: "err",
-        text:
-          err?.message ||
-          "Não foi possível enviar agora. Tente novamente em instantes.",
+      const fd = new FormData();
+      fd.append("unidade", form.unidade);
+      fd.append("cargo", form.cargo);
+      fd.append("nome", form.nome);
+      fd.append("telefone", form.telefone);
+      fd.append("email", form.email);
+      fd.append("mensagem", form.mensagem || "");
+      fd.append("pcd", isPCD ? "1" : "0");
+
+      // ✅ info da vaga (se existir)
+      fd.append("vaga_id", vagaSelecionada?.id || "");
+      fd.append("vaga_titulo", vagaSelecionada?.titulo || "");
+      fd.append("vaga_local", vagaSelecionada?.local || "");
+
+      fd.append("arquivo", form.arquivo);
+
+      const res = await fetch("/api/curriculo", { method: "POST", body: fd });
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setStatus({
+          type: "err",
+          msg: data?.error || "Não foi possível enviar. Tente novamente.",
+        });
+        return;
+      }
+
+      setStatus({
+        type: "ok",
+        msg: "Currículo enviado com sucesso! Em breve o RH fará o contato, se houver aderência ao perfil.",
       });
-    } finally {
-      setEnviando(false);
-      setTimeout(() => setMsg(null), 7000);
+
+      // opcional: limpar form após sucesso
+      setForm(initialForm(vagaSelecionada?.titulo || ""));
+    } catch (err) {
+      setStatus({
+        type: "err",
+        msg: "Falha ao enviar. Verifique sua conexão e tente novamente.",
+      });
     }
   }
 
   return (
-    <main className="trabalhe">
-      <section className="trabalheHero">
-        <div className="trabalheHeroBg" />
-        <div className="trabalheHeroContent">
-          <div className="badge">Carreiras</div>
-          <h1>Trabalhe Conosco</h1>
+    <main className="contato">
+      {/* HERO */}
+      <section className="servicosHero" style={{ borderBottom: "1px solid #e7ebf3" }}>
+        <div className="servicosHeroBg" />
+        <div className="servicosHeroContent">
+          <div className="badge">Trabalhe Conosco</div>
+          <h1>Trabalhe na Happening</h1>
           <p>
-            Confira vagas abertas, histórico de oportunidades e envie seu currículo
-            para o RH.
+            Veja as vagas abertas ou envie seu currículo para nosso banco de talentos.
+            Também incentivamos candidaturas de profissionais com deficiência (PCD).
           </p>
+
+          <div style={{ marginTop: 18, display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <button
+              className="btn btnPrimary"
+              onClick={() => abrirModalBancoTalentos(false)}
+              type="button"
+            >
+              Enviar currículo
+            </button>
+
+            <button
+              className="btn btnSoft"
+              onClick={() => abrirModalBancoTalentos(true)}
+              type="button"
+            >
+              Enviar Currículo PCD
+            </button>
+          </div>
         </div>
       </section>
 
-      <section className="trabalheWrap">
-        <div className="trabalheContainer">
-          <div className="trabalheGrid">
-            {/* COLUNA ESQUERDA: vagas / histórico */}
-            <div className="trabalheLeft">
-              <div className="trabalheCard">
-                <h2>Vagas</h2>
+      {/* VAGAS */}
+      <section className="section">
+        <div className="container">
+          <h2 className="sectionTitle">Vagas disponíveis</h2>
+          <p className="sectionDesc">
+            Quando houver vaga aberta, ela aparecerá aqui com a descrição e o botão para candidatura.
+          </p>
 
-                {vagasAtivas.length > 0 ? (
-                  <>
-                    <p className="trabalheHint">
-                      Selecione a vaga para ver detalhes e enviar seu currículo.
-                    </p>
+          {!hasVagas ? (
+            <div className="card" style={{ padding: 18 }}>
+              <h3 style={{ marginTop: 0 }}>Não há vagas disponíveis no momento</h3>
+              <p style={{ marginBottom: 0, color: "#475569" }}>
+                Você ainda pode enviar seu currículo para o banco de talentos (inclusive PCD) pelos botões acima.
+              </p>
+            </div>
+          ) : (
+            <div className="grid3">
+              {VAGAS.map((v) => (
+                <div key={v.id} className="card">
+                  <h3 style={{ marginTop: 0 }}>{v.titulo}</h3>
 
-                    <div className="trabalheSelectRow">
-                      <label className="trabalheLabel" htmlFor="vaga">
-                        Vaga desejada
-                      </label>
+                  <p style={{ color: "#64748b", marginTop: 6 }}>
+                    {v.local ? <span><strong>Local:</strong> {v.local}</span> : <span>&nbsp;</span>}
+                  </p>
 
-                      <select
-                        id="vaga"
-                        className="trabalheSelect"
-                        value={vagaSelecionada}
-                        onChange={(e) => setVagaSelecionada(e.target.value)}
-                      >
-                        {vagasAtivas.map((v) => (
-                          <option key={v.id} value={v.id}>
-                            {v.titulo}
-                            {v.local ? ` — ${v.local}` : ""}
-                            {v.pcd ? " (PCD)" : ""}
-                          </option>
+                  <p style={{ marginTop: 10 }}>{v.descricao}</p>
+
+                  {v.requisitos?.length ? (
+                    <>
+                      <p style={{ fontWeight: 800, marginTop: 12, marginBottom: 8 }}>Requisitos</p>
+                      <ul style={{ marginTop: 0, paddingLeft: 18 }}>
+                        {v.requisitos.map((r) => (
+                          <li key={r}>{r}</li>
                         ))}
+                      </ul>
+                    </>
+                  ) : null}
 
-                        <option value="banco-talentos">
-                          Banco de Talentos (sem vaga específica)
-                        </option>
-                        <option value="pcd">
-                          🌱 Programa de Inclusão PCD
-                        </option>
-                      </select>
+                  {v.pcd ? (
+                    <div style={{ marginTop: 10, fontWeight: 800, color: "#0b7a4b" }}>
+                      Vaga disponível também para PCD
                     </div>
+                  ) : null}
 
-                    {vagaAtual && (
-                      <div className="vagaPreview">
-                        <div className="vagaPreviewHeader">
-                          <div className="vagaTitle">{vagaAtual.titulo}</div>
-                          <div className="vagaMeta">
-                            {vagaAtual.local ? <span>{vagaAtual.local}</span> : null}
-                            {vagaAtual.pcd ? <span className="vagaPcd">PCD</span> : null}
-                          </div>
-                        </div>
+                  <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+                    <button className="btn btnPrimary" type="button" onClick={() => abrirModalParaVaga(v)}>
+                      Candidatar-se
+                    </button>
 
-                        {vagaAtual.descricao ? (
-                          <p className="vagaDesc">{vagaAtual.descricao}</p>
-                        ) : null}
+                    <button className="btn btnSoft" type="button" onClick={() => abrirModalBancoTalentos(true)}>
+                      Candidatura PCD
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
-                        {vagaAtual.imagem ? (
-                          <a
-                            className="vagaImgWrap"
-                            href={vagaAtual.imagem}
-                            target="_blank"
-                            rel="noreferrer"
-                            title="Abrir imagem em tela cheia"
-                          >
-                            <img
-                              className="vagaImg"
-                              src={vagaAtual.imagem}
-                              alt={`Vaga: ${vagaAtual.titulo}`}
-                            />
-                            <div className="vagaImgHint">
-                              Clique para ampliar
-                            </div>
-                          </a>
-                        ) : null}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <p className="trabalheHint">
-                      No momento não há vagas abertas. Você pode enviar seu currículo
-                      para o <strong>Banco de Talentos</strong> ou para o{" "}
-                      <strong>Programa de Inclusão PCD</strong>.
-                    </p>
+      {/* MODAL FORM */}
+      {open && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={closeModal}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,.55)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 14,
+            zIndex: 9999,
+          }}
+        >
+          <div
+            className="card"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "min(860px, 100%)",
+              padding: 18,
+              borderRadius: 16,
+              maxHeight: "calc(100vh - 28px)",
+              overflow: "auto",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
+              <div>
+                <h2 style={{ marginTop: 0, marginBottom: 6 }}>
+                  {vagaSelecionada ? "Candidatura para vaga" : "Enviar currículo"}
+                </h2>
 
-                    <div className="trabalheSelectRow">
-                      <label className="trabalheLabel" htmlFor="vaga">
-                        Tipo de envio
-                      </label>
+                <p style={{ marginTop: 0, color: "#475569" }}>
+                  {vagaSelecionada ? (
+                    <>
+                      <strong>{vagaSelecionada.titulo}</strong>
+                      {vagaSelecionada.local ? ` — ${vagaSelecionada.local}` : ""}
+                    </>
+                  ) : isPCD ? (
+                    "Programa de Inclusão PCD — envie seu currículo para o RH."
+                  ) : (
+                    "Banco de talentos — envie seu currículo para o RH."
+                  )}
+                </p>
+              </div>
 
-                      <select
-                        id="vaga"
-                        className="trabalheSelect"
-                        value={vagaSelecionada}
-                        onChange={(e) => setVagaSelecionada(e.target.value)}
-                      >
-                        <option value="banco-talentos">
-                          Banco de Talentos (sem vaga específica)
-                        </option>
-                        <option value="pcd">
-                          🌱 Programa de Inclusão PCD
-                        </option>
-                      </select>
-                    </div>
-                  </>
+              <button
+                type="button"
+                onClick={closeModal}
+                aria-label="Fechar"
+                className="btn btnSoft"
+                style={{ height: 40 }}
+              >
+                Fechar
+              </button>
+            </div>
+
+            <form onSubmit={onSubmit}>
+              <div className="grid2" style={{ marginTop: 10 }}>
+                <div>
+                  <label style={{ fontWeight: 800 }}>Unidade desejada</label>
+                  <select
+                    value={form.unidade}
+                    onChange={(e) => setForm((p) => ({ ...p, unidade: e.target.value }))}
+                    style={{ width: "100%", marginTop: 8 }}
+                  >
+                    {UNIDADES.map((u) => (
+                      <option key={u} value={u}>
+                        {u}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ fontWeight: 800 }}>Cargo pretendido</label>
+                  <input
+                    value={form.cargo}
+                    onChange={(e) => setForm((p) => ({ ...p, cargo: e.target.value }))}
+                    placeholder="Ex: Operador de Empilhadeira"
+                    style={{ width: "100%", marginTop: 8 }}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label style={{ fontWeight: 800 }}>Nome</label>
+                  <input
+                    value={form.nome}
+                    onChange={(e) => setForm((p) => ({ ...p, nome: e.target.value }))}
+                    style={{ width: "100%", marginTop: 8 }}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label style={{ fontWeight: 800 }}>Telefone/WhatsApp</label>
+                  <input
+                    value={form.telefone}
+                    onChange={(e) => setForm((p) => ({ ...p, telefone: e.target.value }))}
+                    style={{ width: "100%", marginTop: 8 }}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label style={{ fontWeight: 800 }}>E-mail</label>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
+                    style={{ width: "100%", marginTop: 8 }}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label style={{ fontWeight: 800 }}>Currículo (PDF)</label>
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(e) => setForm((p) => ({ ...p, arquivo: e.target.files?.[0] || null }))}
+                    style={{ width: "100%", marginTop: 8 }}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginTop: 12 }}>
+                <label style={{ fontWeight: 800 }}>Mensagem (opcional)</label>
+                <textarea
+                  value={form.mensagem}
+                  onChange={(e) => setForm((p) => ({ ...p, mensagem: e.target.value }))}
+                  style={{ width: "100%", marginTop: 8, minHeight: 90 }}
+                  placeholder="Conte algo sobre sua experiência, disponibilidade, etc."
+                />
+              </div>
+
+              {isPCD ? (
+                <div style={{ marginTop: 12, padding: 12, borderRadius: 12, background: "#f1f5f9" }}>
+                  <strong>🌱 Programa de Inclusão PCD</strong>
+                  <div style={{ color: "#475569", marginTop: 6 }}>
+                    A Happening Logística valoriza a diversidade e incentiva a candidatura de profissionais com deficiência (PCD).
+                  </div>
+                </div>
+              ) : null}
+
+              <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <button className="btn btnPrimary" type="submit" disabled={status.type === "sending"}>
+                  {status.type === "sending" ? "Enviando..." : "Enviar currículo"}
+                </button>
+
+                {status.type === "ok" && (
+                  <div className="alertOk" style={{ alignSelf: "center" }}>
+                    {status.msg}
+                  </div>
+                )}
+
+                {status.type === "err" && (
+                  <div className="alertErr" style={{ alignSelf: "center" }}>
+                    {status.msg}
+                  </div>
                 )}
               </div>
 
-              {vagasHistorico.length > 0 && (
-                <div className="trabalheCard">
-                  <h2>Histórico de vagas publicadas</h2>
-                  <p className="trabalheHint">
-                    Mantemos aqui um histórico de oportunidades divulgadas.
-                  </p>
-
-                  <div className="historicoGrid">
-                    {vagasHistorico.map((v) => (
-                      <div key={v.id} className="historicoItem">
-                        <div className="historicoTitle">{v.titulo}</div>
-                        <div className="historicoMeta">
-                          {v.data ? <span>{v.data}</span> : null}
-                          {v.local ? <span>{v.local}</span> : null}
-                          {v.pcd ? <span className="vagaPcd">PCD</span> : null}
-                        </div>
-
-                        {v.imagem ? (
-                          <a
-                            className="historicoImgWrap"
-                            href={v.imagem}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <img
-                              className="historicoImg"
-                              src={v.imagem}
-                              alt={`Histórico: ${v.titulo}`}
-                            />
-                          </a>
-                        ) : null}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* COLUNA DIREITA: formulário */}
-            <div className="trabalheRight">
-              <div className="trabalheCard">
-                <h2>Enviar currículo</h2>
-                <p className="trabalheHint">
-                  O envio vai diretamente para o <strong>RH</strong>.
-                </p>
-
-                <form className="trabalheForm" onSubmit={onSubmit}>
-                  <div className="trabalheRow2">
-                    <div>
-                      <label className="trabalheLabel">Nome</label>
-                      <input
-                        className="trabalheInput"
-                        name="nome"
-                        required
-                        placeholder="Seu nome completo"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="trabalheLabel">Telefone/WhatsApp</label>
-                      <input
-                        className="trabalheInput"
-                        name="telefone"
-                        required
-                        placeholder="(16) 99999-9999"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="trabalheRow2">
-                    <div>
-                      <label className="trabalheLabel">E-mail</label>
-                      <input
-                        className="trabalheInput"
-                        type="email"
-                        name="email"
-                        required
-                        placeholder="seuemail@exemplo.com"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="trabalheLabel">Unidade desejada</label>
-                      <select className="trabalheSelect" name="unidade">
-                        <option value="Matriz - Sertãozinho/SP">
-                          Matriz — Sertãozinho/SP
-                        </option>
-                        <option value="Filial - São Paulo/SP">
-                          Filial — São Paulo/SP
-                        </option>
-                        <option value="Filial - Aroeira/MG">
-                          Filial — Aroeira/MG
-                        </option>
-                        <option value="Outra">Outra</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="trabalheLabel">Mensagem (opcional)</label>
-                    <textarea
-                      className="trabalheTextarea"
-                      name="mensagem"
-                      placeholder="Conte rapidamente sua experiência, disponibilidade, etc."
-                    />
-                  </div>
-
-                  <div>
-                    <label className="trabalheLabel">Currículo (PDF)</label>
-                    <input
-                      className="trabalheFile"
-                      type="file"
-                      name="arquivo"
-                      accept="application/pdf"
-                      required
-                    />
-                    <div className="trabalheHintSmall">
-                      Envie em PDF. (Se você quiser aceitar DOC/DOCX, eu ajusto.)
-                    </div>
-                  </div>
-
-                  <button className="btnPrim" disabled={enviando}>
-                    {enviando ? "Enviando..." : "Enviar currículo"}
-                  </button>
-
-                  {msg && (
-                    <div
-                      className={`trabalheMsg ${
-                        msg.type === "ok" ? "ok" : "err"
-                      }`}
-                    >
-                      {msg.text}
-                    </div>
-                  )}
-                </form>
-              </div>
-
-              <div className="trabalheCard">
-                <h2>🌱 Programa de Inclusão PCD</h2>
-                <p>
-                  A Happening Logística valoriza a diversidade e incentiva a
-                  candidatura de profissionais com deficiência (PCD).
-                  <br />
-                  Se você é PCD e deseja fazer parte do nosso time, envie seu
-                  currículo.
-                </p>
-
-                <div className="pcdBox">
-                  <button
-                    className="btnSec"
-                    onClick={() => setVagaSelecionada("pcd")}
-                    type="button"
-                  >
-                    Enviar Currículo PCD
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="trabalheFooterNote">
-            <span>
-              Dica: para postar uma vaga igual do LinkedIn, suba a imagem em{" "}
-              <code>/public/vagas/</code> e cadastre a vaga no array{" "}
-              <code>VAGAS</code> acima.
-            </span>
+              <p style={{ marginTop: 10, color: "#64748b", fontSize: 13 }}>
+                * O envio é direcionado para o RH.
+              </p>
+            </form>
           </div>
         </div>
-      </section>
+      )}
     </main>
   );
 }
