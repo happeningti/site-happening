@@ -36,9 +36,6 @@ export async function POST(req: Request) {
     const unidade = String(fd.get("unidade") || "").trim();
     const mensagem = String(fd.get("mensagem") || "").trim();
 
-    // ✅ NOVO
-    const cargoPretendido = String(fd.get("cargoPretendido") || "").trim();
-
     const vagaTitulo = String(fd.get("vagaTitulo") || "").trim();
     const vagaUnidade = String(fd.get("vagaUnidade") || "").trim();
 
@@ -51,13 +48,6 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!cargoPretendido) {
-      return Response.json(
-        { ok: false, message: "Preencha o cargo pretendido." },
-        { status: 400 }
-      );
-    }
-
     if (!(arquivo instanceof File)) {
       return Response.json(
         { ok: false, message: "Anexe seu currículo em PDF." },
@@ -65,6 +55,7 @@ export async function POST(req: Request) {
       );
     }
 
+    // valida PDF simples
     if (arquivo.type !== "application/pdf") {
       return Response.json(
         { ok: false, message: "O currículo deve ser um arquivo PDF." },
@@ -102,11 +93,7 @@ export async function POST(req: Request) {
           <tr><td><b>Nome:</b></td><td>${escapeHtml(nome)}</td></tr>
           <tr><td><b>Telefone:</b></td><td>${escapeHtml(telefone)}</td></tr>
           <tr><td><b>E-mail:</b></td><td>${escapeHtml(email)}</td></tr>
-
-          <tr><td><b>Cargo pretendido:</b></td><td>${escapeHtml(cargoPretendido)}</td></tr>
-
           ${unidade ? `<tr><td><b>Unidade desejada:</b></td><td>${escapeHtml(unidade)}</td></tr>` : ""}
-
           ${
             tipo === "vaga"
               ? `
@@ -115,7 +102,6 @@ export async function POST(req: Request) {
               `
               : ""
           }
-
           <tr><td><b>Tipo:</b></td><td>${escapeHtml(tipo)}</td></tr>
         </table>
 
@@ -128,9 +114,9 @@ export async function POST(req: Request) {
     `;
 
     await transport.sendMail({
-      from: process.env.CURRICULO_USER,
-      to: process.env.CURRICULO_TO,
-      replyTo: email,
+      from: process.env.CURRICULO_USER, // remetente autenticado
+      to: process.env.CURRICULO_TO,     // RH
+      replyTo: email,                   // responder pro candidato
       subject: assuntoBase,
       html,
       attachments: [
