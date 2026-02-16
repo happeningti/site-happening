@@ -1,5 +1,6 @@
 // app/servicos/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 
 const SERVICOS = [
   {
@@ -88,9 +89,6 @@ export default function ServicosPage() {
             Uma página única com todos os serviços — navegue por âncoras e conheça
             nossas soluções com mais clareza.
           </p>
-
-          {/* REMOVIDO: botões do hero */}
-          {/* <div className="servicosHeroActions">...</div> */}
         </div>
       </section>
 
@@ -109,9 +107,6 @@ export default function ServicosPage() {
                   </a>
                 ))}
               </nav>
-
-              {/* REMOVIDO: botões da lateral */}
-              {/* <div className="servicosNavCta">...</div> */}
             </div>
           </aside>
 
@@ -135,6 +130,7 @@ export default function ServicosPage() {
                   key={s.id}
                   id={s.id}
                   className={`servicosSection ${s.reverse ? "reverse" : ""}`}
+                  style={{ scrollMarginTop: 90 }} // evita a âncora “ficar escondida” atrás do topo
                 >
                   <div className="servicosText">
                     <h2>{s.titulo}</h2>
@@ -147,24 +143,26 @@ export default function ServicosPage() {
                       ))}
                     </ul>
 
-                    {/* BOTÃO EXTRA: só no Agronegócio */}
+                    {/* BOTÃO EXTRA (destacado): só no Agronegócio */}
                     {s.id === "agronegocio" && (
-                      <div style={{ marginTop: 20 }}>
-                        <Link
-                          href="/servicos/operacao-cana"
-                          className="servicosBtn"
-                        >
+                      <div className="servicosActions">
+                        <Link href="/servicos/operacao-cana" className="btnCana">
                           Ver Operação da Cana
                         </Link>
                       </div>
                     )}
-
-                    {/* REMOVIDO: botões por serviço */}
-                    {/* <div className="servicosActions">...</div> */}
                   </div>
 
                   <div className="servicosMedia">
-                    <img className="servicosImg" src={s.img} alt={s.titulo} />
+                    <Image
+                      className="servicosImg"
+                      src={s.img}
+                      alt={s.titulo}
+                      width={960}
+                      height={640}
+                      sizes="(max-width: 960px) 100vw, 40vw"
+                      priority={s.id === "agronegocio"} // primeira imagem carrega mais rápido
+                    />
                   </div>
                 </article>
               ))}

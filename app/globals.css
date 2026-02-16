@@ -10,6 +10,10 @@
 
 *{ box-sizing: border-box; }
 html, body { padding: 0; margin: 0; }
+
+/* Scroll suave para âncoras (#id) */
+html{ scroll-behavior: smooth; }
+
 body{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
   background: #f5f7fb;
@@ -25,6 +29,26 @@ img{
 
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; }
+
+/* Acessibilidade: foco visível no teclado */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.btnCana:focus-visible{
+  outline: 3px solid rgba(34,197,94,0.55);
+  outline-offset: 3px;
+  border-radius: 14px;
+}
+
+/* Respeita usuários com redução de movimento */
+@media (prefers-reduced-motion: reduce){
+  *{
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 .container{
   max-width: 1120px;
@@ -553,6 +577,7 @@ button { font-family: inherit; }
   border: 1px solid #e7ebf3;
   box-shadow: 0 16px 40px rgba(0,0,0,0.10);
 }
+
 /* Responsivo */
 @media (max-width: 960px){
   .servicosContainer{
@@ -582,7 +607,6 @@ button { font-family: inherit; }
   }
 }
 
-
 .servicosNavMobileChips{
   display: flex;
   gap: 10px;
@@ -608,6 +632,9 @@ button { font-family: inherit; }
   background: #fff;
   border-color: rgba(11,122,75,0.25);
 }
+
+
+
 /* =========================
    PÁGINA: UNIDADES (/unidades)
    ========================= */
@@ -722,34 +749,35 @@ button { font-family: inherit; }
 .uniDot.mg{ background: rgba(34,197,94,0.95); }
 .uniDot.go{ background: rgba(15,23,42,0.95); }
 
+/* (ajustado) uniMap sem duplicidade */
 .uniMap{
   border-radius: 18px;
-  border: 1px solid #eef2f7;
   overflow: hidden;
+  background: rgba(11,18,32,0.04);
+  border: 1px solid rgba(11,18,32,0.08);
 }
 .uniMapSvg{
   width: 100%;
   height: auto;
   display: block;
 }
-.uniMap {
-  border-radius: 18px;
-  overflow: hidden;
-  background: rgba(11,18,32,0.04);
-  border: 1px solid rgba(11,18,32,0.08);
-}
 
-.uniMapIframe {
+.uniMapIframe{
   display: block;
   width: 100%;
   height: 420px;
 }
+
 /* Pins */
 .pin{ color: #0f172a; }
 .pin.sp{ color: #0b7a4b; }
 .pin.mg{ color: #22c55e; }
 .pin.go{ color: #0f172a; }
+
+/* (ajustado) animação mais confiável em SVG */
 .pin circle:nth-child(1){
+  transform-box: fill-box;
+  transform-origin: center;
   animation: ping 2.2s ease-out infinite;
 }
 @keyframes ping{
@@ -975,6 +1003,9 @@ button { font-family: inherit; }
     grid-template-columns: 1fr;
   }
 }
+
+
+
 /* =========================
    MAPA CONTATO
    ========================= */
@@ -1017,4 +1048,233 @@ button { font-family: inherit; }
   .contatoMapIframe{
     height: 380px;
   }
+}
+
+
+
+/* =========================
+   PÁGINA: OPERAÇÃO CANA (/servicos/operacao-cana)
+   ========================= */
+
+.operacaoCana{
+  background: #f5f7fb;
+}
+
+.operacaoCanaHero{
+  position: relative;
+  padding: 70px 0 56px;
+  overflow: hidden;
+  border-bottom: 1px solid #e7ebf3;
+}
+
+.operacaoCanaHeroBg{
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(900px 420px at 15% 25%, rgba(25,163,74,.22), transparent 60%),
+              radial-gradient(900px 420px at 85% 35%, rgba(0,120,255,.16), transparent 60%),
+              linear-gradient(140deg, #062b2f, #0b2d2a 55%, #06212b);
+  opacity: .95;
+}
+
+.operacaoCanaHeroContent{
+  position: relative;
+  z-index: 1;
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+  color: #fff;
+}
+
+.operacaoCanaHeroContent h1{
+  margin: 10px 0 10px;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.05;
+}
+
+.operacaoCanaHeroContent p{
+  max-width: 72ch;
+  opacity: .92;
+  font-size: 16px;
+}
+
+.operacaoCanaHeroActions{
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.operacaoCanaBtn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  background: #19a34a;
+  color: #fff;
+  box-shadow: 0 14px 28px rgba(25, 163, 74, 0.28);
+}
+
+.operacaoCanaBtnSec{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.28);
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(8px);
+}
+
+.operacaoCanaWrap{
+  padding: 44px 0 70px;
+}
+
+.operacaoCanaContainer{
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.operacaoCanaGrid{
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.operacaoCanaText{
+  background: #fff;
+  border: 1px solid #e7ebf3;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 12px 28px rgba(2, 12, 27, .06);
+}
+
+.operacaoCanaText h2{
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.operacaoCanaText p{
+  margin: 0 0 14px;
+  color: #334155;
+}
+
+.operacaoCanaBullets{
+  margin: 0;
+  padding-left: 18px;
+  color: #0f172a;
+}
+
+.operacaoCanaBullets li{
+  margin: 8px 0;
+  color: #334155;
+}
+
+.operacaoCanaCard{
+  background: #fff;
+  border: 1px solid #e7ebf3;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(2, 12, 27, .06);
+}
+
+.operacaoCanaCardTitle{
+  padding: 14px 16px;
+  font-weight: 900;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.operacaoCanaVideo{
+  width: 100%;
+  display: block;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  background: #0b1220;
+}
+
+.operacaoCanaGaleria{
+  margin-top: 22px;
+  background: #fff;
+  border: 1px solid #e7ebf3;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(2, 12, 27, .06);
+}
+
+.operacaoCanaGaleria h2{
+  margin: 0 0 14px;
+  font-size: 22px;
+}
+
+.operacaoCanaGaleriaGrid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.operacaoCanaGaleriaGrid img{
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid #eef2f7;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.operacaoCanaGaleriaGrid img:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 22px rgba(2, 12, 27, .12);
+}
+
+@media (max-width: 980px){
+  .operacaoCanaGrid{
+    grid-template-columns: 1fr;
+  }
+  .operacaoCanaGaleriaGrid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .operacaoCanaGaleriaGrid img{
+    height: 160px;
+  }
+}
+
+
+
+/* =========================
+   BOTÃO DESTACADO - Operação Cana (Serviços)
+   ========================= */
+
+.btnCana{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 14px;
+  font-weight: 950;
+  letter-spacing: -0.2px;
+
+  color: #fff;
+  background: linear-gradient(90deg, var(--brand) 0%, var(--brand2) 100%);
+  border: 1px solid rgba(11,122,75,0.25);
+  box-shadow: 0 14px 28px rgba(11,122,75,0.22);
+
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+
+.btnCana:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(11,122,75,0.28);
+  filter: brightness(1.03);
+}
+
+.btnCana:active{
+  transform: translateY(0px);
 }
