@@ -35,7 +35,7 @@ const VAGAS: Vaga[] = [
       "Experiência com empilhadeira e entregas de fracionados",
       "CNH categoria B",
     ],
-    pcd: true,
+    pcd: false,
     ativa: false,
   },
 ];
