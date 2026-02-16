@@ -36,7 +36,7 @@ const VAGAS: Vaga[] = [
       "CNH categoria B",
     ],
     pcd: true,
-    ativa: true,
+    ativa: false,
   },
 ];
 
