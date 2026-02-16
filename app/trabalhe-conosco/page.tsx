@@ -29,14 +29,14 @@ const VAGAS: Vaga[] = [
     titulo: "auxiliar-operacional",
     local: "Sertãozinho/SP",
     descricao:
-      "Atuação com empilhadeira e entregas de fracionados. Vaga disponível também para PCD.",
+      "Atuação com empilhadeira e entregas de fracionados.",
     imagem: "/vagas/operador-empilhadeira.jpg",
     requisitos: [
       "Experiência com empilhadeira e entregas de fracionados",
       "CNH categoria B",
       "Ensino médio completo"
     ],
-    pcd: false,
+    pcd: true,
     ativa: true,
   },
 ];
