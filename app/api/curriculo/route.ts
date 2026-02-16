@@ -1,148 +1,147 @@
-// app/api/curriculo/route.ts
 import nodemailer from "nodemailer";
 
 export const runtime = "nodejs";
-
-const MAX_MB = 5;
-const ALLOWED = new Set([
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-]);
-
-// Rate limit simples (memória). Em produção, o ideal é Redis/Upstash.
-const hits = new Map<string, { count: number; ts: number }>();
-function rateLimit(ip: string, limit = 3, windowMs = 10 * 60 * 1000) {
-  const now = Date.now();
-  const cur = hits.get(ip);
-  if (!cur || now - cur.ts > windowMs) {
-    hits.set(ip, { count: 1, ts: now });
-    return true;
-  }
-  if (cur.count >= limit) return false;
-  cur.count += 1;
-  return true;
-}
-
-function getIP(req: Request) {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "local"
-  );
-}
 
 function missingEnv(keys: string[]) {
   return keys.filter((k) => !process.env[k] || String(process.env[k]).trim() === "");
 }
 
 export async function POST(req: Request) {
-  const ip = getIP(req);
-  if (!rateLimit(ip)) {
-    return Response.json(
-      { error: "Muitas tentativas. Aguarde alguns minutos e tente novamente." },
-      { status: 429 }
-    );
-  }
+  try {
+    const required = [
+      "CURRICULO_HOST",
+      "CURRICULO_PORT",
+      "CURRICULO_SECURE",
+      "CURRICULO_USER",
+      "CURRICULO_PASS",
+      "CURRICULO_TO",
+    ];
+    const miss = missingEnv(required);
+    if (miss.length) {
+      return Response.json(
+        {
+          ok: false,
+          message: `Configuração de e-mail incompleta: faltando ${miss.join(", ")}.`,
+        },
+        { status: 400 }
+      );
+    }
 
-  // Verifica config do currículo (separada)
-  const required = [
-    "CURRICULO_HOST",
-    "CURRICULO_PORT",
-    "CURRICULO_SECURE",
-    "CURRICULO_USER",
-    "CURRICULO_PASS",
-    "CURRICULO_TO",
-  ];
-  const miss = missingEnv(required);
-  if (miss.length) {
-    return Response.json(
-      { error: `Configuração de e-mail incompleta: faltando ${miss.join(", ")}` },
-      { status: 400 }
-    );
-  }
+    const fd = await req.formData();
 
-  const form = await req.formData();
+    const tipo = String(fd.get("tipo") || "espontaneo"); // vaga | espontaneo | pcd
+    const nome = String(fd.get("nome") || "").trim();
+    const telefone = String(fd.get("telefone") || "").trim();
+    const email = String(fd.get("email") || "").trim();
+    const unidade = String(fd.get("unidade") || "").trim();
+    const mensagem = String(fd.get("mensagem") || "").trim();
 
-  // Honeypot anti-bot
-  const website = String(form.get("website") || "");
-  if (website.trim()) {
-    return Response.json({ ok: true });
-  }
+    const vagaTitulo = String(fd.get("vagaTitulo") || "").trim();
+    const vagaUnidade = String(fd.get("vagaUnidade") || "").trim();
 
-  const unidade = String(form.get("unidade") || "").trim();
-  const cargo = String(form.get("cargo") || "").trim();
-  const nome = String(form.get("nome") || "").trim();
-  const email = String(form.get("email") || "").trim();
-  const telefone = String(form.get("telefone") || "").trim();
-  const mensagem = String(form.get("mensagem") || "").trim();
+    const arquivo = fd.get("arquivo");
 
-  const file = form.get("curriculo");
-  if (!(file instanceof File)) {
-    return Response.json({ error: "Currículo não encontrado." }, { status: 400 });
-  }
+    if (!nome || !telefone || !email) {
+      return Response.json(
+        { ok: false, message: "Preencha nome, telefone e e-mail." },
+        { status: 400 }
+      );
+    }
 
-  const sizeMb = file.size / (1024 * 1024);
-  if (sizeMb > MAX_MB) {
-    return Response.json(
-      { error: `Arquivo excede o limite de ${MAX_MB}MB.` },
-      { status: 400 }
-    );
-  }
+    if (!(arquivo instanceof File)) {
+      return Response.json(
+        { ok: false, message: "Anexe seu currículo em PDF." },
+        { status: 400 }
+      );
+    }
 
-  if (!ALLOWED.has(file.type)) {
-    return Response.json(
-      { error: "Formato inválido. Envie PDF, DOC ou DOCX." },
-      { status: 400 }
-    );
-  }
+    // valida PDF simples
+    if (arquivo.type !== "application/pdf") {
+      return Response.json(
+        { ok: false, message: "O currículo deve ser um arquivo PDF." },
+        { status: 400 }
+      );
+    }
 
-  const buf = Buffer.from(await file.arrayBuffer());
+    const buf = Buffer.from(await arquivo.arrayBuffer());
 
-  // SMTP do CURRÍCULO (separado da cotação)
-  const transporter = nodemailer.createTransport({
-    host: process.env.CURRICULO_HOST,
-    port: Number(process.env.CURRICULO_PORT),
-    secure: String(process.env.CURRICULO_SECURE).toLowerCase() === "true",
-    auth: {
-      user: process.env.CURRICULO_USER,
-      pass: process.env.CURRICULO_PASS,
-    },
-  });
-
-  const to = process.env.CURRICULO_TO!;
-  const subject = `Currículo — ${nome} (${cargo}) — ${unidade}`;
-
-  const text = `Novo currículo recebido pelo site:
-
-Unidade desejada: ${unidade}
-Cargo pretendido: ${cargo}
-
-Nome: ${nome}
-E-mail: ${email}
-Telefone: ${telefone}
-
-Mensagem:
-${mensagem || "(não informada)"}
-
-IP: ${ip}
-Arquivo: ${file.name} (${file.type}, ${sizeMb.toFixed(2)}MB)
-`;
-
-  await transporter.sendMail({
-    from: process.env.CURRICULO_USER, // <- AGORA envia como curriculo@...
-    to,
-    replyTo: email || undefined,
-    subject,
-    text,
-    attachments: [
-      {
-        filename: file.name,
-        content: buf,
-        contentType: file.type,
+    const transport = nodemailer.createTransport({
+      host: process.env.CURRICULO_HOST,
+      port: Number(process.env.CURRICULO_PORT),
+      secure: String(process.env.CURRICULO_SECURE) === "true",
+      auth: {
+        user: process.env.CURRICULO_USER,
+        pass: process.env.CURRICULO_PASS,
       },
-    ],
-  });
+    });
 
-  return Response.json({ ok: true });
+    const assuntoBase =
+      tipo === "vaga"
+        ? `Currículo - ${vagaTitulo || "Vaga"}`
+        : tipo === "pcd"
+        ? "Currículo - Programa de Inclusão PCD"
+        : "Currículo - Banco de Talentos";
+
+    const html = `
+      <div style="font-family:Arial, sans-serif; line-height:1.4">
+        <h2 style="margin:0 0 8px">${assuntoBase}</h2>
+        <p style="margin:0 0 12px;color:#444">
+          Recebido pelo site Happening Logística.
+        </p>
+
+        <table cellpadding="6" style="border-collapse:collapse">
+          <tr><td><b>Nome:</b></td><td>${escapeHtml(nome)}</td></tr>
+          <tr><td><b>Telefone:</b></td><td>${escapeHtml(telefone)}</td></tr>
+          <tr><td><b>E-mail:</b></td><td>${escapeHtml(email)}</td></tr>
+          ${unidade ? `<tr><td><b>Unidade desejada:</b></td><td>${escapeHtml(unidade)}</td></tr>` : ""}
+          ${
+            tipo === "vaga"
+              ? `
+                <tr><td><b>Vaga:</b></td><td>${escapeHtml(vagaTitulo || "-")}</td></tr>
+                <tr><td><b>Unidade da vaga:</b></td><td>${escapeHtml(vagaUnidade || "-")}</td></tr>
+              `
+              : ""
+          }
+          <tr><td><b>Tipo:</b></td><td>${escapeHtml(tipo)}</td></tr>
+        </table>
+
+        ${
+          mensagem
+            ? `<p style="margin:12px 0 0"><b>Mensagem:</b><br/>${escapeHtml(mensagem).replaceAll("\n", "<br/>")}</p>`
+            : ""
+        }
+      </div>
+    `;
+
+    await transport.sendMail({
+      from: process.env.CURRICULO_USER, // remetente autenticado
+      to: process.env.CURRICULO_TO,     // RH
+      replyTo: email,                   // responder pro candidato
+      subject: assuntoBase,
+      html,
+      attachments: [
+        {
+          filename: arquivo.name || "curriculo.pdf",
+          content: buf,
+          contentType: "application/pdf",
+        },
+      ],
+    });
+
+    return Response.json({ ok: true });
+  } catch (err) {
+    return Response.json(
+      { ok: false, message: "Erro ao enviar. Verifique logs/configuração de e-mail." },
+      { status: 500 }
+    );
+  }
+}
+
+function escapeHtml(s: string) {
+  return s
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
