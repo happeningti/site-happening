@@ -24,20 +24,20 @@ const UNIDADES = [
 // ✅ VAGAS: quando não tiver vaga, deixe vazio mesmo: []
 // Quando tiver, é só adicionar aqui que aparece no site automaticamente.
 const VAGAS: Vaga[] = [
-  {
-    id: "operador-empilhadeira-2026",
-    titulo: "Operador de Empilhadeira",
-    local: "Sertãozinho/SP",
-    descricao:
-      "Atuação com empilhadeira e entregas de fracionados. Vaga disponível também para PCD.",
-    imagem: "/vagas/operador-empilhadeira.jpg",
-    requisitos: [
-      "Experiência com empilhadeira e entregas de fracionados",
-      "CNH categoria B",
-    ],
-    pcd: false,
-    ativa: false,
-  },
+  //{
+    //id: "operador-empilhadeira-2026",
+    //titulo: "Operador de Empilhadeira",
+    //local: "Sertãozinho/SP",
+    //descricao:
+      //"Atuação com empilhadeira e entregas de fracionados. Vaga disponível também para PCD.",
+    //imagem: "/vagas/operador-empilhadeira.jpg",
+    //requisitos: [
+      //"Experiência com empilhadeira e entregas de fracionados",
+      //"CNH categoria B",
+    //],
+    //pcd: true,
+    //ativa: true,
+  //},
 ];
 
 // Se você quiser esconder vagas encerradas, use isso na hora de renderizar:
