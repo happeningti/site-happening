@@ -62,8 +62,10 @@ export default function ContatoPage() {
           <div className="badge">Contato</div>
           <h1>Fale com a Happening</h1>
           <p>
-            Entre em contato com a unidade mais próxima. Para vagas e envio de
-            currículo, acesse <strong>Trabalhe Conosco</strong>.
+            <p>
+  Entre em contato com a unidade mais próxima para dúvidas, atendimento e suporte.
+</p>
+ <strong>Trabalhe Conosco</strong>.
           </p>
 
           <div
