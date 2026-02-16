@@ -32,16 +32,16 @@ const UNIDADES: Unidade[] = [
     nome: "Filial Aroeira",
     cidade: "Tupaciguara",
     uf: "MG",
-    tipo: "Base Operacional",
+    tipo: "Filial",
     resumo:
-      "Base fixa próxima às operações atendidas, com estrutura local, frota dedicada e suporte técnico para continuidade operacional.",
+      "Filial fixa próxima às operações atendidas, com estrutura local, frota dedicada e suporte técnico para continuidade operacional.",
     recursos: ["Escritório", "Frota", "Oficina", "Contrato"],
   },
   {
     nome: "Filial Santa Juliana",
     cidade: "Santa Juliana",
     uf: "MG",
-    tipo: "Base Operacional",
+    tipo: "Filial",
     resumo:
       "Estrutura operacional instalada estrategicamente na região, com equipe fixa, manutenção local e atendimento contínuo.",
     recursos: ["Escritório", "Frota", "Oficina", "Contrato"],
@@ -50,7 +50,7 @@ const UNIDADES: Unidade[] = [
     nome: "Filial Tropical",
     cidade: "Porteirão",
     uf: "GO",
-    tipo: "Base Operacional",
+    tipo: "Filial",
     resumo:
       "Presença estratégica no Centro-Oeste, com estrutura fixa, suporte técnico próprio e frota preparada para atendimento regional.",
     recursos: ["Escritório", "Frota", "Oficina", "Contrato"],
