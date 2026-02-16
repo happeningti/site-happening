@@ -60,12 +60,7 @@ export default function OperacaoCanaPage() {
                   preload="metadata"
                 >
                   <source src="/videos/cana.mp4" type="video/mp4" />
-                </video>
-
-                <div className="operacaoCanaCardHint">
-                  Dica: se não aparecer, confira se o arquivo está em{" "}
-                  <code>public/videos/cana.mp4</code>.
-                </div>
+                </video>                
               </div>
             </div>
           </div>
