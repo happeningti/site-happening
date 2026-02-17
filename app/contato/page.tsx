@@ -36,7 +36,7 @@ const UNIDADES: Unidade[] = [
     endereco:
     "Av. Marginal Maurílio Bacega, 1950 — JD das Palmeiras — Sertãozinho/SP — CEP 14177-290",
     telefone: "+55 16 3946-4500",
-    whatsapp: //"", //
+    whatsapp: "", //,
   },
   {
     nome: "Filial — São Paulo/SP",
