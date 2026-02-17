@@ -147,8 +147,7 @@ export default function HomePage() {
       <style jsx>{`
         .hero {
           position: relative;
-          min-height: calc(100vh - 56px);
-          overflow: hidden;
+          min-height: calc(100vh - 56px);          
           color: #fff;
           background: #0b1220;
         }
@@ -259,19 +258,18 @@ export default function HomePage() {
           letter-spacing: -0.6px;
           line-height: 1.1;
           color: #fff;
-          font-size: clamp(22px, 2.3vw, 44px);
 
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          font-size: clamp(26px, 2.2vw, 42px);
+
+          white-space: nowrap;   /* mantém 1 linha */
         }
+
 
         /* ✅ no menor, libera quebrar para não cortar */
         @media (max-width: 1100px) {
           .heroTitle {
             white-space: normal;
-            overflow: visible;
-            text-overflow: unset;
+            overflow: visible;            
           }
         }
 
