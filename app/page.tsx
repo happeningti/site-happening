@@ -147,17 +147,22 @@ export default function HomePage() {
       <style jsx>{`
         .hero {
           position: relative;
-          min-height: calc(100vh - 56px);          
+          min-height: 100vh;      /* <- tira o calc para não sobrar faixa */
           color: #fff;
           background: #0b1220;
+          overflow: hidden;        /* <- garante que nada “vaza” */
         }
 
         .heroMedia {
           position: absolute;
           inset: 0;
+          z-index: 0;
         }
 
+        /* ✅ ESSENCIAL: vídeo absoluto colado no topo */
         .heroVideo {
+          position: absolute;
+          inset: 0;
           width: 100%;
           height: 100%;
           object-fit: cover;
@@ -165,16 +170,14 @@ export default function HomePage() {
           transform: scale(1.02);
         }
 
-        .heroOverlay {
+        /* mantém as camadas absolutas também */
+        .heroOverlay,
+        .heroGlow,
+        .heroGrain {
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            90deg,
-            rgba(11, 18, 32, 0.82) 0%,
-            rgba(11, 18, 32, 0.62) 45%,
-            rgba(11, 18, 32, 0.45) 100%
-          );
         }
+
 
         .heroGlow {
           position: absolute;
