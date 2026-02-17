@@ -34,16 +34,14 @@ const UNIDADES: Unidade[] = [
     nome: "Matriz — Sertãozinho/SP",
     tipo: "Matriz",
     endereco:
-      "Av. Marginal Maurílio Bacega, 1950 — JD das Palmeiras — Sertãozinho/SP — CEP 14177-290",
-    responsavel: "Jorge",
+    "Av. Marginal Maurílio Bacega, 1950 — JD das Palmeiras — Sertãozinho/SP — CEP 14177-290",
     telefone: "+55 16 3946-4500",
-    whatsapp: "5516991029083", // Jorge
+    whatsapp: //"", //
   },
   {
     nome: "Filial — São Paulo/SP",
     tipo: "Filial",
-    endereco: "São Paulo/SP",
-    responsavel: "Jorge",
+    endereco: "São Paulo/SP",    
     telefone: "+55 16 99102-9083",
     whatsapp: "5516991029083", // mesmo da Matriz (como você pediu)
   },
@@ -51,15 +49,13 @@ const UNIDADES: Unidade[] = [
     nome: "Filial — Santa Juliana/MG",
     tipo: "Filial",
     endereco: "Santa Juliana/MG",
-    responsavel: "Carlos",
     telefone: "+55 16 99337-4115",
     whatsapp: "5516993374115",
   },
   {
     nome: "Filial — Aroeira/MG",
     tipo: "Filial",
-    endereco: "Tupaciguara/MG",
-    responsavel: "Etienne",
+    endereco: "Tupaciguara/MG",    
     telefone: "+55 17 99734-0783",
     whatsapp: "5517997340783",
   },
