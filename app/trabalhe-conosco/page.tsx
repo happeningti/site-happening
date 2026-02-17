@@ -24,10 +24,10 @@ const UNIDADES = [
 // ✅ VAGAS: quando não tiver vaga, deixe vazio mesmo: []
 const VAGAS: Vaga[] = [
   {
-    id: "auxiliar-operacional",
-    titulo: "Auxiliar Operacional",
+    id: "operador-empilhadeira",
+    titulo: "Operador de Empilhadeira",
     local: "Sertãozinho/SP",
-    descricao: "Atuação com empilhadeira e entregas de fracionados.",
+    descricao: "Experiência com empilhadeira e entregas de facionados.",
     imagem: "/vagas/operador-empilhadeira.jpg",
     requisitos: [
       "Experiência com empilhadeira e entregas de fracionados",
