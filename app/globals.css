@@ -184,9 +184,10 @@ button:focus-visible,
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 0 16px 56px;
+  padding: 0 16px 30px; /* era 56px */
   color: #fff;
 }
+
 
 .empresaHeroContent h1{
   margin: 0 0 10px;
@@ -315,13 +316,15 @@ button:focus-visible,
 /* RESPONSIVO */
 @media (max-width: 960px){
   .empresaHero{
-    min-height: 62vh;
-    align-items: flex-end;
+    min-height: 56vh; /* era 62vh */
+    align-items: center; /* era flex-end */
   }
 
   .empresaHeroContent{
-    padding-bottom: 44px;
+    padding-bottom: 26px; /* era 44px */
   }
+
+
 
   .empresaHeroContent h1{
     font-size: 34px;
