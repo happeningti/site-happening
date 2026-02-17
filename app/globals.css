@@ -151,7 +151,7 @@ button:focus-visible,
   position: relative;
   min-height: 72vh;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   overflow: hidden;
   border-bottom: 1px solid #e7ebf3;
   isolation: isolate; /* garante camadas certinhas (overlay e texto) */
