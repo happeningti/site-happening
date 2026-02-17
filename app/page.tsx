@@ -223,7 +223,7 @@ export default function HomePage() {
           flex-direction: column;
           gap: 18px;
           align-self: start;
-          padding-top: 72px; /* controla a altura do bloco direito */
+          padding-top: 150px; /* controla a altura do bloco direito */
         }
 
         @media (max-width: 980px) {
