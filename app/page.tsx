@@ -226,7 +226,7 @@ export default function HomePage() {
           flex-direction: column;
           gap: 18px;
           align-self: start;
-          padding-top: 150px;
+          padding-top: 110px;
         }
 
         @media (max-width: 980px) {
