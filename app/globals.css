@@ -1619,7 +1619,7 @@ button:focus-visible,
 ========================= */
 .transparenciaHero{
   position: relative;
-  min-height: 46vh;
+  min-height: 34vh;
   display:flex;
   align-items:flex-end;
   overflow:hidden;
