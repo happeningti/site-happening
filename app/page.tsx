@@ -147,10 +147,10 @@ export default function HomePage() {
       <style jsx>{`
         .hero {
           position: relative;
-          min-height: 100vh;      /* <- tira o calc para não sobrar faixa */
+          min-height: 100vh;
           color: #fff;
           background: #0b1220;
-          overflow: hidden;        /* <- garante que nada “vaza” */
+          overflow: hidden;
         }
 
         .heroMedia {
@@ -159,40 +159,57 @@ export default function HomePage() {
           z-index: 0;
         }
 
-        /* ✅ ESSENCIAL: vídeo absoluto colado no topo */
+        /* ✅ vídeo colado + volta o “cinema” (mais escuro/verde) */
         .heroVideo {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
           object-fit: cover;
-          filter: saturate(0.95) contrast(1.05);
           transform: scale(1.02);
+
+          /* AJUSTE PRINCIPAL: volta o tom mais escuro (como antes) */
+          filter: brightness(0.78) saturate(1.05) contrast(1.08);
+        }
+
+        /* ✅ overlay: cobre a faixa clara do topo sem “lavar” o resto */
+        .heroOverlay {
+          position: absolute;
+          inset: 0;
+          background:
+            /* reforço só no topo (corrige a linha clara) */
+            linear-gradient(
+              to bottom,
+              rgba(11, 18, 32, 0.55) 0%,
+              rgba(11, 18, 32, 0) 14%
+            ),
+            /* tinta verde/escuro (clima happening) */
+            linear-gradient(
+              90deg,
+              rgba(7, 58, 38, 0.78) 0%,
+              rgba(11, 18, 32, 0.62) 45%,
+              rgba(11, 18, 32, 0.48) 100%
+            );
         }
 
         /* mantém as camadas absolutas também */
-        .heroOverlay,
         .heroGlow,
         .heroGrain {
           position: absolute;
           inset: 0;
         }
 
-
+        /* ✅ glow mais discreto pra não clarear demais */
         .heroGlow {
-          position: absolute;
-          inset: 0;
           background: radial-gradient(
             circle at 18% 22%,
-            rgba(11, 122, 75, 0.38),
+            rgba(11, 122, 75, 0.22),
             rgba(11, 18, 32, 0) 55%
           );
           pointer-events: none;
         }
 
         .heroGrain {
-          position: absolute;
-          inset: 0;
           pointer-events: none;
           opacity: 0.1;
           background-image: radial-gradient(
@@ -221,7 +238,7 @@ export default function HomePage() {
 
         .heroLeft {
           padding-top: 10px;
-          min-width: 0; /* ✅ importantíssimo no grid para overflow funcionar certo */
+          min-width: 0;
         }
 
         .heroRight {
@@ -261,18 +278,14 @@ export default function HomePage() {
           letter-spacing: -0.6px;
           line-height: 1.1;
           color: #fff;
-
           font-size: clamp(26px, 2.2vw, 42px);
-
-          white-space: nowrap;   /* mantém 1 linha */
+          white-space: nowrap;
         }
 
-
-        /* ✅ no menor, libera quebrar para não cortar */
         @media (max-width: 1100px) {
           .heroTitle {
             white-space: normal;
-            overflow: visible;            
+            overflow: visible;
           }
         }
 
@@ -344,7 +357,7 @@ export default function HomePage() {
         .infoCard {
           margin-top: 18px;
           width: 100%;
-          max-width: 720px;   /* ✅ igual .stats e .heroSub */
+          max-width: 720px;
           border-radius: 16px;
           padding: 16px;
           background: rgba(255, 255, 255, 0.085);
@@ -352,7 +365,6 @@ export default function HomePage() {
           box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
           backdrop-filter: blur(10px);
         }
-
 
         .infoCardTop {
           display: flex;
