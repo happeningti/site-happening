@@ -6,6 +6,11 @@
   --muted: rgba(255,255,255,0.72);
   --brand: #0b7a4b;
   --brand2: #16a34a;
+
+  /* ✅ Padronização das faixas (Hero BG) */
+  --heroBase: linear-gradient(180deg, #0b1220 0%, #0b1220 70%, rgba(11,18,32,0.96) 100%);
+  --heroGlowA: rgba(11,122,75,0.22);
+  --heroGlowB: rgba(34,197,94,0.14);
 }
 
 *{ box-sizing: border-box; }
@@ -364,9 +369,9 @@ button:focus-visible,
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(1200px 600px at 20% 20%, rgba(11,122,75,0.22), transparent 60%),
-    radial-gradient(900px 500px at 80% 30%, rgba(34,197,94,0.16), transparent 55%),
-    linear-gradient(180deg, #0b1220 0%, #0b1220 70%, rgba(11,18,32,0.96) 100%);
+    radial-gradient(1200px 600px at 20% 20%, var(--heroGlowA), transparent 60%),
+    radial-gradient(900px 500px at 80% 30%, var(--heroGlowB), transparent 55%),
+    var(--heroBase);
 }
 
 .servicosHeroContent{
@@ -658,9 +663,9 @@ button:focus-visible,
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(1200px 600px at 22% 25%, rgba(11,122,75,0.22), transparent 60%),
-    radial-gradient(900px 500px at 80% 35%, rgba(34,197,94,0.14), transparent 55%),
-    linear-gradient(180deg, #0b1220 0%, #0b1220 70%, rgba(11,18,32,0.96) 100%);
+    radial-gradient(1200px 600px at 22% 25%, var(--heroGlowA), transparent 60%),
+    radial-gradient(900px 500px at 80% 35%, var(--heroGlowB), transparent 55%),
+    var(--heroBase);
 }
 .uniHeroContent{
   position: relative;
@@ -1278,6 +1283,7 @@ button:focus-visible,
 .btnCana:active{
   transform: translateY(0px);
 }
+
 /* =========================
    TRABALHE CONOSCO (CARREIRAS)
 ========================= */
@@ -1296,9 +1302,11 @@ button:focus-visible,
 .carreirasHeroBg{
   position: absolute;
   inset: 0;
-  background: radial-gradient(1200px 520px at 20% 10%, rgba(20,168,106,.35), transparent 60%),
-              radial-gradient(900px 520px at 80% 20%, rgba(0,90,66,.35), transparent 60%),
-              linear-gradient(180deg, #062a2a 0%, #0a3b3b 60%, #0a3b3b 100%);
+  /* ✅ padronizado */
+  background:
+    radial-gradient(1200px 520px at 20% 10%, var(--heroGlowA), transparent 60%),
+    radial-gradient(900px 520px at 80% 20%, var(--heroGlowB), transparent 60%),
+    var(--heroBase);
   z-index: 0;
 }
 .carreirasHeroContent{
@@ -1605,6 +1613,7 @@ button:focus-visible,
   font-size: 18px;
   cursor: pointer;
 }
+
 /* =========================
    TRANSPARÊNCIA
 ========================= */
@@ -1619,9 +1628,11 @@ button:focus-visible,
 }
 .transparenciaHeroBg{
   position:absolute; inset:0;
-  background: radial-gradient(900px 420px at 20% 30%, rgba(11,122,75,.45), transparent 60%),
-              radial-gradient(900px 520px at 70% 40%, rgba(0,0,0,.55), transparent 55%),
-              linear-gradient(180deg, #0b2a26 0%, #0a1f1b 100%);
+  /* ✅ padronizado */
+  background:
+    radial-gradient(1200px 600px at 22% 25%, var(--heroGlowA), transparent 60%),
+    radial-gradient(900px 520px at 80% 35%, var(--heroGlowB), transparent 55%),
+    var(--heroBase);
   z-index:0;
 }
 .transparenciaHeroContent{
@@ -1676,30 +1687,7 @@ button:focus-visible,
   color:#51606f;
   font-size: 14px;
 }
-.transparenciaList{
-  margin-top:14px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.transparenciaItem{
-  border:1px solid #eef2f7;
-  border-radius: 14px;
-  padding: 12px 12px;
-  display:flex;
-  justify-content: space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.transparenciaItemTitle{
-  font-weight: 800;
-}
-.transparenciaItemActions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
+
 /* Viewer principal */
 .transparenciaViewer {
   margin-top: 14px;
@@ -1769,7 +1757,7 @@ button:focus-visible,
   opacity: 0.85;
 }
 
-/* Lista */
+/* Lista (histórico) */
 .transparenciaList {
   margin-top: 16px;
   display: grid;
@@ -1844,9 +1832,11 @@ button:focus-visible,
 }
 .trabalheHeroBg{
   position:absolute; inset:0;
-  background: radial-gradient(900px 420px at 20% 30%, rgba(11,122,75,.45), transparent 60%),
-              radial-gradient(900px 520px at 70% 40%, rgba(0,0,0,.55), transparent 55%),
-              linear-gradient(180deg, #0b2a26 0%, #0a1f1b 100%);
+  /* ✅ padronizado */
+  background:
+    radial-gradient(1200px 600px at 22% 25%, var(--heroGlowA), transparent 60%),
+    radial-gradient(900px 520px at 80% 35%, var(--heroGlowB), transparent 55%),
+    var(--heroBase);
   z-index:0;
 }
 .trabalheHeroContent{
@@ -2062,4 +2052,3 @@ button:focus-visible,
   font-size: 13px;
   padding: 8px 2px 0;
 }
-

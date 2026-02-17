@@ -163,9 +163,14 @@ export default function CotacaoPage() {
       {/* HEADER */}
       <div
         style={{
-          background: "linear-gradient(90deg, #0b7a4b 0%, #1f2d3a 100%)",
+          background:
+            "radial-gradient(1200px 600px at 22% 25%, rgba(11,122,75,0.22), transparent 60%)," +
+            "radial-gradient(900px 520px at 80% 35%, rgba(34,197,94,0.14), transparent 55%)," +
+            "linear-gradient(180deg, #0b1220 0%, #0b1220 70%, rgba(11,18,32,0.96) 100%)",
           padding: "34px 16px",
           color: "#fff",
+          borderBottom: "1px solid #e7ebf3",
+
         }}
       >
         <div style={{ maxWidth: 980, margin: "0 auto" }}>
