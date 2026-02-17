@@ -12,6 +12,7 @@ export default function OperacaoCanaPage() {
     "/servicos/cana-05.jpg",
     "/servicos/cana-06.jpg",
     "/servicos/cana-07.jpg",
+    "/servicos/cana-08.jpg",
   ];
 
   const [fotoAberta, setFotoAberta] = useState<string | null>(null);
