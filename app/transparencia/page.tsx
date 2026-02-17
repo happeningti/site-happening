@@ -67,8 +67,7 @@ export default function TransparenciaPage() {
           <div className="transparenciaCard">
             <h2>Relatórios publicados</h2>
             <p className="transparenciaHint">
-              Dica: coloque os PDFs em <code>/public/transparencia/</code>.
-              {maisRecente ? (
+                            {maisRecente ? (
                 <>
                   {" "}O mais recente é{" "}
                   <strong>{maisRecente.titulo}</strong> ({formatarMesAno(maisRecente.data)}).
