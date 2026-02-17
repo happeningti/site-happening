@@ -340,7 +340,8 @@ export default function HomePage() {
 
         .infoCard {
           margin-top: 18px;
-          width: min(820px, 100%);
+          width: 100%;
+          max-width: 720px;   /* ✅ igual .stats e .heroSub */
           border-radius: 16px;
           padding: 16px;
           background: rgba(255, 255, 255, 0.085);
@@ -348,6 +349,7 @@ export default function HomePage() {
           box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
           backdrop-filter: blur(10px);
         }
+
 
         .infoCardTop {
           display: flex;
