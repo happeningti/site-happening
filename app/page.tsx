@@ -35,8 +35,8 @@ export default function HomePage() {
             </h1>
 
             <p className="heroSub">
-              Cotação rápida, equipe comercial dedicada e operação preparada para atender suas necessidades com
-              eficiência.
+              Cotação rápida, equipe comercial dedicada e operação preparada para
+              atender suas necessidades com eficiência.
             </p>
 
             <div className="checks">
@@ -69,7 +69,8 @@ export default function HomePage() {
                 <div>
                   <h3 className="cardTitle">Precisa de cotação agora?</h3>
                   <p className="cardText">
-                    Use nosso formulário e receba confirmação por e-mail. O vendedor responde diretamente para você.
+                    Use nosso formulário e receba confirmação por e-mail. O
+                    vendedor responde diretamente para você.
                   </p>
                 </div>
 
@@ -131,7 +132,8 @@ export default function HomePage() {
             <div className="sideCard soft">
               <div className="sideTitle">Fale com a equipe</div>
               <p className="sideText">
-                Atendimento comercial com retorno direto e orientado à sua operação.
+                Atendimento comercial com retorno direto e orientado à sua
+                operação.
               </p>
 
               <Link href="/contato" className="btnOutline">
@@ -191,7 +193,10 @@ export default function HomePage() {
           inset: 0;
           pointer-events: none;
           opacity: 0.1;
-          background-image: radial-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px);
+          background-image: radial-gradient(
+            rgba(255, 255, 255, 0.25) 1px,
+            transparent 1px
+          );
           background-size: 3px 3px;
           mix-blend-mode: overlay;
         }
@@ -204,26 +209,25 @@ export default function HomePage() {
           padding: 22px 16px 64px;
         }
 
-        /* ✅ AJUSTE PRINCIPAL: grid mais largo e alinhado */
+        /* ✅ GRID: mais espaço para o título caber em 1 linha */
         .heroGrid {
           display: grid;
-          grid-template-columns: 1.2fr 0.8fr;
-          gap: 40px;
+          grid-template-columns: 1.5fr 0.5fr;
+          gap: 28px;
           align-items: start;
         }
 
         .heroLeft {
-          max-width: 920px;
           padding-top: 10px;
+          min-width: 0; /* ✅ importantíssimo no grid para overflow funcionar certo */
         }
 
-        /* ✅ AJUSTE PRINCIPAL: direita NÃO sobe em cima do texto */
         .heroRight {
           display: flex;
           flex-direction: column;
           gap: 18px;
           align-self: start;
-          padding-top: 180px; /* controla a altura do bloco direito */
+          padding-top: 200px;
         }
 
         @media (max-width: 980px) {
@@ -255,8 +259,20 @@ export default function HomePage() {
           letter-spacing: -0.6px;
           line-height: 1.1;
           color: #fff;
-          font-size: clamp(22px, 2.4vw, 44px);
-          white-space: normal; /* ✅ evita quebrar feio/empurrar layout */
+          font-size: clamp(22px, 2.3vw, 44px);
+
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        /* ✅ no menor, libera quebrar para não cortar */
+        @media (max-width: 1100px) {
+          .heroTitle {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: unset;
+          }
         }
 
         .heroSub {
@@ -287,7 +303,6 @@ export default function HomePage() {
           border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
-        /* ✅ STATS em 3 colunas fixas */
         .stats {
           margin-top: 18px;
           display: grid;
@@ -395,7 +410,8 @@ export default function HomePage() {
           align-items: center;
           justify-content: center;
           padding: 10px 16px;
-          transition: transform 0.15s ease, filter 0.15s ease, background 0.15s ease;
+          transition: transform 0.15s ease, filter 0.15s ease,
+            background 0.15s ease;
           user-select: none;
         }
 
