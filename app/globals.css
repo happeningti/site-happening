@@ -1700,6 +1700,135 @@ button:focus-visible,
   gap:10px;
   flex-wrap:wrap;
 }
+/* Viewer principal */
+.transparenciaViewer {
+  margin-top: 14px;
+  border: 1px solid #e7ebf3;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.transparenciaViewerHeader {
+  padding: 14px 14px 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.transparenciaViewerTitle {
+  display: grid;
+  gap: 2px;
+}
+
+.pillMini {
+  display: inline-flex;
+  width: fit-content;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #e7ebf3;
+  background: #f7f9fc;
+}
+
+.transparenciaViewerName {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.transparenciaViewerMeta {
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.transparenciaViewerActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.transparenciaIframeWrap {
+  width: 100%;
+  height: min(78vh, 820px);
+  background: #f6f7fb;
+}
+
+.transparenciaIframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.transparenciaViewerDesc {
+  padding: 12px 14px 14px;
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* Lista */
+.transparenciaList {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.transparenciaItem {
+  border: 1px solid #eef2f7;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.transparenciaItemLeft {
+  padding: 12px 14px 0;
+}
+
+.transparenciaItemTitle {
+  font-weight: 700;
+}
+
+.transparenciaItemMeta {
+  font-size: 13px;
+  opacity: 0.75;
+  margin-top: 2px;
+}
+
+.transparenciaItemDesc {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.transparenciaItemActions {
+  padding: 12px 14px 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-top: 1px solid #f0f3f8;
+}
+
+.transparenciaItemPreview {
+  border-top: 1px solid #eef2f7;
+  background: #f6f7fb;
+}
+
+.transparenciaIframeMini {
+  width: 100%;
+  height: 520px;
+  border: 0;
+}
+
+.transparenciaEmpty {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px dashed #d6dde8;
+  border-radius: 12px;
+  background: #fbfcff;
+}
 
 /* =========================
    TRABALHE CONOSCO
