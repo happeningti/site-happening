@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
   return (
@@ -6,17 +7,26 @@ export default function Navbar() {
       style={{
         backgroundColor: "#ffffff",
         borderBottom: "1px solid #ddd",
-        padding: "15px 40px",
+        padding: "12px 40px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
       }}
     >
-      <div style={{ fontWeight: "bold", fontSize: "20px", color: "#1E6F3D" }}>
-        HAPPENING
-      </div>
+      {/* LOGO */}
+      <Link href="/" style={{ display: "flex", alignItems: "center" }}>
+        <Image
+          src="/logo-happening.png"
+          alt="Happening Logística"
+          width={200}
+          height={55}
+          priority
+          style={{ height: "42px", width: "auto" }}
+        />
+      </Link>
 
-      <nav style={{ display: "flex", gap: "20px" }}>
+      {/* MENU */}
+      <nav style={{ display: "flex", gap: "20px", alignItems: "center" }}>
         <Link href="/">Início</Link>
         <Link href="/empresa">A Empresa</Link>
         <Link href="/servicos">Serviços</Link>
@@ -25,7 +35,6 @@ export default function Navbar() {
         <Link href="/contato">Contato</Link>
         <Link href="/transparencia">Transparência</Link>
         <Link href="/trabalhe-conosco">Trabalhe Conosco</Link>
-
       </nav>
     </header>
   );
