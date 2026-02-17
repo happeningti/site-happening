@@ -339,7 +339,7 @@ export default function HomePage() {
         }
 
         .infoCard {
-          margin-top: 40px;
+          margin-top: 18px;
           width: 100%;
           max-width: 720px;   /* ✅ igual .stats e .heroSub */
           border-radius: 16px;
