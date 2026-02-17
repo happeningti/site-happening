@@ -26,7 +26,7 @@ export default function HomePage() {
 
       <div className="heroWrap">
         <div className="heroGrid">
-          {/* COLUNA ESQUERDA */}
+          {/* ESQUERDA */}
           <div className="heroLeft">
             <div className="pill">🚚 Logística • Transporte • Agilidade</div>
 
@@ -45,27 +45,25 @@ export default function HomePage() {
               <span className="check">✅ Suporte dedicado</span>
             </div>
 
-            {/* INDICADORES (AJUSTE OS NÚMEROS DEPOIS) */}
+            {/* STATS (3 cards) */}
             <div className="stats" aria-label="Indicadores da empresa">
               <div className="stat">
                 <div className="statNum">+20</div>
                 <div className="statLabel">anos de mercado</div>
               </div>
+
               <div className="stat">
-                <div className="statNum">+200</div>
+                <div className="statNum">+400</div>
                 <div className="statLabel">colaboradores</div>
               </div>
+
               <div className="stat">
-                <div className="statNum">+300</div>
+                <div className="statNum">+200</div>
                 <div className="statLabel">veículos na frota</div>
-              </div>
-              <div className="stat">
-                <div className="statNum">5</div>
-                <div className="statLabel">estados atendidos</div>
               </div>
             </div>
 
-            {/* CARD (mais “chamada” e menos banner) */}
+            {/* CARD COTAÇÃO */}
             <section className="infoCard" aria-label="Chamada para cotação">
               <div className="infoCardTop">
                 <div>
@@ -92,26 +90,23 @@ export default function HomePage() {
             </section>
           </div>
 
-          {/* COLUNA DIREITA (preenche o “vazio”) */}
+          {/* DIREITA */}
           <aside className="heroRight" aria-label="Destaques e áreas de atuação">
             <div className="sideCard">
               <div className="sideTitle">Atuação</div>
+
               <div className="sideList">
                 <div className="sideItem">
-                  <span className="dot" />
-                  Transporte Rodoviário
+                  <span className="dot" /> Transporte Rodoviário
                 </div>
                 <div className="sideItem">
-                  <span className="dot" />
-                  Agronegócio
+                  <span className="dot" /> Agronegócio
                 </div>
                 <div className="sideItem">
-                  <span className="dot" />
-                  Logística Dedicada
+                  <span className="dot" /> Logística Dedicada
                 </div>
                 <div className="sideItem">
-                  <span className="dot" />
-                  Crossdocking • Distribuição
+                  <span className="dot" /> Crossdocking • Distribuição
                 </div>
               </div>
 
@@ -138,6 +133,7 @@ export default function HomePage() {
               <p className="sideText">
                 Atendimento comercial com retorno direto e orientado à sua operação.
               </p>
+
               <Link href="/contato" className="btnOutline">
                 Entrar em contato
               </Link>
@@ -190,12 +186,11 @@ export default function HomePage() {
           pointer-events: none;
         }
 
-        /* granulado leve (ajuda a dar “acabamento”) */
         .heroGrain {
           position: absolute;
           inset: 0;
           pointer-events: none;
-          opacity: 0.12;
+          opacity: 0.1;
           background-image: radial-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px);
           background-size: 3px 3px;
           mix-blend-mode: overlay;
@@ -209,22 +204,26 @@ export default function HomePage() {
           padding: 22px 16px 64px;
         }
 
+        /* ✅ AJUSTE PRINCIPAL: grid mais largo e alinhado */
         .heroGrid {
           display: grid;
-          grid-template-columns: 1.35fr 0.65fr;
-          gap: 22px;
+          grid-template-columns: 1.2fr 0.8fr;
+          gap: 40px;
           align-items: start;
         }
 
         .heroLeft {
-          max-width: 900px;
+          max-width: 920px;
           padding-top: 10px;
         }
 
+        /* ✅ AJUSTE PRINCIPAL: direita NÃO sobe em cima do texto */
         .heroRight {
-          padding-top: 64px; /* desce para alinhar visualmente com o conteúdo */
-          display: grid;
-          gap: 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          align-self: start;
+          padding-top: 72px; /* controla a altura do bloco direito */
         }
 
         @media (max-width: 980px) {
@@ -232,7 +231,7 @@ export default function HomePage() {
             grid-template-columns: 1fr;
           }
           .heroRight {
-            padding-top: 18px;
+            padding-top: 16px;
           }
         }
 
@@ -257,14 +256,7 @@ export default function HomePage() {
           line-height: 1.1;
           color: #fff;
           font-size: clamp(22px, 2.4vw, 44px);
-          white-space: nowrap;
-          max-width: 100%;
-        }
-
-        @media (max-width: 1100px) {
-          .heroTitle {
-            white-space: normal;
-          }
+          white-space: normal; /* ✅ evita quebrar feio/empurrar layout */
         }
 
         .heroSub {
@@ -295,18 +287,19 @@ export default function HomePage() {
           border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
-        /* STATS */
+        /* ✅ STATS em 3 colunas fixas */
         .stats {
           margin-top: 18px;
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 10px;
-          max-width: 820px;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+          max-width: 720px;
         }
 
         @media (max-width: 720px) {
           .stats {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: 1fr;
+            max-width: 520px;
           }
         }
 
@@ -332,7 +325,6 @@ export default function HomePage() {
           color: rgba(255, 255, 255, 0.82);
         }
 
-        /* CARD COTAÇÃO */
         .infoCard {
           margin-top: 18px;
           width: min(820px, 100%);
@@ -370,6 +362,7 @@ export default function HomePage() {
           color: rgba(255, 255, 255, 0.92);
           font-weight: 900;
           font-size: 12px;
+          white-space: nowrap;
         }
 
         .cardTitle {
@@ -427,7 +420,6 @@ export default function HomePage() {
           background: rgba(255, 255, 255, 0.16);
         }
 
-        /* RIGHT CARDS */
         .sideCard {
           border-radius: 18px;
           padding: 16px;
@@ -445,7 +437,7 @@ export default function HomePage() {
           font-weight: 950;
           letter-spacing: -0.2px;
           margin-bottom: 10px;
-          font-size: 14px;
+          font-size: 13px;
           color: rgba(255, 255, 255, 0.92);
           text-transform: uppercase;
         }
@@ -462,6 +454,7 @@ export default function HomePage() {
           font-weight: 900;
           color: rgba(255, 255, 255, 0.9);
           font-size: 13px;
+          line-height: 1.25;
         }
 
         .dot {
