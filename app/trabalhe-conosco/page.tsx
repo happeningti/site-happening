@@ -25,7 +25,7 @@ const UNIDADES = [
 const VAGAS: Vaga[] = [
   {
     id: "auxiliar-operacional",
-    titulo: "auxiliar-operacional",
+    titulo: "Auxiliar Operacional",
     local: "Sertãozinho/SP",
     descricao: "Atuação com empilhadeira e entregas de fracionados.",
     imagem: "/vagas/operador-empilhadeira.jpg",
