@@ -1,15 +1,20 @@
+//app/cotacao/page.tsx
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-type Vendedor = { label: string; email: string };
+type Vendedor = { label: string; email: string; mostrar?: boolean };
 
 const VENDEDORES: Vendedor[] = [
-  { label: "Marcos Rueda", email: "comercial@happening.com.br" },
-  { label: "Ricardo", email: "comercial1@happening.com.br" },
-  { label: "Giovanna", email: "comercial2@happening.com.br" },
-  { label: "Rafael", email: "comercial3@happening.com.br" },
-  { label: "Beatriz", email: "comercial4@happening.com.br" },
+  { label: "Marcos Rueda", email: "comercial@happening.com.br", mostrar: true },
+
+  // ✅ recebem quando for "todos", mas NÃO aparecem na lista de escolha
+  { label: "Ricardo", email: "comercial1@happening.com.br", mostrar: false },
+  { label: "Rafael", email: "comercial3@happening.com.br", mostrar: false },
+  { label: "Beatriz", email: "comercial4@happening.com.br", mostrar: false },
+
+  // ✅ aparece na lista
+  { label: "Giovanna", email: "comercial2@happening.com.br", mostrar: true },
 ];
 
 // E-mail melhor (aceita maioria dos casos reais)
@@ -32,7 +37,18 @@ function maskTelefone(value: string) {
 
 export default function CotacaoPage() {
   const [modo, setModo] = useState<"todos" | "um">("todos"); // padrão = todos
-  const [vendedorEmail, setVendedorEmail] = useState<string>(VENDEDORES[0].email);
+
+  // lista que aparece no select (somente mostrar !== false)
+  const VENDEDORES_PARA_ESCOLHA = useMemo(
+    () => VENDEDORES.filter((v) => v.mostrar !== false),
+    []
+  );
+
+  // default seguro: primeiro vendedor visível
+  const firstVisibleEmail =
+    VENDEDORES.find((v) => v.mostrar !== false)?.email || VENDEDORES[0].email;
+
+  const [vendedorEmail, setVendedorEmail] = useState<string>(firstVisibleEmail);
 
   const [nome, setNome] = useState("");
   const [empresa, setEmpresa] = useState("");
@@ -69,23 +85,22 @@ export default function CotacaoPage() {
 
   // Feedback: scroll + auto-sumir em 5s
   useEffect(() => {
-  if (!sucesso && !erro) return;
+    if (!sucesso && !erro) return;
 
-  const s = window.setTimeout(() => {
-    feedbackRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, 50);
+    const s = window.setTimeout(() => {
+      feedbackRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
 
-  const t = window.setTimeout(() => {
-    setSucesso(null);
-    setErro("");
-  }, 5000);
+    const t = window.setTimeout(() => {
+      setSucesso(null);
+      setErro("");
+    }, 5000);
 
-  return () => {
-    clearTimeout(s);
-    clearTimeout(t);
-  };
-}, [sucesso, erro]);
-
+    return () => {
+      clearTimeout(s);
+      clearTimeout(t);
+    };
+  }, [sucesso, erro]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -150,7 +165,7 @@ export default function CotacaoPage() {
       setPeso("");
       setObservacoes("");
       setModo("todos");
-      setVendedorEmail(VENDEDORES[0].email);
+      setVendedorEmail(firstVisibleEmail);
     } catch (err) {
       setErro("Erro inesperado ao enviar. Tente novamente.");
     } finally {
@@ -170,7 +185,6 @@ export default function CotacaoPage() {
           padding: "34px 16px",
           color: "#fff",
           borderBottom: "1px solid #e7ebf3",
-
         }}
       >
         <div style={{ maxWidth: 980, margin: "0 auto" }}>
@@ -238,7 +252,7 @@ export default function CotacaoPage() {
                   background: modo === "um" ? "#fff" : "#f3f5f9",
                 }}
               >
-                {VENDEDORES.map((v) => (
+                {VENDEDORES_PARA_ESCOLHA.map((v) => (
                   <option key={v.email} value={v.email}>
                     {v.label} — {v.email}
                   </option>
@@ -292,21 +306,36 @@ export default function CotacaoPage() {
             </Field>
 
             <Field label="Origem">
-              <input value={origem} onChange={(e) => setOrigem(e.target.value)} placeholder="Cidade/UF" style={inputStyle} />
+              <input
+                value={origem}
+                onChange={(e) => setOrigem(e.target.value)}
+                placeholder="Cidade/UF"
+                style={inputStyle}
+              />
             </Field>
 
             <Field label="Destino">
-              <input value={destino} onChange={(e) => setDestino(e.target.value)} placeholder="Cidade/UF" style={inputStyle} />
+              <input
+                value={destino}
+                onChange={(e) => setDestino(e.target.value)}
+                placeholder="Cidade/UF"
+                style={inputStyle}
+              />
             </Field>
 
             <Field label="Tipo de carga">
-              <input value={tipo} onChange={(e) => setTipo(e.target.value)} placeholder="Ex: Carga fracionada" style={inputStyle} />
+              <input
+                value={tipo}
+                onChange={(e) => setTipo(e.target.value)}
+                placeholder="Ex: Carga fracionada"
+                style={inputStyle}
+              />
             </Field>
 
             <Field label="Peso (kg)">
               <input
                 value={peso}
-               onChange={(e) => setPeso(e.target.value.replace(/[^\d.,]/g, ""))}
+                onChange={(e) => setPeso(e.target.value.replace(/[^\d.,]/g, ""))}
                 placeholder="Ex: 1000"
                 style={inputStyle}
                 inputMode="numeric"

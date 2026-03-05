@@ -1,3 +1,4 @@
+// /app/api/cotacao/route.ts
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
@@ -14,7 +15,7 @@ type CotacaoBody = {
 
   // seleção simplificada
   vendedorEmail?: string; // um vendedor
-  enviarTodos?: boolean;  // todos
+  enviarTodos?: boolean; // todos
 };
 
 function parseEmailList(value?: string): string[] {
@@ -36,6 +37,12 @@ function escapeHtml(str: string) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function envBool(v?: string | null, fallback = false) {
+  if (v == null) return fallback;
+  const s = String(v).trim().toLowerCase();
+  return s === "1" || s === "true" || s === "yes" || s === "on";
 }
 
 export async function POST(req: Request) {
@@ -65,6 +72,9 @@ export async function POST(req: Request) {
     const EMAIL_USER = process.env.EMAIL_USER;
     const EMAIL_PASS = process.env.EMAIL_PASS;
 
+    // ✅ agora respeita o .env (EMAIL_SECURE=true/false)
+    const EMAIL_SECURE = envBool(process.env.EMAIL_SECURE, true);
+
     const VENDORES_FIXOS = parseEmailList(process.env.VENDEDORES_EMAILS).map((e) => e.toLowerCase());
     const GERENTES = parseEmailList(process.env.GERENTE_EMAIL).map((e) => e.toLowerCase());
     const TI_BCC = parseEmailList(process.env.TI_EMAIL).map((e) => e.toLowerCase());
@@ -84,12 +94,12 @@ export async function POST(req: Request) {
     }
 
     // --- resolve destino (um ou todos) ---
-    const enviarTodos = !!body.enviarTodos;
+    const enviarTodos = body.enviarTodos === true;
 
     const vendedoresSelecionados = (() => {
       if (enviarTodos) return [...VENDORES_FIXOS];
 
-      const chosen = (body.vendedorEmail || "").trim().toLowerCase();
+      const chosen = String(body.vendedorEmail || "").trim().toLowerCase();
       if (!chosen) return [];
       return [chosen];
     })();
@@ -114,12 +124,9 @@ export async function POST(req: Request) {
     const transporter = nodemailer.createTransport({
       host: EMAIL_HOST,
       port: Number(EMAIL_PORT),
-      secure: true,
+      secure: EMAIL_SECURE,
       auth: { user: EMAIL_USER, pass: EMAIL_PASS },
     });
-
-    // (opcional, mas ajuda a diagnosticar)
-    // await transporter.verify();
 
     const protocolo = `COT-${Date.now()}-${Math.floor(Math.random() * 9000 + 1000)}`;
 
@@ -182,8 +189,8 @@ export async function POST(req: Request) {
     const fromName = "Happening Logística";
     const fromEmail = EMAIL_USER;
 
-    // LOGS (pra você bater o olho e ver se está indo CC/BCC certo)
     console.log("[COTACAO] protocolo:", protocolo);
+    console.log("[COTACAO] secure:", EMAIL_SECURE, "port:", EMAIL_PORT);
     console.log("[COTACAO] to(vendedores):", vendedoresSelecionados.join(", "));
     console.log("[COTACAO] cc(gerentes):", GERENTES.join(", ") || "(vazio)");
     console.log("[COTACAO] bcc(TI):", TI_BCC.join(", ") || "(vazio)");
