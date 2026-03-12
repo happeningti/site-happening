@@ -35,7 +35,7 @@ const VAGAS: Vaga[] = [
       "Ensino médio completo",
     ],
     pcd: true, // ✅ se quiser exibir “vaga também para PCD”
-    ativa: true,
+    ativa: false,
   },
 ];
 
