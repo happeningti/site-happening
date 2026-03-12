@@ -89,7 +89,12 @@ export default function TrabalheConoscoPage() {
     | { type: "err"; msg: string }
   >({ type: "idle" });
 
-  const hasVagas = useMemo(() => VAGAS.length > 0, []);
+  const vagasAtivas = useMemo(
+  () => VAGAS.filter((v) => v.ativa !== false),
+  []
+);
+
+const hasVagas = vagasAtivas.length > 0;
 
   function abrirModalBancoTalentos() {
     setVagaSelecionada(null);
