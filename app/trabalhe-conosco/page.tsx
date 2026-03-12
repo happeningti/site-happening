@@ -34,7 +34,7 @@ const VAGAS: Vaga[] = [
       "CNH categoria B",
       "Ensino médio completo",
     ],
-    pcd: true, // ✅ se quiser exibir “vaga também para PCD”
+    pcd: false, // ✅ se quiser exibir “vaga também para PCD”
     ativa: false,
   },
 ];
