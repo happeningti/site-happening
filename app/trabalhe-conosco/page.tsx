@@ -6,15 +6,15 @@ import { useMemo, useState } from "react";
 type Vaga = {
   id: string;
   titulo: string;
-  local: string; // ex: "Sertãozinho/SP"
-  descricao: string; // texto livre
-  imagem?: string; // "/vagas/arquivo.jpg"
-  requisitos?: string[]; // lista (opcional)
-  responsabilidades?: string[]; // lista (opcional)
-  beneficios?: string[]; // lista (opcional)
-  safra?: string; // ex: "Safra 2026"
-  pcd?: boolean; // se a vaga também é destinada a PCD (opcional)
-  ativa?: boolean; // pra histórico (opcional)
+  local: string;
+  descricao: string;
+  imagem?: string;
+  requisitos?: string[];
+  responsabilidades?: string[];
+  beneficios?: string[];
+  safra?: string;
+  pcd?: boolean;
+  ativa?: boolean;
 };
 
 const UNIDADES = [
@@ -25,7 +25,6 @@ const UNIDADES = [
   "Filial — Tropical/GO",
 ];
 
-// ✅ VAGAS: quando não tiver vaga, deixe vazio mesmo: []
 const VAGAS: Vaga[] = [
   {
     id: "mecanico-linha-pesada-tupaciguara",
@@ -33,7 +32,6 @@ const VAGAS: Vaga[] = [
     local: "Filial — Aroeira/MG (Tupaciguara-MG)",
     descricao:
       "Vaga para atuação na unidade de Tupaciguara-MG, com foco em manutenção de linha pesada, conjuntos canavieiros, pneumática e suspensão.",
-
     requisitos: [
       "CNH categoria B",
       "Ser proativo",
@@ -42,13 +40,11 @@ const VAGAS: Vaga[] = [
       "Disponibilidade para trabalhar em diferentes escalas",
       "Residir em Tupaciguara-MG",
     ],
-
     responsabilidades: [
       "Priorizar sempre a segurança",
       "Realizar manutenções preventivas e corretivas",
       "Atuar em caminhões e/ou conjuntos",
     ],
-
     beneficios: [
       "Salário compatível com a função",
       "Ticket alimentação",
@@ -58,7 +54,6 @@ const VAGAS: Vaga[] = [
       "Plano odontológico",
       "Transporte fornecido pela empresa",
     ],
-
     safra: "Safra 2026",
     pcd: false,
     ativa: true,
@@ -82,13 +77,15 @@ type FormState = {
   email: string;
   mensagem: string;
   arquivo?: File | null;
-
   pcd: "0" | "1";
   pcd_tipo: PcdTipo;
   pcd_adaptacao: string;
 };
 
-const initialForm = (cargoDefault = "", unidadeDefault = UNIDADES[0]): FormState => ({
+const initialForm = (
+  cargoDefault = "",
+  unidadeDefault = UNIDADES[0]
+): FormState => ({
   unidade: unidadeDefault,
   cargo: cargoDefault,
   nome: "",
@@ -96,7 +93,6 @@ const initialForm = (cargoDefault = "", unidadeDefault = UNIDADES[0]): FormState
   email: "",
   mensagem: "",
   arquivo: null,
-
   pcd: "0",
   pcd_tipo: "",
   pcd_adaptacao: "",
@@ -146,7 +142,7 @@ export default function TrabalheConoscoPage() {
     setStatus({ type: "idle" });
   }
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus({ type: "sending" });
 
@@ -156,26 +152,31 @@ export default function TrabalheConoscoPage() {
         return;
       }
 
-      const fd = new FormData();
-      fd.append("unidade", form.unidade);
-      fd.append("cargo", form.cargo);
-      fd.append("nome", form.nome);
-      fd.append("telefone", form.telefone);
-      fd.append("email", form.email);
-      fd.append("mensagem", form.mensagem || "");
+      const fd = new FormData(e.currentTarget);
 
-      fd.append("pcd", form.pcd);
-      fd.append("pcd_tipo", form.pcd_tipo || "");
-      fd.append("pcd_adaptacao", form.pcd_adaptacao || "");
+      fd.set("unidade", form.unidade);
+      fd.set("cargo", form.cargo);
+      fd.set("nome", form.nome);
+      fd.set("telefone", form.telefone);
+      fd.set("email", form.email);
+      fd.set("mensagem", form.mensagem || "");
 
-      fd.append("vaga_id", vagaSelecionada?.id || "");
-      fd.append("vaga_titulo", vagaSelecionada?.titulo || "");
-      fd.append("vaga_local", vagaSelecionada?.local || "");
-      fd.append("vaga_safra", vagaSelecionada?.safra || "");
+      fd.set("pcd", form.pcd);
+      fd.set("pcd_tipo", form.pcd_tipo || "");
+      fd.set("pcd_adaptacao", form.pcd_adaptacao || "");
 
-      fd.append("arquivo", form.arquivo);
+      fd.set("vaga_id", vagaSelecionada?.id || "");
+      fd.set("vaga_titulo", vagaSelecionada?.titulo || "");
+      fd.set("vaga_local", vagaSelecionada?.local || "");
+      fd.set("vaga_safra", vagaSelecionada?.safra || "");
 
-      const res = await fetch("/api/curriculo", { method: "POST", body: fd });
+      fd.set("arquivo", form.arquivo);
+
+      const res = await fetch("/api/curriculo", {
+        method: "POST",
+        body: fd,
+      });
+
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
@@ -194,7 +195,9 @@ export default function TrabalheConoscoPage() {
       setForm(
         initialForm(
           vagaSelecionada?.titulo || "",
-          vagaSelecionada ? normalizarUnidadeDoLocal(vagaSelecionada.local) : UNIDADES[0]
+          vagaSelecionada
+            ? normalizarUnidadeDoLocal(vagaSelecionada.local)
+            : UNIDADES[0]
         )
       );
     } catch {
@@ -283,13 +286,7 @@ export default function TrabalheConoscoPage() {
                   ) : null}
 
                   <p style={{ color: "#64748b", marginTop: 6 }}>
-                    {v.local ? (
-                      <span>
-                        <strong>Local:</strong> {v.local}
-                      </span>
-                    ) : (
-                      <span>&nbsp;</span>
-                    )}
+                    <strong>Local:</strong> {v.local}
                   </p>
 
                   <p style={{ marginTop: 10 }}>{v.descricao}</p>
@@ -428,9 +425,7 @@ export default function TrabalheConoscoPage() {
 
                 <p style={{ marginTop: 0, color: "#475569" }}>
                   {vagaSelecionada ? (
-                    <>
-                      <strong>{vagaSelecionada.titulo}</strong>
-                    </>
+                    <strong>{vagaSelecionada.titulo}</strong>
                   ) : (
                     "Banco de talentos — envie seu currículo para o RH."
                   )}
@@ -449,7 +444,8 @@ export default function TrabalheConoscoPage() {
                     <div
                       style={{
                         display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(180px, 1fr))",
                         gap: 12,
                       }}
                     >
@@ -519,10 +515,22 @@ export default function TrabalheConoscoPage() {
             </div>
 
             <form onSubmit={onSubmit}>
+              <div style={{ display: "none" }} aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  id="website"
+                  name="website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div className="grid2" style={{ marginTop: 10 }}>
                 <div>
                   <label style={{ fontWeight: 800 }}>Unidade desejada</label>
                   <select
+                    name="unidade"
                     value={form.unidade}
                     onChange={(e) =>
                       setForm((p) => ({ ...p, unidade: e.target.value }))
@@ -545,7 +553,8 @@ export default function TrabalheConoscoPage() {
 
                   {vagaSelecionada ? (
                     <p style={{ marginTop: 6, color: "#64748b", fontSize: 12 }}>
-                      Unidade bloqueada automaticamente conforme a vaga selecionada.
+                      Unidade bloqueada automaticamente conforme a vaga
+                      selecionada.
                     </p>
                   ) : null}
                 </div>
@@ -553,6 +562,7 @@ export default function TrabalheConoscoPage() {
                 <div>
                   <label style={{ fontWeight: 800 }}>Cargo pretendido</label>
                   <input
+                    name="cargo"
                     value={form.cargo}
                     onChange={(e) =>
                       setForm((p) => ({ ...p, cargo: e.target.value }))
@@ -566,6 +576,7 @@ export default function TrabalheConoscoPage() {
                 <div>
                   <label style={{ fontWeight: 800 }}>Nome</label>
                   <input
+                    name="nome"
                     value={form.nome}
                     onChange={(e) =>
                       setForm((p) => ({ ...p, nome: e.target.value }))
@@ -578,6 +589,7 @@ export default function TrabalheConoscoPage() {
                 <div>
                   <label style={{ fontWeight: 800 }}>Telefone/WhatsApp</label>
                   <input
+                    name="telefone"
                     value={form.telefone}
                     onChange={(e) =>
                       setForm((p) => ({ ...p, telefone: e.target.value }))
@@ -590,6 +602,7 @@ export default function TrabalheConoscoPage() {
                 <div>
                   <label style={{ fontWeight: 800 }}>E-mail</label>
                   <input
+                    name="email"
                     type="email"
                     value={form.email}
                     onChange={(e) =>
@@ -603,10 +616,14 @@ export default function TrabalheConoscoPage() {
                 <div>
                   <label style={{ fontWeight: 800 }}>Currículo (PDF)</label>
                   <input
+                    name="arquivo"
                     type="file"
                     accept="application/pdf"
                     onChange={(e) =>
-                      setForm((p) => ({ ...p, arquivo: e.target.files?.[0] || null }))
+                      setForm((p) => ({
+                        ...p,
+                        arquivo: e.target.files?.[0] || null,
+                      }))
                     }
                     style={{ width: "100%", marginTop: 8 }}
                     required
@@ -636,7 +653,9 @@ export default function TrabalheConoscoPage() {
                       flexWrap: "wrap",
                     }}
                   >
-                    <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <label
+                      style={{ display: "flex", alignItems: "center", gap: 8 }}
+                    >
                       <input
                         type="radio"
                         name="pcd"
@@ -654,7 +673,9 @@ export default function TrabalheConoscoPage() {
                       Não
                     </label>
 
-                    <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <label
+                      style={{ display: "flex", alignItems: "center", gap: 8 }}
+                    >
                       <input
                         type="radio"
                         name="pcd"
@@ -672,6 +693,7 @@ export default function TrabalheConoscoPage() {
                     <div>
                       <label style={{ fontWeight: 800 }}>Tipo (opcional)</label>
                       <select
+                        name="pcd_tipo"
                         value={form.pcd_tipo}
                         onChange={(e) =>
                           setForm((p) => ({
@@ -697,12 +719,17 @@ export default function TrabalheConoscoPage() {
 
                     <div>
                       <label style={{ fontWeight: 800 }}>
-                        Precisa de adaptação para participar do processo? (opcional)
+                        Precisa de adaptação para participar do processo?
+                        (opcional)
                       </label>
                       <input
+                        name="pcd_adaptacao"
                         value={form.pcd_adaptacao}
                         onChange={(e) =>
-                          setForm((p) => ({ ...p, pcd_adaptacao: e.target.value }))
+                          setForm((p) => ({
+                            ...p,
+                            pcd_adaptacao: e.target.value,
+                          }))
                         }
                         placeholder="Ex.: intérprete de Libras, acessibilidade, etc."
                         style={{ width: "100%", marginTop: 8 }}
@@ -716,8 +743,8 @@ export default function TrabalheConoscoPage() {
                         fontSize: 13,
                       }}
                     >
-                      A Happening valoriza a diversidade e não realiza qualquer tipo de
-                      discriminação em seus processos seletivos.
+                      A Happening valoriza a diversidade e não realiza qualquer
+                      tipo de discriminação em seus processos seletivos.
                     </div>
                   </div>
                 )}
@@ -726,6 +753,7 @@ export default function TrabalheConoscoPage() {
               <div style={{ marginTop: 12 }}>
                 <label style={{ fontWeight: 800 }}>Mensagem (opcional)</label>
                 <textarea
+                  name="mensagem"
                   value={form.mensagem}
                   onChange={(e) =>
                     setForm((p) => ({ ...p, mensagem: e.target.value }))
