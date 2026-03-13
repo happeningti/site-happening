@@ -12,6 +12,7 @@ type Vaga = {
   requisitos?: string[]; // lista (opcional)
   responsabilidades?: string[]; // lista (opcional)
   beneficios?: string[]; // lista (opcional)
+  safra?: string; // ex: "Safra 2026"
   pcd?: boolean; // se a vaga também é destinada a PCD (opcional)
   ativa?: boolean; // pra histórico (opcional)
 };
@@ -29,7 +30,7 @@ const VAGAS: Vaga[] = [
   {
     id: "mecanico-linha-pesada-tupaciguara",
     titulo: "Mecânico (Linha Pesada)",
-    local: "Filial — Aroeira/MG",
+    local: "Filial — Aroeira/MG (Tupaciguara-MG)",
     descricao:
       "Vaga para atuação na unidade de Tupaciguara-MG, com foco em manutenção de linha pesada, conjuntos canavieiros, pneumática e suspensão.",
 
@@ -58,7 +59,8 @@ const VAGAS: Vaga[] = [
       "Transporte fornecido pela empresa",
     ],
 
-    pcd: false,
+    safra: "Safra 2026",
+    pcd: true,
     ativa: true,
   },
 ];
@@ -86,8 +88,8 @@ type FormState = {
   pcd_adaptacao: string;
 };
 
-const initialForm = (cargoDefault = ""): FormState => ({
-  unidade: UNIDADES[0],
+const initialForm = (cargoDefault = "", unidadeDefault = UNIDADES[0]): FormState => ({
+  unidade: unidadeDefault,
   cargo: cargoDefault,
   nome: "",
   telefone: "",
@@ -113,8 +115,16 @@ export default function TrabalheConoscoPage() {
   >({ type: "idle" });
 
   const vagasAtivas = useMemo(() => VAGAS.filter((v) => v.ativa !== false), []);
-
   const hasVagas = vagasAtivas.length > 0;
+
+  function normalizarUnidadeDoLocal(local: string) {
+    if (local.includes("Filial — Aroeira/MG")) return "Filial — Aroeira/MG";
+    if (local.includes("Matriz — Sertãozinho/SP")) return "Matriz — Sertãozinho/SP";
+    if (local.includes("Filial — São Paulo/SP")) return "Filial — São Paulo/SP";
+    if (local.includes("Filial — Santa Juliana/MG")) return "Filial — Santa Juliana/MG";
+    if (local.includes("Filial — Tropical/GO")) return "Filial — Tropical/GO";
+    return UNIDADES[0];
+  }
 
   function abrirModalBancoTalentos() {
     setVagaSelecionada(null);
@@ -125,7 +135,7 @@ export default function TrabalheConoscoPage() {
 
   function abrirModalParaVaga(v: Vaga) {
     setVagaSelecionada(v);
-    setForm(initialForm(v.titulo));
+    setForm(initialForm(v.titulo, normalizarUnidadeDoLocal(v.local)));
     setStatus({ type: "idle" });
     setOpen(true);
   }
@@ -161,6 +171,7 @@ export default function TrabalheConoscoPage() {
       fd.append("vaga_id", vagaSelecionada?.id || "");
       fd.append("vaga_titulo", vagaSelecionada?.titulo || "");
       fd.append("vaga_local", vagaSelecionada?.local || "");
+      fd.append("vaga_safra", vagaSelecionada?.safra || "");
 
       fd.append("arquivo", form.arquivo);
 
@@ -180,7 +191,12 @@ export default function TrabalheConoscoPage() {
         msg: "Currículo enviado com sucesso! Em breve o RH fará o contato, se houver aderência ao perfil.",
       });
 
-      setForm(initialForm(vagaSelecionada?.titulo || ""));
+      setForm(
+        initialForm(
+          vagaSelecionada?.titulo || "",
+          vagaSelecionada ? normalizarUnidadeDoLocal(vagaSelecionada.local) : UNIDADES[0]
+        )
+      );
     } catch {
       setStatus({
         type: "err",
@@ -247,6 +263,24 @@ export default function TrabalheConoscoPage() {
               {vagasAtivas.map((v) => (
                 <div key={v.id} className="card">
                   <h3 style={{ marginTop: 0 }}>{v.titulo}</h3>
+
+                  {v.safra ? (
+                    <div
+                      style={{
+                        display: "inline-block",
+                        marginTop: 2,
+                        marginBottom: 8,
+                        padding: "6px 10px",
+                        borderRadius: 999,
+                        background: "#ecfdf5",
+                        color: "#0f766e",
+                        fontSize: 12,
+                        fontWeight: 800,
+                      }}
+                    >
+                      {v.safra}
+                    </div>
+                  ) : null}
 
                   <p style={{ color: "#64748b", marginTop: 6 }}>
                     {v.local ? (
@@ -379,8 +413,15 @@ export default function TrabalheConoscoPage() {
               overflow: "auto",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
-              <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 10,
+                alignItems: "flex-start",
+              }}
+            >
+              <div style={{ flex: 1 }}>
                 <h2 style={{ marginTop: 0, marginBottom: 6 }}>
                   {vagaSelecionada ? "Candidatura para vaga" : "Enviar currículo"}
                 </h2>
@@ -389,12 +430,81 @@ export default function TrabalheConoscoPage() {
                   {vagaSelecionada ? (
                     <>
                       <strong>{vagaSelecionada.titulo}</strong>
-                      {vagaSelecionada.local ? ` — ${vagaSelecionada.local}` : ""}
                     </>
                   ) : (
                     "Banco de talentos — envie seu currículo para o RH."
                   )}
                 </p>
+
+                {vagaSelecionada ? (
+                  <div
+                    style={{
+                      marginTop: 10,
+                      background: "#f8fafc",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: 14,
+                      padding: 14,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                        gap: 12,
+                      }}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontSize: 12,
+                            fontWeight: 800,
+                            color: "#64748b",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          Vaga
+                        </div>
+                        <div style={{ marginTop: 4, fontWeight: 700 }}>
+                          {vagaSelecionada.titulo}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div
+                          style={{
+                            fontSize: 12,
+                            fontWeight: 800,
+                            color: "#64748b",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          Unidade
+                        </div>
+                        <div style={{ marginTop: 4, fontWeight: 700 }}>
+                          {vagaSelecionada.local}
+                        </div>
+                      </div>
+
+                      {vagaSelecionada.safra ? (
+                        <div>
+                          <div
+                            style={{
+                              fontSize: 12,
+                              fontWeight: 800,
+                              color: "#64748b",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            Período
+                          </div>
+                          <div style={{ marginTop: 4, fontWeight: 700 }}>
+                            {vagaSelecionada.safra}
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                ) : null}
               </div>
 
               <button
@@ -417,7 +527,14 @@ export default function TrabalheConoscoPage() {
                     onChange={(e) =>
                       setForm((p) => ({ ...p, unidade: e.target.value }))
                     }
-                    style={{ width: "100%", marginTop: 8 }}
+                    disabled={vagaSelecionada !== null}
+                    style={{
+                      width: "100%",
+                      marginTop: 8,
+                      background: vagaSelecionada ? "#f1f5f9" : "#fff",
+                      cursor: vagaSelecionada ? "not-allowed" : "pointer",
+                      opacity: 1,
+                    }}
                   >
                     {UNIDADES.map((u) => (
                       <option key={u} value={u}>
@@ -425,6 +542,12 @@ export default function TrabalheConoscoPage() {
                       </option>
                     ))}
                   </select>
+
+                  {vagaSelecionada ? (
+                    <p style={{ marginTop: 6, color: "#64748b", fontSize: 12 }}>
+                      Unidade bloqueada automaticamente conforme a vaga selecionada.
+                    </p>
+                  ) : null}
                 </div>
 
                 <div>
@@ -505,7 +628,14 @@ export default function TrabalheConoscoPage() {
                   <label style={{ fontWeight: 800 }}>
                     Você é pessoa com deficiência (PCD)?
                   </label>
-                  <div style={{ marginTop: 8, display: "flex", gap: 14, flexWrap: "wrap" }}>
+                  <div
+                    style={{
+                      marginTop: 8,
+                      display: "flex",
+                      gap: 14,
+                      flexWrap: "wrap",
+                    }}
+                  >
                     <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <input
                         type="radio"
@@ -544,7 +674,10 @@ export default function TrabalheConoscoPage() {
                       <select
                         value={form.pcd_tipo}
                         onChange={(e) =>
-                          setForm((p) => ({ ...p, pcd_tipo: e.target.value as PcdTipo }))
+                          setForm((p) => ({
+                            ...p,
+                            pcd_tipo: e.target.value as PcdTipo,
+                          }))
                         }
                         style={{ width: "100%", marginTop: 8 }}
                       >
@@ -576,7 +709,13 @@ export default function TrabalheConoscoPage() {
                       />
                     </div>
 
-                    <div style={{ gridColumn: "1 / -1", color: "#475569", fontSize: 13 }}>
+                    <div
+                      style={{
+                        gridColumn: "1 / -1",
+                        color: "#475569",
+                        fontSize: 13,
+                      }}
+                    >
                       A Happening valoriza a diversidade e não realiza qualquer tipo de
                       discriminação em seus processos seletivos.
                     </div>
@@ -596,7 +735,14 @@ export default function TrabalheConoscoPage() {
                 />
               </div>
 
-              <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <div
+                style={{
+                  marginTop: 14,
+                  display: "flex",
+                  gap: 10,
+                  flexWrap: "wrap",
+                }}
+              >
                 <button
                   className="btn btnPrimary"
                   type="submit"
