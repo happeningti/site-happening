@@ -1,3 +1,4 @@
+//app/trabalhe-conosco/page.tsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -5,12 +6,14 @@ import { useMemo, useState } from "react";
 type Vaga = {
   id: string;
   titulo: string;
-  local: string;         // ex: "Sertãozinho/SP"
-  descricao: string;     // texto livre
-  imagem?: string;       // "/vagas/arquivo.jpg"
+  local: string; // ex: "Sertãozinho/SP"
+  descricao: string; // texto livre
+  imagem?: string; // "/vagas/arquivo.jpg"
   requisitos?: string[]; // lista (opcional)
-  pcd?: boolean;         // se a vaga também é destinada a PCD (opcional)
-  ativa?: boolean;       // pra histórico (opcional)
+  responsabilidades?: string[]; // lista (opcional)
+  beneficios?: string[]; // lista (opcional)
+  pcd?: boolean; // se a vaga também é destinada a PCD (opcional)
+  ativa?: boolean; // pra histórico (opcional)
 };
 
 const UNIDADES = [
@@ -24,18 +27,39 @@ const UNIDADES = [
 // ✅ VAGAS: quando não tiver vaga, deixe vazio mesmo: []
 const VAGAS: Vaga[] = [
   {
-    id: "operador-empilhadeira",
-    titulo: "Operador de Empilhadeira",
-    local: "Sertãozinho/SP",
-    descricao: "Experiência com empilhadeira e entregas de facionados.",
-    imagem: "/vagas/operador-empilhadeira.jpg",
+    id: "mecanico-linha-pesada-tupaciguara",
+    titulo: "Mecânico (Linha Pesada)",
+    local: "Filial — Aroeira/MG",
+    descricao:
+      "Vaga para atuação na unidade de Tupaciguara-MG, com foco em manutenção de linha pesada, conjuntos canavieiros, pneumática e suspensão.",
+
     requisitos: [
-      "Experiência com empilhadeira e entregas de fracionados",
       "CNH categoria B",
-      "Ensino médio completo",
+      "Ser proativo",
+      "Experiência com manutenção de linha pesada",
+      "Experiência com conjuntos canavieiros, pneumática e suspensão",
+      "Disponibilidade para trabalhar em diferentes escalas",
+      "Residir em Tupaciguara-MG",
     ],
-    pcd: false, // ✅ se quiser exibir “vaga também para PCD”
-    ativa: false,
+
+    responsabilidades: [
+      "Priorizar sempre a segurança",
+      "Realizar manutenções preventivas e corretivas",
+      "Atuar em caminhões e/ou conjuntos",
+    ],
+
+    beneficios: [
+      "Salário compatível com a função",
+      "Ticket alimentação",
+      "Premiação mensal",
+      "Seguro de vida",
+      "Plano de saúde",
+      "Plano odontológico",
+      "Transporte fornecido pela empresa",
+    ],
+
+    pcd: false,
+    ativa: true,
   },
 ];
 
@@ -57,10 +81,9 @@ type FormState = {
   mensagem: string;
   arquivo?: File | null;
 
-  // ✅ PCD (opcional)
   pcd: "0" | "1";
   pcd_tipo: PcdTipo;
-  pcd_adaptacao: string; // opcional
+  pcd_adaptacao: string;
 };
 
 const initialForm = (cargoDefault = ""): FormState => ({
@@ -89,12 +112,9 @@ export default function TrabalheConoscoPage() {
     | { type: "err"; msg: string }
   >({ type: "idle" });
 
-  const vagasAtivas = useMemo(
-  () => VAGAS.filter((v) => v.ativa !== false),
-  []
-);
+  const vagasAtivas = useMemo(() => VAGAS.filter((v) => v.ativa !== false), []);
 
-const hasVagas = vagasAtivas.length > 0;
+  const hasVagas = vagasAtivas.length > 0;
 
   function abrirModalBancoTalentos() {
     setVagaSelecionada(null);
@@ -105,7 +125,7 @@ const hasVagas = vagasAtivas.length > 0;
 
   function abrirModalParaVaga(v: Vaga) {
     setVagaSelecionada(v);
-    setForm(initialForm(v.titulo)); // ✅ cargo pretendido vem preenchido
+    setForm(initialForm(v.titulo));
     setStatus({ type: "idle" });
     setOpen(true);
   }
@@ -126,13 +146,6 @@ const hasVagas = vagasAtivas.length > 0;
         return;
       }
 
-      // ✅ validação leve: se marcou PCD, tipo é recomendado (mas não obrigatório)
-      // Se você quiser obrigar o tipo, descomente:
-      // if (form.pcd === "1" && !form.pcd_tipo) {
-      //   setStatus({ type: "err", msg: "Selecione o tipo de deficiência (opcionalmente, escolha 'Outra')." });
-      //   return;
-      // }
-
       const fd = new FormData();
       fd.append("unidade", form.unidade);
       fd.append("cargo", form.cargo);
@@ -141,12 +154,10 @@ const hasVagas = vagasAtivas.length > 0;
       fd.append("email", form.email);
       fd.append("mensagem", form.mensagem || "");
 
-      // ✅ PCD (opcional)
       fd.append("pcd", form.pcd);
       fd.append("pcd_tipo", form.pcd_tipo || "");
       fd.append("pcd_adaptacao", form.pcd_adaptacao || "");
 
-      // ✅ info da vaga (se existir)
       fd.append("vaga_id", vagaSelecionada?.id || "");
       fd.append("vaga_titulo", vagaSelecionada?.titulo || "");
       fd.append("vaga_local", vagaSelecionada?.local || "");
@@ -169,9 +180,8 @@ const hasVagas = vagasAtivas.length > 0;
         msg: "Currículo enviado com sucesso! Em breve o RH fará o contato, se houver aderência ao perfil.",
       });
 
-      // opcional: limpar form após sucesso
       setForm(initialForm(vagaSelecionada?.titulo || ""));
-    } catch (err) {
+    } catch {
       setStatus({
         type: "err",
         msg: "Falha ao enviar. Verifique sua conexão e tente novamente.",
@@ -183,7 +193,6 @@ const hasVagas = vagasAtivas.length > 0;
 
   return (
     <main className="contato">
-      {/* HERO */}
       <section
         className="servicosHero"
         style={{ borderBottom: "1px solid #e7ebf3" }}
@@ -217,7 +226,6 @@ const hasVagas = vagasAtivas.length > 0;
         </div>
       </section>
 
-      {/* VAGAS */}
       <section className="section">
         <div className="container">
           <h2 className="sectionTitle">Vagas disponíveis</h2>
@@ -236,7 +244,7 @@ const hasVagas = vagasAtivas.length > 0;
             </div>
           ) : (
             <div className="grid3">
-              {VAGAS.map((v) => (
+              {vagasAtivas.map((v) => (
                 <div key={v.id} className="card">
                   <h3 style={{ marginTop: 0 }}>{v.titulo}</h3>
 
@@ -266,6 +274,44 @@ const hasVagas = vagasAtivas.length > 0;
                       <ul style={{ marginTop: 0, paddingLeft: 18 }}>
                         {v.requisitos.map((r) => (
                           <li key={r}>{r}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : null}
+
+                  {v.responsabilidades?.length ? (
+                    <>
+                      <p
+                        style={{
+                          fontWeight: 800,
+                          marginTop: 12,
+                          marginBottom: 8,
+                        }}
+                      >
+                        Responsabilidades
+                      </p>
+                      <ul style={{ marginTop: 0, paddingLeft: 18 }}>
+                        {v.responsabilidades.map((r) => (
+                          <li key={r}>{r}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : null}
+
+                  {v.beneficios?.length ? (
+                    <>
+                      <p
+                        style={{
+                          fontWeight: 800,
+                          marginTop: 12,
+                          marginBottom: 8,
+                        }}
+                      >
+                        Benefícios
+                      </p>
+                      <ul style={{ marginTop: 0, paddingLeft: 18 }}>
+                        {v.beneficios.map((b) => (
+                          <li key={b}>{b}</li>
                         ))}
                       </ul>
                     </>
@@ -306,7 +352,6 @@ const hasVagas = vagasAtivas.length > 0;
         </div>
       </section>
 
-      {/* MODAL FORM */}
       {open && (
         <div
           role="dialog"
@@ -446,12 +491,20 @@ const hasVagas = vagasAtivas.length > 0;
                 </div>
               </div>
 
-              {/* ✅ PCD (opcional) — dentro do mesmo formulário */}
-              <div style={{ marginTop: 12, padding: 12, borderRadius: 12, background: "#f1f5f9" }}>
+              <div
+                style={{
+                  marginTop: 12,
+                  padding: 12,
+                  borderRadius: 12,
+                  background: "#f1f5f9",
+                }}
+              >
                 <strong>♿ Informações adicionais (opcional)</strong>
 
                 <div style={{ marginTop: 10 }}>
-                  <label style={{ fontWeight: 800 }}>Você é pessoa com deficiência (PCD)?</label>
+                  <label style={{ fontWeight: 800 }}>
+                    Você é pessoa com deficiência (PCD)?
+                  </label>
                   <div style={{ marginTop: 8, display: "flex", gap: 14, flexWrap: "wrap" }}>
                     <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <input
@@ -499,8 +552,12 @@ const hasVagas = vagasAtivas.length > 0;
                         <option value="Física">Física</option>
                         <option value="Auditiva">Auditiva</option>
                         <option value="Visual">Visual</option>
-                        <option value="Intelectual/Psicossocial">Intelectual/Psicossocial</option>
-                        <option value="Reabilitado pelo INSS">Reabilitado pelo INSS</option>
+                        <option value="Intelectual/Psicossocial">
+                          Intelectual/Psicossocial
+                        </option>
+                        <option value="Reabilitado pelo INSS">
+                          Reabilitado pelo INSS
+                        </option>
                         <option value="Outra">Outra</option>
                       </select>
                     </div>
@@ -520,7 +577,8 @@ const hasVagas = vagasAtivas.length > 0;
                     </div>
 
                     <div style={{ gridColumn: "1 / -1", color: "#475569", fontSize: 13 }}>
-                      A Happening valoriza a diversidade e não realiza qualquer tipo de discriminação em seus processos seletivos.
+                      A Happening valoriza a diversidade e não realiza qualquer tipo de
+                      discriminação em seus processos seletivos.
                     </div>
                   </div>
                 )}
@@ -539,7 +597,11 @@ const hasVagas = vagasAtivas.length > 0;
               </div>
 
               <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
-                <button className="btn btnPrimary" type="submit" disabled={status.type === "sending"}>
+                <button
+                  className="btn btnPrimary"
+                  type="submit"
+                  disabled={status.type === "sending"}
+                >
                   {status.type === "sending" ? "Enviando..." : "Enviar currículo"}
                 </button>
 
