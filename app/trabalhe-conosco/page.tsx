@@ -60,7 +60,7 @@ const VAGAS: Vaga[] = [
     ],
 
     safra: "Safra 2026",
-    pcd: true,
+    pcd: false,
     ativa: true,
   },
 ];
