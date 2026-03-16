@@ -668,6 +668,39 @@ export default function HomePage() {
             width: 100%;
           }
         }
+          /* ===== AJUSTE MOBILE HERO ===== */
+
+@media (max-width: 600px){
+
+.heroTitle{
+  font-size:24px;
+}
+
+.heroSub{
+  font-size:14px;
+}
+
+.heroWrap{
+  padding:18px 16px 40px;
+}
+
+/* NOVO AJUSTE */
+
+.heroRight{
+  padding-top:20px;
+}
+
+.heroGrid{
+  gap:20px;
+}
+
+.sideCard{
+  padding:14px;
+}
+
+}
+
+/* ===== FIM AJUSTE MOBILE ===== */
       `}</style>
     </main>
   );
