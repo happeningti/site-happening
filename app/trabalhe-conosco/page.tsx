@@ -565,15 +565,15 @@ export default function TrabalheConoscoPage() {
                 <div>
                   <label style={{ fontWeight: 800 }}>Cargo pretendido</label>
                   <input
-  name="cargo"
-  value={form.cargo}
-  onChange={(e) =>
-    setForm((p) => ({ ...p, cargo: e.target.value }))
-  }
-  placeholder="Ex: Operador de Empilhadeira"
-  style={{ width: "100%", marginTop: 8, color: "#0f172a" }}
-  required
-/>
+                    name="cargo"
+                    value={form.cargo}
+                    onChange={(e) =>
+                      setForm((p) => ({ ...p, cargo: e.target.value }))
+                    }
+                    placeholder="Ex: Operador de Empilhadeira"
+                    style={{ width: "100%", marginTop: 8, color: "#0f172a" }}
+                    required
+                  />
                 </div>
 
                 <div>
@@ -605,15 +605,15 @@ export default function TrabalheConoscoPage() {
                 <div>
                   <label style={{ fontWeight: 800 }}>E-mail</label>
                   <input
-  name="email"
-  type="email"
-  value={form.email}
-  onChange={(e) =>
-    setForm((p) => ({ ...p, email: e.target.value }))
-  }
-  style={{ width: "100%", marginTop: 8, color: "#0f172a" }}
-  required
-/>
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) =>
+                      setForm((p) => ({ ...p, email: e.target.value }))
+                    }
+                    style={{ width: "100%", marginTop: 8, color: "#0f172a" }}
+                    required
+                  />
                 </div>
 
                 <div>
