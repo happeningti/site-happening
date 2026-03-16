@@ -1,6 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 
+const linkStyle: React.CSSProperties = {
+  color: "#1f2937",
+  textDecoration: "none",
+  fontWeight: 600,
+  fontSize: "16px",
+};
+
 export default function Navbar() {
   return (
     <header
@@ -27,14 +34,23 @@ export default function Navbar() {
 
       {/* MENU */}
       <nav style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-        <Link href="/">Início</Link>
-        <Link href="/empresa">A Empresa</Link>
-        <Link href="/servicos">Serviços</Link>
-        <Link href="/unidades">Unidades</Link>
-        <Link href="/cotacao">Cotação</Link>
-        <Link href="/contato">Contato</Link>
-        <Link href="/transparencia">Transparência</Link>
-        <Link href="/trabalhe-conosco">Trabalhe Conosco</Link>
+        <Link href="/" style={linkStyle}>Início</Link>
+
+        <Link href="/empresa" style={linkStyle}>A Empresa</Link>
+
+        <Link href="/servicos" style={linkStyle}>Serviços</Link>
+
+        <Link href="/unidades" style={linkStyle}>Unidades</Link>        
+
+        <Link href="/cotacao" style={linkStyle}>Cotação</Link>
+
+        <Link href="/contato" style={linkStyle}>Contato</Link>
+
+        <Link href="/transparencia" style={linkStyle}>Transparência</Link>
+
+        <Link href="/noticias" style={linkStyle}>Notícias</Link>
+
+        <Link href="/trabalhe-conosco" style={linkStyle}>Trabalhe Conosco</Link>
       </nav>
     </header>
   );

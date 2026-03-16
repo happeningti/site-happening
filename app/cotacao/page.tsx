@@ -8,21 +8,19 @@ type Vendedor = { label: string; email: string; mostrar?: boolean };
 const VENDEDORES: Vendedor[] = [
   { label: "Marcos Rueda", email: "comercial@happening.com.br", mostrar: true },
 
-  // ✅ recebem quando for "todos", mas NÃO aparecem na lista de escolha
   { label: "Ricardo", email: "comercial1@happening.com.br", mostrar: false },
   { label: "Rafael", email: "comercial3@happening.com.br", mostrar: false },
   { label: "Beatriz", email: "comercial4@happening.com.br", mostrar: false },
 
-  // ✅ aparece na lista
   { label: "Giovanna", email: "comercial2@happening.com.br", mostrar: true },
 ];
 
-// E-mail melhor (aceita maioria dos casos reais)
 function isValidEmail(email: string) {
-  return /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-z0-9-]+\.)+[a-z]{2,}$/i.test(email.trim());
+  return /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-z0-9-]+\.)+[a-z]{2,}$/i.test(
+    email.trim()
+  );
 }
 
-// Máscara (##) #####-####
 function maskTelefone(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
   const ddd = digits.slice(0, 2);
@@ -36,19 +34,18 @@ function maskTelefone(value: string) {
 }
 
 export default function CotacaoPage() {
-  const [modo, setModo] = useState<"todos" | "um">("todos"); // padrão = todos
+  const [modo, setModo] = useState<"todos" | "um">("todos");
 
-  // lista que aparece no select (somente mostrar !== false)
-  const VENDEDORES_PARA_ESCOLHA = useMemo(
+  const vendedoresParaEscolha = useMemo(
     () => VENDEDORES.filter((v) => v.mostrar !== false),
     []
   );
 
-  // default seguro: primeiro vendedor visível
   const firstVisibleEmail =
     VENDEDORES.find((v) => v.mostrar !== false)?.email || VENDEDORES[0].email;
 
-  const [vendedorEmail, setVendedorEmail] = useState<string>(firstVisibleEmail);
+  const [vendedorEmail, setVendedorEmail] =
+    useState<string>(firstVisibleEmail);
 
   const [nome, setNome] = useState("");
   const [empresa, setEmpresa] = useState("");
@@ -81,14 +78,27 @@ export default function CotacaoPage() {
     if (modo === "um" && !vendedorEmail) return false;
 
     return true;
-  }, [nome, empresa, telefone, email, origem, destino, tipo, peso, modo, vendedorEmail]);
+  }, [
+    nome,
+    empresa,
+    telefone,
+    email,
+    origem,
+    destino,
+    tipo,
+    peso,
+    modo,
+    vendedorEmail,
+  ]);
 
-  // Feedback: scroll + auto-sumir em 5s
   useEffect(() => {
     if (!sucesso && !erro) return;
 
     const s = window.setTimeout(() => {
-      feedbackRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      feedbackRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }, 50);
 
     const t = window.setTimeout(() => {
@@ -107,7 +117,6 @@ export default function CotacaoPage() {
     setErro("");
     setSucesso(null);
 
-    // validações amigáveis
     if (!isValidEmail(email)) {
       setErro("Digite um e-mail válido.");
       return;
@@ -148,13 +157,14 @@ export default function CotacaoPage() {
       const data = await r.json();
 
       if (!r.ok || !data?.success) {
-        setErro(data?.error || "Não foi possível enviar sua cotação. Tente novamente.");
+        setErro(
+          data?.error || "Não foi possível enviar sua cotação. Tente novamente."
+        );
         return;
       }
 
       setSucesso({ protocolo: data.protocolo });
 
-      // opcional: limpar formulário depois do sucesso
       setNome("");
       setEmpresa("");
       setTelefone("");
@@ -166,7 +176,7 @@ export default function CotacaoPage() {
       setObservacoes("");
       setModo("todos");
       setVendedorEmail(firstVisibleEmail);
-    } catch (err) {
+    } catch {
       setErro("Erro inesperado ao enviar. Tente novamente.");
     } finally {
       setLoading(false);
@@ -174,52 +184,116 @@ export default function CotacaoPage() {
   }
 
   return (
-    <div style={{ background: "#f5f7fb", minHeight: "100vh" }}>
-      {/* HEADER */}
+    <main
+      style={{
+        background:
+          "linear-gradient(180deg,#021b16 0%, #063d2f 50%, #021b16 100%)",
+        color: "#ffffff",
+        minHeight: "100vh",
+      }}
+    >
+      {/* HERO */}
       <div
         style={{
           background:
             "radial-gradient(1200px 600px at 22% 25%, rgba(11,122,75,0.22), transparent 60%)," +
             "radial-gradient(900px 520px at 80% 35%, rgba(34,197,94,0.14), transparent 55%)," +
             "linear-gradient(180deg, #0b1220 0%, #0b1220 70%, rgba(11,18,32,0.96) 100%)",
-          padding: "34px 16px",
+          padding: "44px 16px 36px",
           color: "#fff",
-          borderBottom: "1px solid #e7ebf3",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
       >
         <div style={{ maxWidth: 980, margin: "0 auto" }}>
-          <h1 style={{ margin: 0, fontSize: 32, fontWeight: 800 }}>Cotação</h1>
-          <p style={{ margin: "8px 0 0", opacity: 0.92 }}>
-            Preencha os dados e envie sua solicitação. Um de nossos vendedores retornará por e-mail.
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "8px 14px",
+              borderRadius: 999,
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.18)",
+              color: "rgba(255,255,255,0.88)",
+              fontWeight: 700,
+              fontSize: 13,
+              marginBottom: 14,
+            }}
+          >
+            Cotação
+          </div>
+
+          <h1
+            style={{
+              margin: 0,
+              fontSize: 40,
+              lineHeight: 1.1,
+              fontWeight: 900,
+              letterSpacing: -0.6,
+              color: "#ffffff",
+            }}
+          >
+            Solicite sua cotação
+          </h1>
+
+          <p
+            style={{
+              margin: "10px 0 0",
+              maxWidth: 760,
+              color: "rgba(255,255,255,0.88)",
+              fontSize: 16,
+              lineHeight: 1.7,
+            }}
+          >
+            Preencha os dados da operação e envie sua solicitação. Nossa equipe
+            comercial retornará por e-mail com o atendimento da sua cotação.
           </p>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div style={{ maxWidth: 980, margin: "0 auto", padding: "22px 16px 44px" }}>
+      <div style={{ maxWidth: 980, margin: "0 auto", padding: "28px 16px 48px" }}>
         <form
           onSubmit={onSubmit}
           style={{
-            maxWidth: 720,
+            maxWidth: 760,
             margin: "0 auto",
-            background: "#fff",
-            borderRadius: 14,
-            boxShadow: "0 10px 24px rgba(0,0,0,0.08)",
+            background: "#ffffff",
+            borderRadius: 18,
+            boxShadow: "0 12px 28px rgba(0,0,0,0.10)",
             padding: 22,
+            border: "1px solid #e7ebf3",
           }}
         >
           {/* SELEÇÃO */}
           <div
             style={{
               border: "1px solid #e7ebf3",
-              borderRadius: 12,
+              borderRadius: 14,
               padding: 16,
               marginBottom: 18,
+              background: "#f8fafc",
             }}
           >
-            <div style={{ fontWeight: 800, marginBottom: 10 }}>Para quem deseja enviar?</div>
+            <div
+              style={{
+                fontWeight: 800,
+                marginBottom: 10,
+                color: "#0f172a",
+              }}
+            >
+              Para quem deseja enviar?
+            </div>
 
-            <label style={{ display: "flex", gap: 10, alignItems: "center", cursor: "pointer" }}>
+            <label
+              style={{
+                display: "flex",
+                gap: 10,
+                alignItems: "center",
+                cursor: "pointer",
+                color: "#334155",
+              }}
+            >
               <input
                 type="radio"
                 name="modo"
@@ -227,14 +301,28 @@ export default function CotacaoPage() {
                 onChange={() => setModo("todos")}
               />
               <span>
-                Enviar para todos os vendedores <span style={{ color: "#667085" }}>(padrão)</span>
+                Enviar para todos os vendedores{" "}
+                <span style={{ color: "#667085" }}>(padrão)</span>
               </span>
             </label>
 
             <div style={{ height: 8 }} />
 
-            <label style={{ display: "flex", gap: 10, alignItems: "center", cursor: "pointer" }}>
-              <input type="radio" name="modo" checked={modo === "um"} onChange={() => setModo("um")} />
+            <label
+              style={{
+                display: "flex",
+                gap: 10,
+                alignItems: "center",
+                cursor: "pointer",
+                color: "#334155",
+              }}
+            >
+              <input
+                type="radio"
+                name="modo"
+                checked={modo === "um"}
+                onChange={() => setModo("um")}
+              />
               <span>Escolher um vendedor</span>
             </label>
 
@@ -250,9 +338,10 @@ export default function CotacaoPage() {
                   border: "1px solid #d9e1f0",
                   padding: "0 12px",
                   background: modo === "um" ? "#fff" : "#f3f5f9",
+                  color: "#0f172a",
                 }}
               >
-                {VENDEDORES_PARA_ESCOLHA.map((v) => (
+                {vendedoresParaEscolha.map((v) => (
                   <option key={v.email} value={v.email}>
                     {v.label} — {v.email}
                   </option>
@@ -260,13 +349,20 @@ export default function CotacaoPage() {
               </select>
 
               <div style={{ marginTop: 6, fontSize: 12, color: "#667085" }}>
-                Se escolher “um vendedor”, ele receberá a cotação e responderá diretamente para seu e-mail.
+                Se escolher “um vendedor”, ele receberá a cotação e responderá
+                diretamente para seu e-mail.
               </div>
             </div>
           </div>
 
-          {/* CAMPOS (GRID) */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+          {/* CAMPOS */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 14,
+            }}
+          >
             <Field label="Nome">
               <input
                 value={nome}
@@ -345,7 +441,16 @@ export default function CotacaoPage() {
 
           {/* OBS */}
           <div style={{ marginTop: 14 }}>
-            <div style={{ fontWeight: 700, marginBottom: 6 }}>Observações</div>
+            <div
+              style={{
+                fontWeight: 700,
+                marginBottom: 6,
+                color: "#0f172a",
+              }}
+            >
+              Observações
+            </div>
+
             <textarea
               value={observacoes}
               onChange={(e) => setObservacoes(e.target.value)}
@@ -358,12 +463,22 @@ export default function CotacaoPage() {
                 padding: 12,
                 resize: "vertical",
                 outline: "none",
+                color: "#0f172a",
+                background: "#ffffff",
               }}
             />
           </div>
 
-          {/* BOTÃO + DICA */}
-          <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 12 }}>
+          {/* BOTÃO */}
+          <div
+            style={{
+              marginTop: 16,
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              flexWrap: "wrap",
+            }}
+          >
             <button
               type="submit"
               disabled={!podeEnviar || loading}
@@ -387,7 +502,8 @@ export default function CotacaoPage() {
           </div>
 
           <div style={{ marginTop: 10, fontSize: 12, color: "#667085" }}>
-            • O vendedor responderá diretamente para o e-mail informado no formulário.
+            • O vendedor responderá diretamente para o e-mail informado no
+            formulário.
           </div>
 
           {/* FEEDBACK */}
@@ -403,8 +519,15 @@ export default function CotacaoPage() {
                   fontWeight: 700,
                 }}
               >
-                ✅ Cotação enviada com sucesso! Protocolo: <b>{sucesso.protocolo}</b>
-                <div style={{ fontWeight: 400, marginTop: 6, fontSize: 12 }}>
+                ✅ Cotação enviada com sucesso! Protocolo:{" "}
+                <b>{sucesso.protocolo}</b>
+                <div
+                  style={{
+                    fontWeight: 400,
+                    marginTop: 6,
+                    fontSize: 12,
+                  }}
+                >
                   Esta mensagem será ocultada automaticamente em 5 segundos.
                 </div>
               </div>
@@ -422,7 +545,13 @@ export default function CotacaoPage() {
                 }}
               >
                 ❌ {erro}
-                <div style={{ fontWeight: 400, marginTop: 6, fontSize: 12 }}>
+                <div
+                  style={{
+                    fontWeight: 400,
+                    marginTop: 6,
+                    fontSize: 12,
+                  }}
+                >
                   Esta mensagem será ocultada automaticamente em 5 segundos.
                 </div>
               </div>
@@ -430,14 +559,28 @@ export default function CotacaoPage() {
           </div>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
-      <div style={{ fontWeight: 700, marginBottom: 6 }}>{label}</div>
+      <div
+        style={{
+          fontWeight: 700,
+          marginBottom: 6,
+          color: "#0f172a",
+        }}
+      >
+        {label}
+      </div>
       {children}
     </div>
   );
@@ -450,4 +593,6 @@ const inputStyle: React.CSSProperties = {
   border: "1px solid #d9e1f0",
   padding: "0 12px",
   outline: "none",
+  color: "#0f172a",
+  background: "#ffffff",
 };

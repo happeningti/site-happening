@@ -2,147 +2,167 @@
 "use client";
 
 import Link from "next/link";
+import NoticiasPreview from "../noticias-preview";
 
 export default function HomePage() {
   return (
-    <main className="hero">
-      <div className="heroMedia" aria-hidden="true">
-        <video
-          className="heroVideo"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/hero-poster.jpg"
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
+    <main>
+      <section className="hero">
+        <div className="heroMedia" aria-hidden="true">
+          <video
+            className="heroVideo"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/hero-poster.jpg"
+          >
+            <source src="/hero.mp4" type="video/mp4" />
+          </video>
 
-        <div className="heroOverlay" />
-        <div className="heroGlow" />
-        <div className="heroGrain" />
-      </div>
+          <div className="heroOverlay" />
+          <div className="heroGlow" />
+          <div className="heroGrain" />
+        </div>
 
-      <div className="heroWrap">
-        <div className="heroGrid">
-          {/* ESQUERDA */}
-          <div className="heroLeft">
-            <div className="pill">🚚 Logística • Transporte • Agilidade</div>
+        <div className="heroWrap">
+          <div className="heroGrid">
+            <div className="heroLeft">
+              <div className="pill">🚚 Logística • Transporte • Agilidade</div>
 
-            <h1 className="heroTitle">
-              Transporte com segurança, prazos e atendimento de verdade.
-            </h1>
+              <h1 className="heroTitle">
+                Transporte com segurança, prazos e atendimento de verdade.
+              </h1>
 
-            <p className="heroSub">
-              Cotação rápida, equipe comercial dedicada e operação preparada para
-              atender suas necessidades com eficiência.
-            </p>
-
-            <div className="checks">
-              <span className="check">✅ Atendimento rápido</span>
-              <span className="check">✅ Operação profissional</span>
-              <span className="check">✅ Suporte dedicado</span>
-            </div>
-
-            {/* STATS (3 cards) */}
-            <div className="stats" aria-label="Indicadores da empresa">
-              <div className="stat">
-                <div className="statNum">+20</div>
-                <div className="statLabel">anos de mercado</div>
-              </div>
-
-              <div className="stat">
-                <div className="statNum">+400</div>
-                <div className="statLabel">colaboradores</div>
-              </div>
-
-              <div className="stat">
-                <div className="statNum">+200</div>
-                <div className="statLabel">veículos na frota</div>
-              </div>
-            </div>
-
-            {/* CARD COTAÇÃO */}
-            <section className="infoCard" aria-label="Chamada para cotação">
-              <div className="infoCardTop">
-                <div>
-                  <h3 className="cardTitle">Precisa de cotação agora?</h3>
-                  <p className="cardText">
-                    Use nosso formulário e receba confirmação por e-mail. O
-                    vendedor responde diretamente para você.
-                  </p>
-                </div>
-
-                <div className="cardBadge" aria-hidden="true">
-                  ⚡ Resposta rápida
-                </div>
-              </div>
-
-              <div className="cardActions">
-                <Link href="/cotacao" className="btnPrimarySmall">
-                  Abrir cotação
-                </Link>
-
-                <Link href="/servicos" className="btnSoft">
-                  Ver serviços
-                </Link>
-              </div>
-            </section>
-          </div>
-
-          {/* DIREITA */}
-          <aside className="heroRight" aria-label="Destaques e áreas de atuação">
-            <div className="sideCard">
-              <div className="sideTitle">Atuação</div>
-
-              <div className="sideList">
-                <div className="sideItem">
-                  <span className="dot" /> Transporte Rodoviário
-                </div>
-                <div className="sideItem">
-                  <span className="dot" /> Agronegócio
-                </div>
-                <div className="sideItem">
-                  <span className="dot" /> Logística Dedicada
-                </div>
-                <div className="sideItem">
-                  <span className="dot" /> Crossdocking • Distribuição
-                </div>
-              </div>
-
-              <div className="sideDivider" />
-
-              <div className="sideMini">
-                <div className="miniRow">
-                  <span className="miniIcon">🛰️</span>
-                  Rastreamento e controle operacional
-                </div>
-                <div className="miniRow">
-                  <span className="miniIcon">🛡️</span>
-                  Segurança, conformidade e processos
-                </div>
-              </div>
-
-              <Link href="/unidades" className="sideLink">
-                Ver unidades →
-              </Link>
-            </div>
-
-            <div className="sideCard soft">
-              <div className="sideTitle">Fale com a equipe</div>
-              <p className="sideText">
-                Atendimento comercial com retorno direto e orientado à sua
-                operação.
+              <p className="heroSub">
+                Cotação rápida, equipe comercial dedicada e operação preparada para
+                atender suas necessidades com eficiência.
               </p>
 
-              <Link href="/contato" className="btnOutline">
-                Entrar em contato
-              </Link>
+              <div className="checks">
+                <span className="check">✅ Atendimento rápido</span>
+                <span className="check">✅ Operação profissional</span>
+                <span className="check">✅ Suporte dedicado</span>
+              </div>
+
+              <div className="stats" aria-label="Indicadores da empresa">
+                <div className="stat">
+                  <div className="statNum">+20</div>
+                  <div className="statLabel">anos de mercado</div>
+                </div>
+
+                <div className="stat">
+                  <div className="statNum">+400</div>
+                  <div className="statLabel">colaboradores</div>
+                </div>
+
+                <div className="stat">
+                  <div className="statNum">+200</div>
+                  <div className="statLabel">veículos na frota</div>
+                </div>
+              </div>
+
+              <section className="infoCard" aria-label="Chamada para cotação">
+                <div className="infoCardTop">
+                  <div>
+                    <h3 className="cardTitle">Precisa de cotação agora?</h3>
+                    <p className="cardText">
+                      Use nosso formulário e receba confirmação por e-mail. O
+                      vendedor responde diretamente para você.
+                    </p>
+                  </div>
+
+                  <div className="cardBadge" aria-hidden="true">
+                    ⚡ Resposta rápida
+                  </div>
+                </div>
+
+                <div className="cardActions">
+                  <Link href="/cotacao" className="btnPrimarySmall">
+                    Abrir cotação
+                  </Link>
+
+                  <Link href="/servicos" className="btnSoft">
+                    Ver serviços
+                  </Link>
+                </div>
+              </section>
             </div>
-          </aside>
+
+            <aside className="heroRight" aria-label="Destaques e áreas de atuação">
+              <div className="sideCard">
+                <div className="sideTitle">Atuação</div>
+
+                <div className="sideList">
+                  <div className="sideItem">
+                    <span className="dot" /> Transporte Rodoviário
+                  </div>
+                  <div className="sideItem">
+                    <span className="dot" /> Agronegócio
+                  </div>
+                  <div className="sideItem">
+                    <span className="dot" /> Logística Dedicada
+                  </div>
+                  <div className="sideItem">
+                    <span className="dot" /> Crossdocking • Distribuição
+                  </div>
+                </div>
+
+                <div className="sideDivider" />
+
+                <div className="sideMini">
+                  <div className="miniRow">
+                    <span className="miniIcon">🛰️</span>
+                    Rastreamento e controle operacional
+                  </div>
+                  <div className="miniRow">
+                    <span className="miniIcon">🛡️</span>
+                    Segurança, conformidade e processos
+                  </div>
+                </div>
+
+                <Link href="/unidades" className="sideLink">
+                  Ver unidades →
+                </Link>
+              </div>
+
+              <div className="sideCard soft">
+                <div className="sideTitle">Fale com a equipe</div>
+                <p className="sideText">
+                  Atendimento comercial com retorno direto e orientado à sua
+                  operação.
+                </p>
+
+                <Link href="/contato" className="btnOutline">
+                  Entrar em contato
+                </Link>
+              </div>
+            </aside>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section className="homeNoticias">
+        <div className="containerNoticias">
+          <div className="noticiasHeader">
+            <div>
+              <div className="noticiasBadge">Notícias</div>
+              <h2>Últimas atualizações da Happening</h2>
+              <p>
+                Acompanhe novidades, ações institucionais, investimentos e
+                comunicados importantes da Happening Logística.
+              </p>
+            </div>
+
+            <Link href="/noticias" className="verTodasNoticias">
+              Ver todas →
+            </Link>
+          </div>
+
+          <NoticiasPreview />
+        </div>
+      </section>
 
       <style jsx>{`
         .hero {
@@ -159,7 +179,6 @@ export default function HomePage() {
           z-index: 0;
         }
 
-        /* ✅ vídeo colado + volta o “cinema” (mais escuro/verde) */
         .heroVideo {
           position: absolute;
           inset: 0;
@@ -167,23 +186,18 @@ export default function HomePage() {
           height: 100%;
           object-fit: cover;
           transform: scale(1.02);
-
-          /* AJUSTE PRINCIPAL: volta o tom mais escuro (como antes) */
           filter: brightness(0.78) saturate(1.05) contrast(1.08);
         }
 
-        /* ✅ overlay: cobre a faixa clara do topo sem “lavar” o resto */
         .heroOverlay {
           position: absolute;
           inset: 0;
           background:
-            /* reforço só no topo (corrige a linha clara) */
             linear-gradient(
               to bottom,
               rgba(11, 18, 32, 0.55) 0%,
               rgba(11, 18, 32, 0) 14%
             ),
-            /* tinta verde/escuro (clima happening) */
             linear-gradient(
               90deg,
               rgba(7, 58, 38, 0.78) 0%,
@@ -192,14 +206,12 @@ export default function HomePage() {
             );
         }
 
-        /* mantém as camadas absolutas também */
         .heroGlow,
         .heroGrain {
           position: absolute;
           inset: 0;
         }
 
-        /* ✅ glow mais discreto pra não clarear demais */
         .heroGlow {
           background: radial-gradient(
             circle at 18% 22%,
@@ -228,7 +240,6 @@ export default function HomePage() {
           padding: 22px 16px 64px;
         }
 
-        /* ✅ GRID: mais espaço para o título caber em 1 linha */
         .heroGrid {
           display: grid;
           grid-template-columns: 1.5fr 0.5fr;
@@ -253,6 +264,7 @@ export default function HomePage() {
           .heroGrid {
             grid-template-columns: 1fr;
           }
+
           .heroRight {
             padding-top: 16px;
           }
@@ -436,6 +448,7 @@ export default function HomePage() {
           box-shadow: 0 14px 30px rgba(11, 122, 75, 0.25);
           border: 1px solid rgba(255, 255, 255, 0.12);
         }
+
         .btnPrimarySmall:hover {
           transform: translateY(-1px);
           filter: brightness(1.05);
@@ -446,6 +459,7 @@ export default function HomePage() {
           border: 1px solid rgba(255, 255, 255, 0.18);
           color: #fff;
         }
+
         .btnSoft:hover {
           transform: translateY(-1px);
           background: rgba(255, 255, 255, 0.16);
@@ -540,6 +554,7 @@ export default function HomePage() {
           background: rgba(255, 255, 255, 0.08);
           border: 1px solid rgba(255, 255, 255, 0.12);
         }
+
         .sideLink:hover {
           background: rgba(255, 255, 255, 0.12);
           transform: translateY(-1px);
@@ -558,9 +573,100 @@ export default function HomePage() {
           border: 1px solid rgba(255, 255, 255, 0.22);
           color: #fff;
         }
+
         .btnOutline:hover {
           transform: translateY(-1px);
           background: rgba(255, 255, 255, 0.08);
+        }
+
+        .homeNoticias {
+          position: relative;
+          padding: 84px 20px;
+          background:
+            radial-gradient(
+              circle at top left,
+              rgba(11, 122, 75, 0.22),
+              transparent 26%
+            ),
+            linear-gradient(180deg, #05111c 0%, #072033 48%, #08311f 100%);
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .containerNoticias {
+          max-width: 1180px;
+          margin: 0 auto;
+        }
+
+        .noticiasHeader {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          gap: 18px;
+          margin-bottom: 34px;
+          flex-wrap: wrap;
+        }
+
+        .noticiasBadge {
+          display: inline-flex;
+          align-items: center;
+          padding: 8px 12px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          color: rgba(255, 255, 255, 0.92);
+          font-size: 13px;
+          font-weight: 800;
+          margin-bottom: 12px;
+        }
+
+        .noticiasHeader h2 {
+          margin: 0 0 10px;
+          font-size: clamp(28px, 2.1vw, 38px);
+          font-weight: 900;
+          color: #fff;
+          letter-spacing: -0.4px;
+        }
+
+        .noticiasHeader p {
+          margin: 0;
+          max-width: 760px;
+          color: rgba(255, 255, 255, 0.8);
+          line-height: 1.6;
+          font-size: 16px;
+        }
+
+        .verTodasNoticias {
+          text-decoration: none;
+          font-weight: 900;
+          color: #0b7a4b;
+          background: #ffffff;
+          padding: 12px 18px;
+          border-radius: 12px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.15s ease, filter 0.15s ease;
+          white-space: nowrap;
+          box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .verTodasNoticias:hover {
+          transform: translateY(-1px);
+          filter: brightness(1.02);
+        }
+
+        @media (max-width: 720px) {
+          .homeNoticias {
+            padding: 64px 16px;
+          }
+
+          .noticiasHeader {
+            align-items: flex-start;
+          }
+
+          .verTodasNoticias {
+            width: 100%;
+          }
         }
       `}</style>
     </main>

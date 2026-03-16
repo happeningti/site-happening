@@ -1,3 +1,4 @@
+//app/servicos/operacao-cana/page.tsx
 "use client";
 
 import Link from "next/link";
@@ -18,15 +19,24 @@ export default function OperacaoCanaPage() {
   const [fotoAberta, setFotoAberta] = useState<string | null>(null);
 
   return (
-    <main className="operacaoCana">
-      {/* HERO */}
+    <main
+      className="operacaoCana"
+      style={{
+        background:
+          "linear-gradient(180deg,#021b16 0%, #063d2f 50%, #021b16 100%)",
+        color: "#f5f7f6",
+        minHeight: "100vh",
+      }}
+    >
       <section className="operacaoCanaHero">
         <div className="operacaoCanaHeroBg" />
+
         <div className="operacaoCanaHeroContent">
           <div className="badge">Agronegócio</div>
 
-          <h1>Operação Cana-de-açúcar</h1>
-          <p>
+          <h1 style={{ color: "#ffffff" }}>Operação Cana-de-açúcar</h1>
+
+          <p style={{ color: "#d6e3de" }}>
             Estrutura dedicada ao transporte de cana, com foco em eficiência,
             segurança e cumprimento rigoroso das janelas operacionais.
           </p>
@@ -43,30 +53,44 @@ export default function OperacaoCanaPage() {
         </div>
       </section>
 
-      {/* CONTEÚDO */}
       <section className="operacaoCanaWrap">
         <div className="operacaoCanaContainer">
           <div className="operacaoCanaGrid">
-            {/* TEXTO */}
-            <div className="operacaoCanaText">
-              <h2>Como atuamos</h2>
-              <p>
+            <div
+              className="operacaoCanaText"
+              style={{
+                background: "#ffffff",
+                color: "#0f172a",
+              }}
+            >
+              <h2 style={{ color: "#065f46" }}>Como atuamos</h2>
+
+              <p style={{ color: "#374151" }}>
                 Trabalhamos com planejamento operacional e acompanhamento para
-                garantir fluidez na operação, preservando prazos e integridade da
-                carga.
+                garantir fluidez na operação, preservando prazos e integridade
+                da carga.
               </p>
 
-              <ul className="operacaoCanaBullets">
+              <ul
+                className="operacaoCanaBullets"
+                style={{ color: "#374151" }}
+              >
                 <li>Atuação alinhada à rotina da usina e frentes de corte</li>
                 <li>Equipe operacional dedicada e suporte durante a jornada</li>
-                <li>Controle e organização para reduzir paradas e retrabalho</li>
+                <li>
+                  Controle e organização para reduzir paradas e retrabalho
+                </li>
               </ul>
             </div>
 
-            {/* VÍDEO */}
             <div className="operacaoCanaMedia">
               <div className="operacaoCanaCard">
-                <div className="operacaoCanaCardTitle">Vídeo da Operação</div>
+                <div
+                  className="operacaoCanaCardTitle"
+                  style={{ color: "#065f46" }}
+                >
+                  Vídeo da Operação
+                </div>
 
                 <video
                   className="operacaoCanaVideo"
@@ -80,26 +104,50 @@ export default function OperacaoCanaPage() {
             </div>
           </div>
 
-          {/* GALERIA */}
-          <div className="operacaoCanaGaleria">
-            <h2>Fotos da Operação</h2>
+          <div
+  className="operacaoCanaGaleria"
+  style={{
+    background: "transparent",
+    border: "none",
+    boxShadow: "none",
+    padding: "0",
+  }}
+>
+  <h2 style={{ color: "#ffffff", marginBottom: "18px" }}>
+    Fotos da Operação
+  </h2>
 
-            <div className="operacaoCanaGaleriaGrid">
-              {fotos.map((src) => (
-                <img
-                  key={src}
-                  src={src}
-                  alt="Operação de Cana"
-                  style={{ cursor: "zoom-in" }}
-                  onClick={() => setFotoAberta(src)}
-                />
-              ))}
-            </div>
-          </div>
+  <div className="operacaoCanaGaleriaGrid">
+    {fotos.map((src) => (
+      <div
+        key={src}
+        style={{
+          overflow: "hidden",
+          borderRadius: "20px",
+          border: "1px solid rgba(255,255,255,0.08)",
+          background: "rgba(255,255,255,0.03)",
+          boxShadow: "0 10px 24px rgba(0,0,0,0.28)",
+          cursor: "zoom-in",
+        }}
+        onClick={() => setFotoAberta(src)}
+      >
+        <img
+          src={src}
+          alt="Operação de Cana"
+          style={{
+            width: "100%",
+            height: "220px",
+            objectFit: "cover",
+            display: "block",
+          }}
+        />
+      </div>
+    ))}
+  </div>
+</div>
         </div>
       </section>
 
-      {/* MODAL */}
       {fotoAberta && (
         <div
           onClick={() => setFotoAberta(null)}

@@ -248,10 +248,12 @@ export default function TrabalheConoscoPage() {
       <section className="section">
         <div className="container">
           <h2 className="sectionTitle">Vagas disponíveis</h2>
-          <p className="sectionDesc">
-            Quando houver vaga aberta, ela aparecerá aqui com a descrição e o
-            botão para candidatura.
-          </p>
+          <p
+  className="sectionDesc"
+  style={{ color: "rgba(255,255,255,0.82)" }}
+>
+  Quando houver vaga aberta, ela aparecerá aqui com a descrição e o botão para candidatura.
+</p>
 
           {!hasVagas ? (
             <div className="card" style={{ padding: 18 }}>
@@ -636,7 +638,7 @@ export default function TrabalheConoscoPage() {
                   marginTop: 12,
                   padding: 12,
                   borderRadius: 12,
-                  background: "#f1f5f9",
+                  background: "#f1f5f9"
                 }}
               >
                 <strong>♿ Informações adicionais (opcional)</strong>

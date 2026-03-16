@@ -77,17 +77,28 @@ const SERVICOS = [
 
 export default function ServicosPage() {
   return (
-    <main className="servicos">
+    <main
+      className="servicos"
+      style={{
+        background:
+          "linear-gradient(180deg,#021b16 0%, #063d2f 50%, #021b16 100%)",
+        color: "#f5f7f6",
+        minHeight: "100vh",
+      }}
+    >
       {/* HERO */}
       <section className="servicosHero">
         <div className="servicosHeroBg" />
 
         <div className="servicosHeroContent">
           <div className="badge">Serviços</div>
-          <h1>Serviços Happening Logística</h1>
-          <p>
-            Uma página única com todos os serviços — navegue por âncoras e conheça
-            nossas soluções com mais clareza.
+          <h1 style={{ color: "#ffffff" }}>
+            Serviços Happening Logística
+          </h1>
+
+          <p style={{ color: "#d6e3de" }}>
+            Uma página única com todos os serviços — navegue por âncoras e
+            conheça nossas soluções com mais clareza.
           </p>
         </div>
       </section>
@@ -95,7 +106,6 @@ export default function ServicosPage() {
       {/* CONTEÚDO */}
       <section className="servicosWrap">
         <div className="servicosContainer">
-          {/* NAV DESKTOP (sticky) */}
           <aside className="servicosNav">
             <div className="servicosNavBox">
               <div className="servicosNavTitle">Navegação</div>
@@ -111,9 +121,9 @@ export default function ServicosPage() {
           </aside>
 
           <div>
-            {/* NAV MOBILE (chips) */}
             <div className="servicosNavMobile">
               <div className="servicosNavMobileLabel">Ir para:</div>
+
               <div className="servicosNavMobileChips">
                 {SERVICOS.map((s) => (
                   <a key={s.id} href={`#${s.id}`} className="servicosChip">
@@ -123,19 +133,27 @@ export default function ServicosPage() {
               </div>
             </div>
 
-            {/* SEÇÕES */}
             <div className="servicosContent">
               {SERVICOS.map((s) => (
                 <article
                   key={s.id}
                   id={s.id}
-                  className={`servicosSection ${s.reverse ? "reverse" : ""}`}
-                  style={{ scrollMarginTop: 90 }} // evita a âncora “ficar escondida” atrás do topo
+                  className={`servicosSection ${
+                    s.reverse ? "reverse" : ""
+                  }`}
+                  style={{ scrollMarginTop: 90 }}
                 >
                   <div className="servicosText">
-                    <h2>{s.titulo}</h2>
-                    <p className="servicosSubtitle">{s.subtitulo}</p>
-                    <p>{s.texto}</p>
+                    <h2 style={{ color: "#ffffff" }}>{s.titulo}</h2>
+
+                    <p
+                      className="servicosSubtitle"
+                      style={{ color: "#b7cec6" }}
+                    >
+                      {s.subtitulo}
+                    </p>
+
+                    <p style={{ color: "#d6e3de" }}>{s.texto}</p>
 
                     <ul className="servicosBullets">
                       {s.bullets.map((b) => (
@@ -143,10 +161,12 @@ export default function ServicosPage() {
                       ))}
                     </ul>
 
-                    {/* BOTÃO EXTRA (destacado): só no Agronegócio */}
                     {s.id === "agronegocio" && (
                       <div className="servicosActions">
-                        <Link href="/servicos/operacao-cana" className="btnCana">
+                        <Link
+                          href="/servicos/operacao-cana"
+                          className="btnCana"
+                        >
                           Ver Operação da Cana
                         </Link>
                       </div>
@@ -161,7 +181,7 @@ export default function ServicosPage() {
                       width={960}
                       height={640}
                       sizes="(max-width: 960px) 100vw, 40vw"
-                      priority={s.id === "agronegocio"} // primeira imagem carrega mais rápido
+                      priority={s.id === "agronegocio"}
                     />
                   </div>
                 </article>
