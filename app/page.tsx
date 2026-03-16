@@ -2,7 +2,6 @@
 "use client";
 
 import Link from "next/link";
-import NoticiasPreview from "../noticias-preview";
 
 export default function HomePage() {
   return (
@@ -140,27 +139,6 @@ export default function HomePage() {
               </div>
             </aside>
           </div>
-        </div>
-      </section>
-
-      <section className="homeNoticias">
-        <div className="containerNoticias">
-          <div className="noticiasHeader">
-            <div>
-              <div className="noticiasBadge">Notícias</div>
-              <h2>Últimas atualizações da Happening</h2>
-              <p>
-                Acompanhe novidades, ações institucionais, investimentos e
-                comunicados importantes da Happening Logística.
-              </p>
-            </div>
-
-            <Link href="/noticias" className="verTodasNoticias">
-              Ver todas →
-            </Link>
-          </div>
-
-          <NoticiasPreview />
         </div>
       </section>
 
@@ -577,96 +555,6 @@ export default function HomePage() {
         .btnOutline:hover {
           transform: translateY(-1px);
           background: rgba(255, 255, 255, 0.08);
-        }
-
-        .homeNoticias {
-          position: relative;
-          padding: 84px 20px;
-          background:
-            radial-gradient(
-              circle at top left,
-              rgba(11, 122, 75, 0.22),
-              transparent 26%
-            ),
-            linear-gradient(180deg, #05111c 0%, #072033 48%, #08311f 100%);
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .containerNoticias {
-          max-width: 1180px;
-          margin: 0 auto;
-        }
-
-        .noticiasHeader {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          gap: 18px;
-          margin-bottom: 34px;
-          flex-wrap: wrap;
-        }
-
-        .noticiasBadge {
-          display: inline-flex;
-          align-items: center;
-          padding: 8px 12px;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          color: rgba(255, 255, 255, 0.92);
-          font-size: 13px;
-          font-weight: 800;
-          margin-bottom: 12px;
-        }
-
-        .noticiasHeader h2 {
-          margin: 0 0 10px;
-          font-size: clamp(28px, 2.1vw, 38px);
-          font-weight: 900;
-          color: #fff;
-          letter-spacing: -0.4px;
-        }
-
-        .noticiasHeader p {
-          margin: 0;
-          max-width: 760px;
-          color: rgba(255, 255, 255, 0.8);
-          line-height: 1.6;
-          font-size: 16px;
-        }
-
-        .verTodasNoticias {
-          text-decoration: none;
-          font-weight: 900;
-          color: #0b7a4b;
-          background: #ffffff;
-          padding: 12px 18px;
-          border-radius: 12px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          transition: transform 0.15s ease, filter 0.15s ease;
-          white-space: nowrap;
-          box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
-        }
-
-        .verTodasNoticias:hover {
-          transform: translateY(-1px);
-          filter: brightness(1.02);
-        }
-
-        @media (max-width: 720px) {
-          .homeNoticias {
-            padding: 64px 16px;
-          }
-
-          .noticiasHeader {
-            align-items: flex-start;
-          }
-
-          .verTodasNoticias {
-            width: 100%;
-          }
         }
           /* ===== AJUSTE MOBILE HERO ===== */
 
