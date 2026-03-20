@@ -531,7 +531,7 @@ export default function TrabalheConoscoPage() {
                         style={{
                           border: "none",
                           background: "transparent",
-                          color: "#2563eb",
+                          color: "#166534",
                           fontWeight: 800,
                           fontSize: 15,
                           padding: 0,
@@ -540,10 +540,10 @@ export default function TrabalheConoscoPage() {
                           textUnderlineOffset: "3px",
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.color = "#1d4ed8";
+                          e.currentTarget.style.color = "#14532d";
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.color = "#2563eb";
+                          e.currentTarget.style.color = "#166534";
                         }}
                       >
                         Ver detalhes
