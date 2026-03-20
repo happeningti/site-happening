@@ -7,6 +7,7 @@ type Vaga = {
   id: string;
   titulo: string;
   local: string;
+  resumo: string;
   descricao: string;
   imagem?: string;
   requisitos?: string[];
@@ -30,6 +31,8 @@ const VAGAS: Vaga[] = [
     id: "mecanico-linha-pesada-tupaciguara",
     titulo: "Mecânico (Linha Pesada)",
     local: "Filial — Aroeira/MG (Tupaciguara-MG)",
+    resumo:
+      "Manutenção de linha pesada, conjuntos canavieiros, pneumática e suspensão.",
     descricao:
       "Vaga para atuação na unidade de Tupaciguara-MG, com foco em manutenção de linha pesada, conjuntos canavieiros, pneumática e suspensão.",
     requisitos: [
@@ -62,6 +65,8 @@ const VAGAS: Vaga[] = [
     id: "tecnico-seguranca-trabalho-tupaciguara",
     titulo: "Técnico em Segurança do Trabalho",
     local: "Filial — Aroeira/MG (Tupaciguara-MG)",
+    resumo:
+      "Segurança do trabalho, prevenção de acidentes e apoio às rotinas da filial.",
     descricao:
       "Vaga para atuação na unidade de Tupaciguara-MG, com foco em segurança do trabalho, prevenção de acidentes, orientação operacional e apoio às rotinas da filial.",
     requisitos: [
@@ -93,6 +98,8 @@ const VAGAS: Vaga[] = [
     id: "motoristas-canavieiros-porteirao",
     titulo: "Motoristas Canavieiros",
     local: "Filial — Tropical/GO (Porteirão-GO)",
+    resumo:
+      "Transporte canavieiro com experiência em operação agrícola e direção segura.",
     descricao:
       "Vaga para atuação na unidade de Porteirão-GO, voltada para motoristas com experiência em transporte canavieiro e vivência em operação agrícola.",
     requisitos: [
@@ -121,12 +128,13 @@ const VAGAS: Vaga[] = [
     ativa: true,
   },
 
-  // ===== VAGAS RESERVA / FUTURAS =====
+  // ===== RESERVA PARA NOVAS VAGAS =====
   {
     id: "vaga-04",
     titulo: "Nova vaga 04",
     local: "Matriz — Sertãozinho/SP",
-    descricao: "Descrição da vaga 04.",
+    resumo: "Resumo curto da vaga 04.",
+    descricao: "Descrição completa da vaga 04.",
     requisitos: ["Requisito 1", "Requisito 2"],
     responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
     beneficios: ["Benefício 1", "Benefício 2"],
@@ -138,7 +146,8 @@ const VAGAS: Vaga[] = [
     id: "vaga-05",
     titulo: "Nova vaga 05",
     local: "Filial — São Paulo/SP",
-    descricao: "Descrição da vaga 05.",
+    resumo: "Resumo curto da vaga 05.",
+    descricao: "Descrição completa da vaga 05.",
     requisitos: ["Requisito 1", "Requisito 2"],
     responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
     beneficios: ["Benefício 1", "Benefício 2"],
@@ -150,7 +159,8 @@ const VAGAS: Vaga[] = [
     id: "vaga-06",
     titulo: "Nova vaga 06",
     local: "Filial — Santa Juliana/MG",
-    descricao: "Descrição da vaga 06.",
+    resumo: "Resumo curto da vaga 06.",
+    descricao: "Descrição completa da vaga 06.",
     requisitos: ["Requisito 1", "Requisito 2"],
     responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
     beneficios: ["Benefício 1", "Benefício 2"],
@@ -162,7 +172,8 @@ const VAGAS: Vaga[] = [
     id: "vaga-07",
     titulo: "Nova vaga 07",
     local: "Filial — Aroeira/MG",
-    descricao: "Descrição da vaga 07.",
+    resumo: "Resumo curto da vaga 07.",
+    descricao: "Descrição completa da vaga 07.",
     requisitos: ["Requisito 1", "Requisito 2"],
     responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
     beneficios: ["Benefício 1", "Benefício 2"],
@@ -174,7 +185,8 @@ const VAGAS: Vaga[] = [
     id: "vaga-08",
     titulo: "Nova vaga 08",
     local: "Filial — Tropical/GO",
-    descricao: "Descrição da vaga 08.",
+    resumo: "Resumo curto da vaga 08.",
+    descricao: "Descrição completa da vaga 08.",
     requisitos: ["Requisito 1", "Requisito 2"],
     responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
     beneficios: ["Benefício 1", "Benefício 2"],
@@ -225,7 +237,7 @@ const initialForm = (
 export default function TrabalheConoscoPage() {
   const [open, setOpen] = useState(false);
   const [vagaSelecionada, setVagaSelecionada] = useState<Vaga | null>(null);
-  const [vagaExpandida, setVagaExpandida] = useState<string | null>(null);
+  const [vagaDetalhe, setVagaDetalhe] = useState<Vaga | null>(null);
 
   const [form, setForm] = useState<FormState>(initialForm());
   const [status, setStatus] = useState<
@@ -261,14 +273,18 @@ export default function TrabalheConoscoPage() {
     setOpen(true);
   }
 
+  function abrirDetalhesVaga(v: Vaga) {
+    setVagaDetalhe(v);
+  }
+
+  function fecharDetalhesVaga() {
+    setVagaDetalhe(null);
+  }
+
   function closeModal() {
     setOpen(false);
     setVagaSelecionada(null);
     setStatus({ type: "idle" });
-  }
-
-  function toggleDetalhes(id: string) {
-    setVagaExpandida((prev) => (prev === id ? null : id));
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -381,7 +397,7 @@ export default function TrabalheConoscoPage() {
             className="sectionDesc"
             style={{ color: "rgba(255,255,255,0.82)" }}
           >
-            Clique em <strong>Ver detalhes</strong> para abrir a vaga completa.
+            Clique em <strong>Ver detalhes</strong> para ver a vaga completa.
           </p>
 
           {!hasVagas ? (
@@ -393,242 +409,403 @@ export default function TrabalheConoscoPage() {
               </p>
             </div>
           ) : (
-            <div className="grid3" style={{ alignItems: "start" }}>
-              {vagasAtivas.map((v) => {
-                const expandida = vagaExpandida === v.id;
-
-                return (
+            <div className="grid3" style={{ alignItems: "stretch" }}>
+              {vagasAtivas.map((v) => (
+                <div
+                  key={v.id}
+                  className="card"
+                  style={{
+                    padding: 0,
+                    overflow: "hidden",
+                    borderRadius: 24,
+                    border: "1px solid #dbe4f0",
+                    boxShadow: "0 18px 45px rgba(15, 23, 42, 0.10)",
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    minHeight: 470,
+                    background: "#ffffff",
+                  }}
+                >
                   <div
-                    key={v.id}
-                    className="card"
                     style={{
-                      padding: 0,
-                      overflow: "hidden",
-                      borderRadius: 20,
-                      border: "1px solid #dbe4f0",
-                      boxShadow: "0 18px 45px rgba(15, 23, 42, 0.10)",
-                      display: "flex",
-                      flexDirection: "column",
-                      transition: "all .2s ease",
+                      background:
+                        "linear-gradient(135deg, #157347 0%, #198754 55%, #249e61 100%)",
+                      color: "#fff",
+                      padding: "22px 22px 20px",
                     }}
                   >
                     <div
                       style={{
-                        background:
-                          "linear-gradient(135deg, #0f5132 0%, #0d6a43 48%, #198754 100%)",
-                        color: "#fff",
-                        padding: "18px 18px 16px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: 10,
+                        alignItems: "flex-start",
+                        flexWrap: "wrap",
                       }}
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          gap: 10,
-                          alignItems: "flex-start",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        {v.safra ? (
-                          <div
-                            style={{
-                              display: "inline-flex",
-                              alignItems: "center",
-                              padding: "6px 12px",
-                              borderRadius: 999,
-                              background: "rgba(255,255,255,0.16)",
-                              border: "1px solid rgba(255,255,255,0.18)",
-                              fontSize: 12,
-                              fontWeight: 800,
-                              letterSpacing: ".3px",
-                            }}
-                          >
-                            {v.safra}
-                          </div>
-                        ) : (
-                          <div />
-                        )}
-                      </div>
-
-                      <h3
-                        style={{
-                          margin: "16px 0 10px",
-                          fontSize: 24,
-                          lineHeight: 1.15,
-                          color: "#fff",
-                        }}
-                      >
-                        {v.titulo}
-                      </h3>
-
-                      <div
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 8,
-                          padding: "8px 12px",
-                          borderRadius: 12,
-                          background: "rgba(255,255,255,0.10)",
-                          border: "1px solid rgba(255,255,255,0.14)",
-                          fontSize: 13,
-                          fontWeight: 700,
-                        }}
-                      >
-                        📍 {v.local}
-                      </div>
+                      {v.safra ? (
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            padding: "7px 14px",
+                            borderRadius: 999,
+                            background: "rgba(255,255,255,0.14)",
+                            border: "1px solid rgba(255,255,255,0.18)",
+                            fontSize: 12,
+                            fontWeight: 800,
+                            letterSpacing: ".3px",
+                          }}
+                        >
+                          {v.safra}
+                        </div>
+                      ) : (
+                        <div />
+                      )}
                     </div>
+
+                    <h3
+                      style={{
+                        margin: "18px 0 12px",
+                        fontSize: 25,
+                        lineHeight: 1.15,
+                        color: "#fff",
+                        minHeight: 58,
+                      }}
+                    >
+                      {v.titulo}
+                    </h3>
 
                     <div
                       style={{
-                        padding: 18,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 14,
-                        color: "#0f172a",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
+                        padding: "10px 14px",
+                        borderRadius: 14,
+                        background: "rgba(255,255,255,0.10)",
+                        border: "1px solid rgba(255,255,255,0.14)",
+                        fontSize: 13,
+                        fontWeight: 700,
                       }}
                     >
-                      <p style={{ margin: 0, color: "#334155", lineHeight: 1.6 }}>
-                        {v.descricao}
-                      </p>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: 10,
-                          flexWrap: "wrap",
-                          marginTop: 2,
-                        }}
-                      >
-                        <button
-                          type="button"
-                          className="btn btnSoft"
-                          onClick={() => toggleDetalhes(v.id)}
-                        >
-                          {expandida ? "Ocultar detalhes" : "Ver detalhes"}
-                        </button>
-
-                        <button
-                          className="btn btnPrimary"
-                          type="button"
-                          onClick={() => abrirModalParaVaga(v)}
-                        >
-                          Candidatar-se
-                        </button>
-                      </div>
-
-                      {expandida ? (
-                        <>
-                          {v.requisitos?.length ? (
-                            <div
-                              style={{
-                                background: "#f8fafc",
-                                border: "1px solid #e2e8f0",
-                                borderRadius: 16,
-                                padding: 14,
-                              }}
-                            >
-                              <p
-                                style={{
-                                  fontWeight: 800,
-                                  marginTop: 0,
-                                  marginBottom: 8,
-                                  color: "#0f172a",
-                                }}
-                              >
-                                Requisitos
-                              </p>
-                              <ul
-                                style={{
-                                  margin: 0,
-                                  paddingLeft: 18,
-                                  color: "#334155",
-                                  lineHeight: 1.6,
-                                }}
-                              >
-                                {v.requisitos.map((r) => (
-                                  <li key={r}>{r}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          ) : null}
-
-                          {v.responsabilidades?.length ? (
-                            <div
-                              style={{
-                                background: "#fff",
-                                border: "1px solid #e2e8f0",
-                                borderRadius: 16,
-                                padding: 14,
-                              }}
-                            >
-                              <p
-                                style={{
-                                  fontWeight: 800,
-                                  marginTop: 0,
-                                  marginBottom: 8,
-                                  color: "#0f172a",
-                                }}
-                              >
-                                Responsabilidades
-                              </p>
-                              <ul
-                                style={{
-                                  margin: 0,
-                                  paddingLeft: 18,
-                                  color: "#334155",
-                                  lineHeight: 1.6,
-                                }}
-                              >
-                                {v.responsabilidades.map((r) => (
-                                  <li key={r}>{r}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          ) : null}
-
-                          {v.beneficios?.length ? (
-                            <div
-                              style={{
-                                background: "#f0fdf4",
-                                border: "1px solid #bbf7d0",
-                                borderRadius: 16,
-                                padding: 14,
-                              }}
-                            >
-                              <p
-                                style={{
-                                  fontWeight: 800,
-                                  marginTop: 0,
-                                  marginBottom: 8,
-                                  color: "#166534",
-                                }}
-                              >
-                                Benefícios
-                              </p>
-                              <ul
-                                style={{
-                                  margin: 0,
-                                  paddingLeft: 18,
-                                  color: "#166534",
-                                  lineHeight: 1.6,
-                                }}
-                              >
-                                {v.beneficios.map((b) => (
-                                  <li key={b}>{b}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          ) : null}
-                        </>
-                      ) : null}
+                      📍 {v.local}
                     </div>
                   </div>
-                );
-              })}
+
+                  <div
+                    style={{
+                      padding: 22,
+                      display: "flex",
+                      flexDirection: "column",
+                      flex: 1,
+                      color: "#0f172a",
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: 0,
+                        color: "#334155",
+                        lineHeight: 1.7,
+                        minHeight: 92,
+                      }}
+                    >
+                      {v.resumo}
+                    </p>
+
+                    <div
+                      style={{
+                        marginTop: "auto",
+                        display: "flex",
+                        gap: 10,
+                        flexWrap: "wrap",
+                        paddingTop: 20,
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className="btn btnSoft"
+                        onClick={() => abrirDetalhesVaga(v)}
+                      >
+                        Ver detalhes
+                      </button>
+
+                      <button
+                        className="btn btnPrimary"
+                        type="button"
+                        onClick={() => abrirModalParaVaga(v)}
+                      >
+                        Candidatar-se
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
       </section>
+
+      {vagaDetalhe && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={fecharDetalhesVaga}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,.55)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 14,
+            zIndex: 9998,
+          }}
+        >
+          <div
+            className="card"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "min(940px, 100%)",
+              maxHeight: "calc(100vh - 28px)",
+              overflow: "auto",
+              padding: 0,
+              borderRadius: 22,
+              color: "#0f172a",
+            }}
+          >
+            <div
+              style={{
+                background:
+                  "linear-gradient(135deg, #157347 0%, #198754 55%, #249e61 100%)",
+                color: "#fff",
+                padding: 22,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: 12,
+                  alignItems: "flex-start",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div>
+                  {vagaDetalhe.safra ? (
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        padding: "7px 14px",
+                        borderRadius: 999,
+                        background: "rgba(255,255,255,0.14)",
+                        border: "1px solid rgba(255,255,255,0.18)",
+                        fontSize: 12,
+                        fontWeight: 800,
+                        letterSpacing: ".3px",
+                        marginBottom: 14,
+                      }}
+                    >
+                      {vagaDetalhe.safra}
+                    </div>
+                  ) : null}
+
+                  <h2 style={{ margin: 0, fontSize: 32, lineHeight: 1.1 }}>
+                    {vagaDetalhe.titulo}
+                  </h2>
+
+                  <div
+                    style={{
+                      marginTop: 14,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "10px 14px",
+                      borderRadius: 14,
+                      background: "rgba(255,255,255,0.10)",
+                      border: "1px solid rgba(255,255,255,0.14)",
+                      fontSize: 14,
+                      fontWeight: 700,
+                    }}
+                  >
+                    📍 {vagaDetalhe.local}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={fecharDetalhesVaga}
+                  className="btn btnSoft"
+                  style={{ height: 42 }}
+                >
+                  Fechar
+                </button>
+              </div>
+            </div>
+
+            <div style={{ padding: 22 }}>
+              <div
+                style={{
+                  background: "#f8fafc",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: 18,
+                  padding: 16,
+                  marginBottom: 16,
+                }}
+              >
+                <p
+                  style={{
+                    fontWeight: 800,
+                    marginTop: 0,
+                    marginBottom: 8,
+                    color: "#0f172a",
+                  }}
+                >
+                  Descrição da vaga
+                </p>
+                <p style={{ margin: 0, color: "#334155", lineHeight: 1.7 }}>
+                  {vagaDetalhe.descricao}
+                </p>
+              </div>
+
+              {vagaDetalhe.requisitos?.length ? (
+                <div
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: 18,
+                    padding: 16,
+                    marginBottom: 16,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontWeight: 800,
+                      marginTop: 0,
+                      marginBottom: 8,
+                      color: "#0f172a",
+                    }}
+                  >
+                    Requisitos
+                  </p>
+                  <ul
+                    style={{
+                      margin: 0,
+                      paddingLeft: 18,
+                      color: "#334155",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {vagaDetalhe.requisitos.map((r) => (
+                      <li key={r}>{r}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              {vagaDetalhe.responsabilidades?.length ? (
+                <div
+                  style={{
+                    background: "#fff",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: 18,
+                    padding: 16,
+                    marginBottom: 16,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontWeight: 800,
+                      marginTop: 0,
+                      marginBottom: 8,
+                      color: "#0f172a",
+                    }}
+                  >
+                    Responsabilidades
+                  </p>
+                  <ul
+                    style={{
+                      margin: 0,
+                      paddingLeft: 18,
+                      color: "#334155",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {vagaDetalhe.responsabilidades.map((r) => (
+                      <li key={r}>{r}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              {vagaDetalhe.beneficios?.length ? (
+                <div
+                  style={{
+                    background: "#f0fdf4",
+                    border: "1px solid #bbf7d0",
+                    borderRadius: 18,
+                    padding: 16,
+                    marginBottom: 16,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontWeight: 800,
+                      marginTop: 0,
+                      marginBottom: 8,
+                      color: "#166534",
+                    }}
+                  >
+                    Benefícios
+                  </p>
+                  <ul
+                    style={{
+                      margin: 0,
+                      paddingLeft: 18,
+                      color: "#166534",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {vagaDetalhe.beneficios.map((b) => (
+                      <li key={b}>{b}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: 10,
+                  flexWrap: "wrap",
+                  marginTop: 18,
+                }}
+              >
+                <button
+                  className="btn btnPrimary"
+                  type="button"
+                  onClick={() => {
+                    fecharDetalhesVaga();
+                    abrirModalParaVaga(vagaDetalhe);
+                  }}
+                >
+                  Candidatar-se
+                </button>
+
+                <button
+                  className="btn btnSoft"
+                  type="button"
+                  onClick={fecharDetalhesVaga}
+                >
+                  Fechar detalhes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {open && (
         <div
