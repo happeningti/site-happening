@@ -423,7 +423,7 @@ export default function TrabalheConoscoPage() {
                     display: "flex",
                     flexDirection: "column",
                     height: "100%",
-                    minHeight: 500,
+                    minHeight: 390,
                     background: "#ffffff",
                   }}
                 >
@@ -501,6 +501,7 @@ export default function TrabalheConoscoPage() {
                       flexDirection: "column",
                       flex: 1,
                       color: "#0f172a",
+                      gap: 14,
                     }}
                   >
                     <p
@@ -508,7 +509,7 @@ export default function TrabalheConoscoPage() {
                         margin: 0,
                         color: "#334155",
                         lineHeight: 1.7,
-                        minHeight: 92,
+                        minHeight: 64,
                       }}
                     >
                       {v.resumo}
@@ -516,11 +517,12 @@ export default function TrabalheConoscoPage() {
 
                     <div
                       style={{
-                        marginTop: "auto",
                         display: "flex",
-                        gap: 10,
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: 12,
                         flexWrap: "wrap",
-                        paddingTop: 20,
+                        marginTop: 4,
                       }}
                     >
                       <button
@@ -528,14 +530,20 @@ export default function TrabalheConoscoPage() {
                         onClick={() => abrirDetalhesVaga(v)}
                         style={{
                           border: "none",
-                          background: "linear-gradient(135deg, #0d6efd 0%, #2563eb 100%)",
-                          color: "#fff",
+                          background: "transparent",
+                          color: "#2563eb",
                           fontWeight: 800,
-                          fontSize: 16,
-                          borderRadius: 14,
-                          padding: "14px 22px",
+                          fontSize: 15,
+                          padding: 0,
                           cursor: "pointer",
-                          boxShadow: "0 10px 25px rgba(37, 99, 235, 0.28)",
+                          textDecoration: "underline",
+                          textUnderlineOffset: "3px",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = "#1d4ed8";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = "#2563eb";
                         }}
                       >
                         Ver detalhes
@@ -622,7 +630,16 @@ export default function TrabalheConoscoPage() {
                     </div>
                   ) : null}
 
-                  <h2 style={{ margin: 0, fontSize: 32, lineHeight: 1.1 }}>
+                  <h2
+                    style={{
+                      margin: 0,
+                      fontSize: 32,
+                      lineHeight: 1.1,
+                      color: "#ffffff",
+                      fontWeight: 800,
+                      textShadow: "0 1px 2px rgba(0,0,0,0.12)",
+                    }}
+                  >
                     {vagaDetalhe.titulo}
                   </h2>
 

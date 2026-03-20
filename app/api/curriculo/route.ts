@@ -117,9 +117,9 @@ function resolveUnitLabel(params: { unidade: string; vagaLocal: string; isVaga: 
     return "Filial Santa Juliana/MG";
   }
 
-  if (text.includes("tropical")) {
-    return "Filial Tropical/GO";
-  }
+  if (text.includes("tropical") || text.includes("porteirao")) {
+  return "Filial Tropical/GO";
+}
 
   if (text.includes("sao paulo")) {
     return "Filial São Paulo/SP";
