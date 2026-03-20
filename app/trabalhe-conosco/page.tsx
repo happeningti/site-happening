@@ -86,7 +86,7 @@ const VAGAS: Vaga[] = [
       "Transporte fornecido pela empresa",
     ],
     safra: "Safra 2026",
-    pcd: true,
+    pcd: false,
     ativa: true,
   },
   {
@@ -117,7 +117,7 @@ const VAGAS: Vaga[] = [
       "Transporte próprio",
     ],
     safra: "Safra 2026",
-    pcd: true,
+    pcd: false,
     ativa: true,
   },
 ];
