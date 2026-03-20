@@ -120,6 +120,68 @@ const VAGAS: Vaga[] = [
     pcd: false,
     ativa: true,
   },
+
+  // ===== VAGAS RESERVA / FUTURAS =====
+  {
+    id: "vaga-04",
+    titulo: "Nova vaga 04",
+    local: "Matriz — Sertãozinho/SP",
+    descricao: "Descrição da vaga 04.",
+    requisitos: ["Requisito 1", "Requisito 2"],
+    responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
+    beneficios: ["Benefício 1", "Benefício 2"],
+    safra: "Safra 2026",
+    pcd: false,
+    ativa: false,
+  },
+  {
+    id: "vaga-05",
+    titulo: "Nova vaga 05",
+    local: "Filial — São Paulo/SP",
+    descricao: "Descrição da vaga 05.",
+    requisitos: ["Requisito 1", "Requisito 2"],
+    responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
+    beneficios: ["Benefício 1", "Benefício 2"],
+    safra: "Safra 2026",
+    pcd: false,
+    ativa: false,
+  },
+  {
+    id: "vaga-06",
+    titulo: "Nova vaga 06",
+    local: "Filial — Santa Juliana/MG",
+    descricao: "Descrição da vaga 06.",
+    requisitos: ["Requisito 1", "Requisito 2"],
+    responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
+    beneficios: ["Benefício 1", "Benefício 2"],
+    safra: "Safra 2026",
+    pcd: false,
+    ativa: false,
+  },
+  {
+    id: "vaga-07",
+    titulo: "Nova vaga 07",
+    local: "Filial — Aroeira/MG",
+    descricao: "Descrição da vaga 07.",
+    requisitos: ["Requisito 1", "Requisito 2"],
+    responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
+    beneficios: ["Benefício 1", "Benefício 2"],
+    safra: "Safra 2026",
+    pcd: false,
+    ativa: false,
+  },
+  {
+    id: "vaga-08",
+    titulo: "Nova vaga 08",
+    local: "Filial — Tropical/GO",
+    descricao: "Descrição da vaga 08.",
+    requisitos: ["Requisito 1", "Requisito 2"],
+    responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
+    beneficios: ["Benefício 1", "Benefício 2"],
+    safra: "Safra 2026",
+    pcd: false,
+    ativa: false,
+  },
 ];
 
 type PcdTipo =
@@ -163,6 +225,7 @@ const initialForm = (
 export default function TrabalheConoscoPage() {
   const [open, setOpen] = useState(false);
   const [vagaSelecionada, setVagaSelecionada] = useState<Vaga | null>(null);
+  const [vagaExpandida, setVagaExpandida] = useState<string | null>(null);
 
   const [form, setForm] = useState<FormState>(initialForm());
   const [status, setStatus] = useState<
@@ -202,6 +265,10 @@ export default function TrabalheConoscoPage() {
     setOpen(false);
     setVagaSelecionada(null);
     setStatus({ type: "idle" });
+  }
+
+  function toggleDetalhes(id: string) {
+    setVagaExpandida((prev) => (prev === id ? null : id));
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -314,8 +381,7 @@ export default function TrabalheConoscoPage() {
             className="sectionDesc"
             style={{ color: "rgba(255,255,255,0.82)" }}
           >
-            Quando houver vaga aberta, ela aparecerá aqui com a descrição e o
-            botão para candidatura.
+            Clique em <strong>Ver detalhes</strong> para abrir a vaga completa.
           </p>
 
           {!hasVagas ? (
@@ -327,240 +393,238 @@ export default function TrabalheConoscoPage() {
               </p>
             </div>
           ) : (
-            <div className="grid3" style={{ alignItems: "stretch" }}>
-              {vagasAtivas.map((v) => (
-                <div
-                  key={v.id}
-                  className="card"
-                  style={{
-                    padding: 0,
-                    overflow: "hidden",
-                    borderRadius: 20,
-                    border: "1px solid #dbe4f0",
-                    boxShadow: "0 18px 45px rgba(15, 23, 42, 0.10)",
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                  }}
-                >
+            <div className="grid3" style={{ alignItems: "start" }}>
+              {vagasAtivas.map((v) => {
+                const expandida = vagaExpandida === v.id;
+
+                return (
                   <div
+                    key={v.id}
+                    className="card"
                     style={{
-                      background:
-                        "linear-gradient(135deg, #0f5132 0%, #0d6a43 48%, #198754 100%)",
-                      color: "#fff",
-                      padding: "18px 18px 16px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        gap: 10,
-                        alignItems: "flex-start",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {v.safra ? (
-                        <div
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            padding: "6px 12px",
-                            borderRadius: 999,
-                            background: "rgba(255,255,255,0.16)",
-                            border: "1px solid rgba(255,255,255,0.18)",
-                            fontSize: 12,
-                            fontWeight: 800,
-                            letterSpacing: ".3px",
-                          }}
-                        >
-                          {v.safra}
-                        </div>
-                      ) : (
-                        <div />
-                      )}
-
-                      {v.pcd ? (
-                        <div
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            padding: "6px 12px",
-                            borderRadius: 999,
-                            background: "#ecfdf5",
-                            color: "#0f766e",
-                            fontSize: 12,
-                            fontWeight: 800,
-                          }}
-                        >
-                          Vaga também para PCD
-                        </div>
-                      ) : null}
-                    </div>
-
-                    <h3
-                      style={{
-                        margin: "16px 0 8px",
-                        fontSize: 25,
-                        lineHeight: 1.15,
-                        color: "#fff",
-                      }}
-                    >
-                      {v.titulo}
-                    </h3>
-
-                    <div
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 8,
-                        padding: "8px 12px",
-                        borderRadius: 12,
-                        background: "rgba(255,255,255,0.10)",
-                        border: "1px solid rgba(255,255,255,0.14)",
-                        fontSize: 13,
-                        fontWeight: 700,
-                      }}
-                    >
-                      📍 {v.local}
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      padding: 18,
+                      padding: 0,
+                      overflow: "hidden",
+                      borderRadius: 20,
+                      border: "1px solid #dbe4f0",
+                      boxShadow: "0 18px 45px rgba(15, 23, 42, 0.10)",
                       display: "flex",
                       flexDirection: "column",
-                      gap: 14,
-                      flex: 1,
-                      color: "#0f172a",
+                      transition: "all .2s ease",
                     }}
                   >
-                    <p style={{ margin: 0, color: "#334155", lineHeight: 1.6 }}>
-                      {v.descricao}
-                    </p>
-
-                    {v.requisitos?.length ? (
+                    <div
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #0f5132 0%, #0d6a43 48%, #198754 100%)",
+                        color: "#fff",
+                        padding: "18px 18px 16px",
+                      }}
+                    >
                       <div
                         style={{
-                          background: "#f8fafc",
-                          border: "1px solid #e2e8f0",
-                          borderRadius: 16,
-                          padding: 14,
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: 10,
+                          alignItems: "flex-start",
+                          flexWrap: "wrap",
                         }}
                       >
-                        <p
-                          style={{
-                            fontWeight: 800,
-                            marginTop: 0,
-                            marginBottom: 8,
-                            color: "#0f172a",
-                          }}
-                        >
-                          Requisitos
-                        </p>
-                        <ul
-                          style={{
-                            margin: 0,
-                            paddingLeft: 18,
-                            color: "#334155",
-                            lineHeight: 1.6,
-                          }}
-                        >
-                          {v.requisitos.map((r) => (
-                            <li key={r}>{r}</li>
-                          ))}
-                        </ul>
+                        {v.safra ? (
+                          <div
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              padding: "6px 12px",
+                              borderRadius: 999,
+                              background: "rgba(255,255,255,0.16)",
+                              border: "1px solid rgba(255,255,255,0.18)",
+                              fontSize: 12,
+                              fontWeight: 800,
+                              letterSpacing: ".3px",
+                            }}
+                          >
+                            {v.safra}
+                          </div>
+                        ) : (
+                          <div />
+                        )}
                       </div>
-                    ) : null}
 
-                    {v.responsabilidades?.length ? (
+                      <h3
+                        style={{
+                          margin: "16px 0 10px",
+                          fontSize: 24,
+                          lineHeight: 1.15,
+                          color: "#fff",
+                        }}
+                      >
+                        {v.titulo}
+                      </h3>
+
                       <div
                         style={{
-                          background: "#fff",
-                          border: "1px solid #e2e8f0",
-                          borderRadius: 16,
-                          padding: 14,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 8,
+                          padding: "8px 12px",
+                          borderRadius: 12,
+                          background: "rgba(255,255,255,0.10)",
+                          border: "1px solid rgba(255,255,255,0.14)",
+                          fontSize: 13,
+                          fontWeight: 700,
                         }}
                       >
-                        <p
-                          style={{
-                            fontWeight: 800,
-                            marginTop: 0,
-                            marginBottom: 8,
-                            color: "#0f172a",
-                          }}
-                        >
-                          Responsabilidades
-                        </p>
-                        <ul
-                          style={{
-                            margin: 0,
-                            paddingLeft: 18,
-                            color: "#334155",
-                            lineHeight: 1.6,
-                          }}
-                        >
-                          {v.responsabilidades.map((r) => (
-                            <li key={r}>{r}</li>
-                          ))}
-                        </ul>
+                        📍 {v.local}
                       </div>
-                    ) : null}
-
-                    {v.beneficios?.length ? (
-                      <div
-                        style={{
-                          background: "#f0fdf4",
-                          border: "1px solid #bbf7d0",
-                          borderRadius: 16,
-                          padding: 14,
-                        }}
-                      >
-                        <p
-                          style={{
-                            fontWeight: 800,
-                            marginTop: 0,
-                            marginBottom: 8,
-                            color: "#166534",
-                          }}
-                        >
-                          Benefícios
-                        </p>
-                        <ul
-                          style={{
-                            margin: 0,
-                            paddingLeft: 18,
-                            color: "#166534",
-                            lineHeight: 1.6,
-                          }}
-                        >
-                          {v.beneficios.map((b) => (
-                            <li key={b}>{b}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ) : null}
+                    </div>
 
                     <div
                       style={{
-                        marginTop: "auto",
+                        padding: 18,
                         display: "flex",
-                        gap: 10,
-                        flexWrap: "wrap",
+                        flexDirection: "column",
+                        gap: 14,
+                        color: "#0f172a",
                       }}
                     >
-                      <button
-                        className="btn btnPrimary"
-                        type="button"
-                        onClick={() => abrirModalParaVaga(v)}
+                      <p style={{ margin: 0, color: "#334155", lineHeight: 1.6 }}>
+                        {v.descricao}
+                      </p>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: 10,
+                          flexWrap: "wrap",
+                          marginTop: 2,
+                        }}
                       >
-                        Candidatar-se
-                      </button>
+                        <button
+                          type="button"
+                          className="btn btnSoft"
+                          onClick={() => toggleDetalhes(v.id)}
+                        >
+                          {expandida ? "Ocultar detalhes" : "Ver detalhes"}
+                        </button>
+
+                        <button
+                          className="btn btnPrimary"
+                          type="button"
+                          onClick={() => abrirModalParaVaga(v)}
+                        >
+                          Candidatar-se
+                        </button>
+                      </div>
+
+                      {expandida ? (
+                        <>
+                          {v.requisitos?.length ? (
+                            <div
+                              style={{
+                                background: "#f8fafc",
+                                border: "1px solid #e2e8f0",
+                                borderRadius: 16,
+                                padding: 14,
+                              }}
+                            >
+                              <p
+                                style={{
+                                  fontWeight: 800,
+                                  marginTop: 0,
+                                  marginBottom: 8,
+                                  color: "#0f172a",
+                                }}
+                              >
+                                Requisitos
+                              </p>
+                              <ul
+                                style={{
+                                  margin: 0,
+                                  paddingLeft: 18,
+                                  color: "#334155",
+                                  lineHeight: 1.6,
+                                }}
+                              >
+                                {v.requisitos.map((r) => (
+                                  <li key={r}>{r}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : null}
+
+                          {v.responsabilidades?.length ? (
+                            <div
+                              style={{
+                                background: "#fff",
+                                border: "1px solid #e2e8f0",
+                                borderRadius: 16,
+                                padding: 14,
+                              }}
+                            >
+                              <p
+                                style={{
+                                  fontWeight: 800,
+                                  marginTop: 0,
+                                  marginBottom: 8,
+                                  color: "#0f172a",
+                                }}
+                              >
+                                Responsabilidades
+                              </p>
+                              <ul
+                                style={{
+                                  margin: 0,
+                                  paddingLeft: 18,
+                                  color: "#334155",
+                                  lineHeight: 1.6,
+                                }}
+                              >
+                                {v.responsabilidades.map((r) => (
+                                  <li key={r}>{r}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : null}
+
+                          {v.beneficios?.length ? (
+                            <div
+                              style={{
+                                background: "#f0fdf4",
+                                border: "1px solid #bbf7d0",
+                                borderRadius: 16,
+                                padding: 14,
+                              }}
+                            >
+                              <p
+                                style={{
+                                  fontWeight: 800,
+                                  marginTop: 0,
+                                  marginBottom: 8,
+                                  color: "#166534",
+                                }}
+                              >
+                                Benefícios
+                              </p>
+                              <ul
+                                style={{
+                                  margin: 0,
+                                  paddingLeft: 18,
+                                  color: "#166534",
+                                  lineHeight: 1.6,
+                                }}
+                              >
+                                {v.beneficios.map((b) => (
+                                  <li key={b}>{b}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : null}
+                        </>
+                      ) : null}
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
