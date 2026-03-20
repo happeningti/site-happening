@@ -23,39 +23,70 @@ const UNIDADES = [
   "Filial — Aroeira/MG",
   "Filial — Santa Juliana/MG",
   "Filial — Tropical/GO",
+  "Filial — Porteirão/GO",
 ];
 
 const VAGAS: Vaga[] = [
   {
-    id: "mecanico-linha-pesada-tupaciguara",
-    titulo: "Mecânico (Linha Pesada)",
+    id: "tecnico-seguranca-trabalho-tupaciguara",
+    titulo: "Técnico em Segurança do Trabalho",
     local: "Filial — Aroeira/MG (Tupaciguara-MG)",
     descricao:
-      "Vaga para atuação na unidade de Tupaciguara-MG, com foco em manutenção de linha pesada, conjuntos canavieiros, pneumática e suspensão.",
+      "Vaga para atuação na unidade de Tupaciguara-MG, com foco em rotinas de segurança do trabalho, acompanhamento operacional e apoio às ações preventivas da unidade.",
     requisitos: [
-      "CNH categoria B",
-      "Ser proativo",
-      "Experiência com manutenção de linha pesada",
-      "Experiência com conjuntos canavieiros, pneumática e suspensão",
-      "Disponibilidade para trabalhar em diferentes escalas",
-      "Residir em Tupaciguara-MG",
+      'CNH categoria "B"',
+      "Residir em Tupaciguara/MG",
+      "Experiência na função",
+      "Curso e registro válidos",
     ],
     responsabilidades: [
-      "Priorizar sempre a segurança",
-      "Realizar manutenções preventivas e corretivas",
-      "Atuar em caminhões e/ou conjuntos",
+      "Acompanhar rotinas de segurança do trabalho na unidade",
+      "Orientar equipes quanto ao cumprimento das normas de segurança",
+      "Apoiar ações preventivas e inspeções internas",
+      "Promover práticas seguras no ambiente de trabalho",
     ],
     beneficios: [
       "Salário compatível com a função",
-      "Ticket alimentação",
-      "Premiação mensal",
+      "Vale alimentação",
+      "Premiação de segurança",
       "Seguro de vida",
       "Plano de saúde",
       "Plano odontológico",
       "Transporte fornecido pela empresa",
     ],
     safra: "Safra 2026",
-    pcd: false,
+    pcd: true,
+    ativa: true,
+  },
+  {
+    id: "motoristas-canavieiros-porteirao",
+    titulo: "Motoristas Canavieiros",
+    local: "Filial — Porteirão/GO",
+    descricao:
+      "Vaga para atuação na filial de Porteirão-GO, voltada para motoristas com experiência em transporte canavieiro e vivência em operação agrícola.",
+    requisitos: [
+      "CNH 'E' (EAR)",
+      "Experiência de 6 meses em transporte canavieiro (CTPS)",
+      "Respeito aos valores da empresa",
+      "Bom relacionamento interpessoal",
+      "Residir em: Porteirão, Turvelândia, Maurilândia ou Santa Helena",
+    ],
+    responsabilidades: [
+      "Realizar o transporte de cana com segurança e responsabilidade",
+      "Cumprir procedimentos operacionais da empresa",
+      "Zelar pelo veículo e pelos equipamentos",
+      "Atuar em conformidade com os valores e normas internas",
+    ],
+    beneficios: [
+      "Salário compatível",
+      "PPR",
+      "Vale alimentação",
+      "Plano odontológico",
+      "Seguro de vida",
+      "Transporte próprio",
+    ],
+    safra: "Safra 2026",
+    pcd: true,
     ativa: true,
   },
 ];
@@ -119,6 +150,7 @@ export default function TrabalheConoscoPage() {
     if (local.includes("Filial — São Paulo/SP")) return "Filial — São Paulo/SP";
     if (local.includes("Filial — Santa Juliana/MG")) return "Filial — Santa Juliana/MG";
     if (local.includes("Filial — Tropical/GO")) return "Filial — Tropical/GO";
+    if (local.includes("Filial — Porteirão/GO")) return "Filial — Porteirão/GO";
     return UNIDADES[0];
   }
 
@@ -249,11 +281,12 @@ export default function TrabalheConoscoPage() {
         <div className="container">
           <h2 className="sectionTitle">Vagas disponíveis</h2>
           <p
-  className="sectionDesc"
-  style={{ color: "rgba(255,255,255,0.82)" }}
->
-  Quando houver vaga aberta, ela aparecerá aqui com a descrição e o botão para candidatura.
-</p>
+            className="sectionDesc"
+            style={{ color: "rgba(255,255,255,0.82)" }}
+          >
+            Quando houver vaga aberta, ela aparecerá aqui com a descrição e o
+            botão para candidatura.
+          </p>
 
           {!hasVagas ? (
             <div className="card" style={{ padding: 18 }}>
@@ -402,17 +435,17 @@ export default function TrabalheConoscoPage() {
           }}
         >
           <div
-  className="card"
-  onClick={(e) => e.stopPropagation()}
-  style={{
-    width: "min(860px, 100%)",
-    padding: 18,
-    borderRadius: 16,
-    maxHeight: "calc(100vh - 28px)",
-    overflow: "auto",
-    color: "#0f172a"
-  }}
->
+            className="card"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "min(860px, 100%)",
+              padding: 18,
+              borderRadius: 16,
+              maxHeight: "calc(100vh - 28px)",
+              overflow: "auto",
+              color: "#0f172a",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -639,7 +672,7 @@ export default function TrabalheConoscoPage() {
                   marginTop: 12,
                   padding: 12,
                   borderRadius: 12,
-                  background: "#f1f5f9"
+                  background: "#f1f5f9",
                 }}
               >
                 <strong>♿ Informações adicionais (opcional)</strong>

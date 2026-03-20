@@ -90,7 +90,7 @@ function resolveDestination(params: { unidade: string; vagaLocal: string }) {
     return String(process.env.CURRICULO_TO_SANTA_JULIANA || base).trim();
   }
 
-  if (text.includes("tropical")) {
+  if (text.includes("tropical") || text.includes("porteirao")) {
     return String(process.env.CURRICULO_TO_TROPICAL || base).trim();
   }
 
