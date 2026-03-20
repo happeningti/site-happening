@@ -128,7 +128,7 @@ const VAGAS: Vaga[] = [
     ativa: true,
   },
 
-  // ===== RESERVA PARA NOVAS VAGAS =====
+  // ===== VAGAS RESERVA / FUTURAS =====
   {
     id: "vaga-04",
     titulo: "Nova vaga 04",
@@ -423,7 +423,7 @@ export default function TrabalheConoscoPage() {
                     display: "flex",
                     flexDirection: "column",
                     height: "100%",
-                    minHeight: 470,
+                    minHeight: 500,
                     background: "#ffffff",
                   }}
                 >
@@ -525,8 +525,18 @@ export default function TrabalheConoscoPage() {
                     >
                       <button
                         type="button"
-                        className="btn btnSoft"
                         onClick={() => abrirDetalhesVaga(v)}
+                        style={{
+                          border: "none",
+                          background: "linear-gradient(135deg, #0d6efd 0%, #2563eb 100%)",
+                          color: "#fff",
+                          fontWeight: 800,
+                          fontSize: 16,
+                          borderRadius: 14,
+                          padding: "14px 22px",
+                          cursor: "pointer",
+                          boxShadow: "0 10px 25px rgba(37, 99, 235, 0.28)",
+                        }}
                       >
                         Ver detalhes
                       </button>
