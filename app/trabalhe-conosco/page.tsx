@@ -56,7 +56,7 @@ const VAGAS: Vaga[] = [
     ],
     safra: "Safra 2026",
     pcd: false,
-    ativa: true,
+    ativa: false,
   },
   {
     id: "tecnico-seguranca-trabalho-tupaciguara",
@@ -87,7 +87,7 @@ const VAGAS: Vaga[] = [
     ],
     safra: "Safra 2026",
     pcd: false,
-    ativa: true,
+    ativa: false,
   },
   {
     id: "motoristas-canavieiros-porteirao",
@@ -118,7 +118,7 @@ const VAGAS: Vaga[] = [
     ],
     safra: "Safra 2026",
     pcd: false,
-    ativa: true,
+    ativa: false,
   },
 ];
 
