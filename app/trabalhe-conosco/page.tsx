@@ -23,16 +23,47 @@ const UNIDADES = [
   "Filial — Aroeira/MG",
   "Filial — Santa Juliana/MG",
   "Filial — Tropical/GO",
-  "Filial — Porteirão/GO",
 ];
 
 const VAGAS: Vaga[] = [
+  {
+    id: "mecanico-linha-pesada-tupaciguara",
+    titulo: "Mecânico (Linha Pesada)",
+    local: "Filial — Aroeira/MG (Tupaciguara-MG)",
+    descricao:
+      "Vaga para atuação na unidade de Tupaciguara-MG, com foco em manutenção de linha pesada, conjuntos canavieiros, pneumática e suspensão.",
+    requisitos: [
+      "CNH categoria B",
+      "Ser proativo",
+      "Experiência com manutenção de linha pesada",
+      "Experiência com conjuntos canavieiros, pneumática e suspensão",
+      "Disponibilidade para trabalhar em diferentes escalas",
+      "Residir em Tupaciguara-MG",
+    ],
+    responsabilidades: [
+      "Priorizar sempre a segurança",
+      "Realizar manutenções preventivas e corretivas",
+      "Atuar em caminhões e/ou conjuntos",
+    ],
+    beneficios: [
+      "Salário compatível com a função",
+      "Ticket alimentação",
+      "Premiação mensal",
+      "Seguro de vida",
+      "Plano de saúde",
+      "Plano odontológico",
+      "Transporte fornecido pela empresa",
+    ],
+    safra: "Safra 2026",
+    pcd: false,
+    ativa: true,
+  },
   {
     id: "tecnico-seguranca-trabalho-tupaciguara",
     titulo: "Técnico em Segurança do Trabalho",
     local: "Filial — Aroeira/MG (Tupaciguara-MG)",
     descricao:
-      "Vaga para atuação na unidade de Tupaciguara-MG, com foco em rotinas de segurança do trabalho, acompanhamento operacional e apoio às ações preventivas da unidade.",
+      "Vaga para atuação na unidade de Tupaciguara-MG, com foco em segurança do trabalho, prevenção de acidentes, orientação operacional e apoio às rotinas da filial.",
     requisitos: [
       'CNH categoria "B"',
       "Residir em Tupaciguara/MG",
@@ -61,15 +92,15 @@ const VAGAS: Vaga[] = [
   {
     id: "motoristas-canavieiros-porteirao",
     titulo: "Motoristas Canavieiros",
-    local: "Filial — Porteirão/GO",
+    local: "Filial — Tropical/GO (Porteirão-GO)",
     descricao:
-      "Vaga para atuação na filial de Porteirão-GO, voltada para motoristas com experiência em transporte canavieiro e vivência em operação agrícola.",
+      "Vaga para atuação na unidade de Porteirão-GO, voltada para motoristas com experiência em transporte canavieiro e vivência em operação agrícola.",
     requisitos: [
-      "CNH 'E' (EAR)",
+      "CNH E com EAR",
       "Experiência de 6 meses em transporte canavieiro (CTPS)",
       "Respeito aos valores da empresa",
       "Bom relacionamento interpessoal",
-      "Residir em: Porteirão, Turvelândia, Maurilândia ou Santa Helena",
+      "Residir em Porteirão, Turvelândia, Maurilândia ou Santa Helena",
     ],
     responsabilidades: [
       "Realizar o transporte de cana com segurança e responsabilidade",
@@ -150,7 +181,6 @@ export default function TrabalheConoscoPage() {
     if (local.includes("Filial — São Paulo/SP")) return "Filial — São Paulo/SP";
     if (local.includes("Filial — Santa Juliana/MG")) return "Filial — Santa Juliana/MG";
     if (local.includes("Filial — Tropical/GO")) return "Filial — Tropical/GO";
-    if (local.includes("Filial — Porteirão/GO")) return "Filial — Porteirão/GO";
     return UNIDADES[0];
   }
 
@@ -297,119 +327,237 @@ export default function TrabalheConoscoPage() {
               </p>
             </div>
           ) : (
-            <div className="grid3">
+            <div className="grid3" style={{ alignItems: "stretch" }}>
               {vagasAtivas.map((v) => (
-                <div key={v.id} className="card">
-                  <h3 style={{ marginTop: 0 }}>{v.titulo}</h3>
-
-                  {v.safra ? (
+                <div
+                  key={v.id}
+                  className="card"
+                  style={{
+                    padding: 0,
+                    overflow: "hidden",
+                    borderRadius: 20,
+                    border: "1px solid #dbe4f0",
+                    boxShadow: "0 18px 45px rgba(15, 23, 42, 0.10)",
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                  }}
+                >
+                  <div
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #0f5132 0%, #0d6a43 48%, #198754 100%)",
+                      color: "#fff",
+                      padding: "18px 18px 16px",
+                    }}
+                  >
                     <div
                       style={{
-                        display: "inline-block",
-                        marginTop: 2,
-                        marginBottom: 8,
-                        padding: "6px 10px",
-                        borderRadius: 999,
-                        background: "#ecfdf5",
-                        color: "#0f766e",
-                        fontSize: 12,
-                        fontWeight: 800,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: 10,
+                        alignItems: "flex-start",
+                        flexWrap: "wrap",
                       }}
                     >
-                      {v.safra}
+                      {v.safra ? (
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            padding: "6px 12px",
+                            borderRadius: 999,
+                            background: "rgba(255,255,255,0.16)",
+                            border: "1px solid rgba(255,255,255,0.18)",
+                            fontSize: 12,
+                            fontWeight: 800,
+                            letterSpacing: ".3px",
+                          }}
+                        >
+                          {v.safra}
+                        </div>
+                      ) : (
+                        <div />
+                      )}
+
+                      {v.pcd ? (
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            padding: "6px 12px",
+                            borderRadius: 999,
+                            background: "#ecfdf5",
+                            color: "#0f766e",
+                            fontSize: 12,
+                            fontWeight: 800,
+                          }}
+                        >
+                          Vaga também para PCD
+                        </div>
+                      ) : null}
                     </div>
-                  ) : null}
 
-                  <p style={{ color: "#64748b", marginTop: 6 }}>
-                    <strong>Local:</strong> {v.local}
-                  </p>
+                    <h3
+                      style={{
+                        margin: "16px 0 8px",
+                        fontSize: 25,
+                        lineHeight: 1.15,
+                        color: "#fff",
+                      }}
+                    >
+                      {v.titulo}
+                    </h3>
 
-                  <p style={{ marginTop: 10 }}>{v.descricao}</p>
-
-                  {v.requisitos?.length ? (
-                    <>
-                      <p
-                        style={{
-                          fontWeight: 800,
-                          marginTop: 12,
-                          marginBottom: 8,
-                        }}
-                      >
-                        Requisitos
-                      </p>
-                      <ul style={{ marginTop: 0, paddingLeft: 18 }}>
-                        {v.requisitos.map((r) => (
-                          <li key={r}>{r}</li>
-                        ))}
-                      </ul>
-                    </>
-                  ) : null}
-
-                  {v.responsabilidades?.length ? (
-                    <>
-                      <p
-                        style={{
-                          fontWeight: 800,
-                          marginTop: 12,
-                          marginBottom: 8,
-                        }}
-                      >
-                        Responsabilidades
-                      </p>
-                      <ul style={{ marginTop: 0, paddingLeft: 18 }}>
-                        {v.responsabilidades.map((r) => (
-                          <li key={r}>{r}</li>
-                        ))}
-                      </ul>
-                    </>
-                  ) : null}
-
-                  {v.beneficios?.length ? (
-                    <>
-                      <p
-                        style={{
-                          fontWeight: 800,
-                          marginTop: 12,
-                          marginBottom: 8,
-                        }}
-                      >
-                        Benefícios
-                      </p>
-                      <ul style={{ marginTop: 0, paddingLeft: 18 }}>
-                        {v.beneficios.map((b) => (
-                          <li key={b}>{b}</li>
-                        ))}
-                      </ul>
-                    </>
-                  ) : null}
-
-                  {v.pcd ? (
                     <div
                       style={{
-                        marginTop: 10,
-                        fontWeight: 800,
-                        color: "#0b7a4b",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
+                        padding: "8px 12px",
+                        borderRadius: 12,
+                        background: "rgba(255,255,255,0.10)",
+                        border: "1px solid rgba(255,255,255,0.14)",
+                        fontSize: 13,
+                        fontWeight: 700,
                       }}
                     >
-                      Vaga disponível também para PCD
+                      📍 {v.local}
                     </div>
-                  ) : null}
+                  </div>
 
                   <div
                     style={{
-                      marginTop: 14,
+                      padding: 18,
                       display: "flex",
-                      gap: 10,
-                      flexWrap: "wrap",
+                      flexDirection: "column",
+                      gap: 14,
+                      flex: 1,
+                      color: "#0f172a",
                     }}
                   >
-                    <button
-                      className="btn btnPrimary"
-                      type="button"
-                      onClick={() => abrirModalParaVaga(v)}
+                    <p style={{ margin: 0, color: "#334155", lineHeight: 1.6 }}>
+                      {v.descricao}
+                    </p>
+
+                    {v.requisitos?.length ? (
+                      <div
+                        style={{
+                          background: "#f8fafc",
+                          border: "1px solid #e2e8f0",
+                          borderRadius: 16,
+                          padding: 14,
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontWeight: 800,
+                            marginTop: 0,
+                            marginBottom: 8,
+                            color: "#0f172a",
+                          }}
+                        >
+                          Requisitos
+                        </p>
+                        <ul
+                          style={{
+                            margin: 0,
+                            paddingLeft: 18,
+                            color: "#334155",
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          {v.requisitos.map((r) => (
+                            <li key={r}>{r}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+
+                    {v.responsabilidades?.length ? (
+                      <div
+                        style={{
+                          background: "#fff",
+                          border: "1px solid #e2e8f0",
+                          borderRadius: 16,
+                          padding: 14,
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontWeight: 800,
+                            marginTop: 0,
+                            marginBottom: 8,
+                            color: "#0f172a",
+                          }}
+                        >
+                          Responsabilidades
+                        </p>
+                        <ul
+                          style={{
+                            margin: 0,
+                            paddingLeft: 18,
+                            color: "#334155",
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          {v.responsabilidades.map((r) => (
+                            <li key={r}>{r}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+
+                    {v.beneficios?.length ? (
+                      <div
+                        style={{
+                          background: "#f0fdf4",
+                          border: "1px solid #bbf7d0",
+                          borderRadius: 16,
+                          padding: 14,
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontWeight: 800,
+                            marginTop: 0,
+                            marginBottom: 8,
+                            color: "#166534",
+                          }}
+                        >
+                          Benefícios
+                        </p>
+                        <ul
+                          style={{
+                            margin: 0,
+                            paddingLeft: 18,
+                            color: "#166534",
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          {v.beneficios.map((b) => (
+                            <li key={b}>{b}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+
+                    <div
+                      style={{
+                        marginTop: "auto",
+                        display: "flex",
+                        gap: 10,
+                        flexWrap: "wrap",
+                      }}
                     >
-                      Candidatar-se
-                    </button>
+                      <button
+                        className="btn btnPrimary"
+                        type="button"
+                        onClick={() => abrirModalParaVaga(v)}
+                      >
+                        Candidatar-se
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
