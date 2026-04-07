@@ -46,12 +46,34 @@ function formatarMesAno(iso: string) {
   return `${meses[mm - 1]}/${y}`;
 }
 
+function formatarDataCompleta(iso: string) {
+  const [y, m] = iso.split("-");
+  const meses = [
+    "janeiro",
+    "fevereiro",
+    "março",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro",
+  ];
+
+  const mm = Math.max(1, Math.min(12, Number(m || "1")));
+  return `${meses[mm - 1]} de ${y}`;
+}
+
 export default function TransparenciaPage() {
   const relatoriosOrdenados = [...RELATORIOS].sort(
     (a, b) => new Date(b.data).getTime() - new Date(a.data).getTime()
   );
 
   const maisRecente = relatoriosOrdenados[0];
+  const historico = relatoriosOrdenados.slice(1);
 
   return (
     <main className="transparencia">
@@ -64,7 +86,7 @@ export default function TransparenciaPage() {
 
           <p>
             Em conformidade com a Lei 14.611/2023, disponibilizamos nossos
-            relatórios de transparência e igualdade salarial.
+            relatórios oficiais para consulta pública.
           </p>
 
           <div className="transparenciaHeroActions">
@@ -84,8 +106,8 @@ export default function TransparenciaPage() {
         id="relatorios"
         style={{
           background:
-            "radial-gradient(circle at top left, rgba(16,185,129,0.10), transparent 22%), linear-gradient(180deg, #f8fafc 0%, #eef5f9 50%, #e7f1ec 100%)",
-          padding: "56px 0 72px",
+            "radial-gradient(circle at top left, rgba(16,185,129,0.08), transparent 22%), linear-gradient(180deg, #f8fbfc 0%, #eef4f3 52%, #e8f0ec 100%)",
+          padding: "56px 0 84px",
         }}
       >
         <div className="transparenciaContainer">
@@ -94,145 +116,273 @@ export default function TransparenciaPage() {
             style={{
               background: "rgba(255,255,255,0.96)",
               border: "1px solid rgba(226,232,240,0.95)",
-              boxShadow: "0 18px 48px rgba(15,23,42,0.10)",
+              boxShadow: "0 18px 50px rgba(15,23,42,0.08)",
               color: "#0f172a",
               backdropFilter: "blur(8px)",
+              overflow: "hidden",
             }}
           >
-            <h2 style={{ color: "#0f172a" }}>Relatórios publicados</h2>
+            <div
+              style={{
+                padding: "26px 26px 0",
+              }}
+            >
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "8px 14px",
+                  borderRadius: 999,
+                  background: "rgba(16,185,129,0.10)",
+                  border: "1px solid rgba(16,185,129,0.18)",
+                  color: "#047857",
+                  fontWeight: 700,
+                  fontSize: 13,
+                  marginBottom: 18,
+                }}
+              >
+                Publicação mais recente
+              </div>
 
-            <p className="transparenciaHint" style={{ color: "#475569" }}>
-              {maisRecente ? (
-                <>
-                  O mais recente é <strong>{maisRecente.titulo}</strong> (
-                  {formatarMesAno(maisRecente.data)}).
-                </>
-              ) : (
-                <>Os relatórios publicados aparecerão aqui para consulta.</>
-              )}
-            </p>
+              <h2
+                style={{
+                  color: "#0f172a",
+                  marginBottom: 10,
+                }}
+              >
+                Relatórios publicados
+              </h2>
+
+              <p
+                className="transparenciaHint"
+                style={{
+                  color: "#475569",
+                  marginBottom: 24,
+                }}
+              >
+                {maisRecente ? (
+                  <>
+                    O relatório mais recente disponível é{" "}
+                    <strong>{maisRecente.titulo}</strong>, publicado em{" "}
+                    {formatarDataCompleta(maisRecente.data)}.
+                  </>
+                ) : (
+                  <>Os relatórios publicados aparecerão aqui para consulta.</>
+                )}
+              </p>
+            </div>
 
             {maisRecente ? (
               <div
-                className="transparenciaViewer"
                 style={{
-                  background: "#ffffff",
-                  border: "1px solid rgba(226,232,240,0.9)",
-                  borderRadius: 20,
-                  overflow: "hidden",
-                  boxShadow: "0 12px 30px rgba(15,23,42,0.08)",
+                  padding: "0 26px 26px",
                 }}
               >
                 <div
-                  className="transparenciaViewerHeader"
                   style={{
                     background:
-                      "linear-gradient(180deg, rgba(248,250,252,0.98) 0%, rgba(241,245,249,0.98) 100%)",
-                    borderBottom: "1px solid rgba(226,232,240,0.9)",
-                    padding: "18px 18px 16px",
-                  }}
-                >
-                  <div className="transparenciaViewerTitle">
-                    <span
-                      className="pillMini"
-                      style={{
-                        background: "rgba(16,185,129,0.12)",
-                        color: "#047857",
-                        border: "1px solid rgba(16,185,129,0.18)",
-                      }}
-                    >
-                      Mais recente
-                    </span>
-
-                    <div
-                      className="transparenciaViewerName"
-                      style={{ color: "#0f172a" }}
-                    >
-                      {maisRecente.titulo}
-                    </div>
-
-                    <div
-                      className="transparenciaViewerMeta"
-                      style={{ color: "#64748b" }}
-                    >
-                      {formatarMesAno(maisRecente.data)}
-                    </div>
-                  </div>
-
-                  <div className="transparenciaViewerActions">
-                    <a
-                      className="btnPrim"
-                      href={maisRecente.arquivo}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Abrir PDF
-                    </a>
-
-                    <a className="btnSec" href={maisRecente.arquivo} download>
-                      Baixar
-                    </a>
-
-                    <a
-                      className="btnSec"
-                      href={maisRecente.arquivo}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Ampliar
-                    </a>
-                  </div>
-                </div>
-
-                <div
-                  className="transparenciaIframeWrap"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%)",
-                    padding: 12,
+                      "linear-gradient(135deg, #ffffff 0%, #f8fbfc 45%, #eef7f2 100%)",
+                    border: "1px solid rgba(226,232,240,0.95)",
+                    borderRadius: 24,
+                    padding: 28,
+                    boxShadow: "0 16px 36px rgba(15,23,42,0.06)",
                   }}
                 >
                   <div
                     style={{
-                      background: "#ffffff",
-                      borderRadius: 16,
-                      overflow: "hidden",
-                      border: "1px solid rgba(226,232,240,0.95)",
-                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.8)",
+                      display: "grid",
+                      gap: 22,
                     }}
                   >
-                    <iframe
-                      className="transparenciaIframe"
-                      src={maisRecente.arquivo}
-                      title={`Visualizador - ${maisRecente.titulo}`}
+                    <div
                       style={{
-                        background: "#ffffff",
-                        border: "none",
-                        minHeight: 720,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: 18,
                       }}
-                    />
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontSize: 28,
+                            fontWeight: 800,
+                            color: "#0f172a",
+                            lineHeight: 1.1,
+                            marginBottom: 8,
+                          }}
+                        >
+                          {maisRecente.titulo}
+                        </div>
+
+                        <div
+                          style={{
+                            color: "#64748b",
+                            fontSize: 15,
+                            marginBottom: 10,
+                          }}
+                        >
+                          {formatarMesAno(maisRecente.data)}
+                        </div>
+
+                        {maisRecente.descricao ? (
+                          <div
+                            style={{
+                              color: "#475569",
+                              fontSize: 16,
+                              lineHeight: 1.6,
+                              maxWidth: 760,
+                            }}
+                          >
+                            {maisRecente.descricao}
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div
+                        style={{
+                          display: "grid",
+                          gap: 10,
+                          minWidth: 230,
+                        }}
+                      >
+                        <a
+                          className="btnPrim"
+                          href={maisRecente.arquivo}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{
+                            textAlign: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          Abrir relatório
+                        </a>
+
+                        <a
+                          className="btnSec"
+                          href={maisRecente.arquivo}
+                          download
+                          style={{
+                            textAlign: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          Baixar PDF
+                        </a>
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                        gap: 14,
+                      }}
+                    >
+                      <div
+                        style={{
+                          background: "#ffffff",
+                          border: "1px solid rgba(226,232,240,0.95)",
+                          borderRadius: 18,
+                          padding: "18px 18px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: "#64748b",
+                            fontSize: 13,
+                            fontWeight: 700,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.04em",
+                            marginBottom: 8,
+                          }}
+                        >
+                          Tipo de documento
+                        </div>
+                        <div
+                          style={{
+                            color: "#0f172a",
+                            fontSize: 16,
+                            fontWeight: 700,
+                          }}
+                        >
+                          PDF oficial
+                        </div>
+                      </div>
+
+                      <div
+                        style={{
+                          background: "#ffffff",
+                          border: "1px solid rgba(226,232,240,0.95)",
+                          borderRadius: 18,
+                          padding: "18px 18px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: "#64748b",
+                            fontSize: 13,
+                            fontWeight: 700,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.04em",
+                            marginBottom: 8,
+                          }}
+                        >
+                          Competência
+                        </div>
+                        <div
+                          style={{
+                            color: "#0f172a",
+                            fontSize: 16,
+                            fontWeight: 700,
+                          }}
+                        >
+                          2º semestre
+                        </div>
+                      </div>
+
+                      <div
+                        style={{
+                          background: "#ffffff",
+                          border: "1px solid rgba(226,232,240,0.95)",
+                          borderRadius: 18,
+                          padding: "18px 18px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: "#64748b",
+                            fontSize: 13,
+                            fontWeight: 700,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.04em",
+                            marginBottom: 8,
+                          }}
+                        >
+                          Publicação
+                        </div>
+                        <div
+                          style={{
+                            color: "#0f172a",
+                            fontSize: 16,
+                            fontWeight: 700,
+                          }}
+                        >
+                          {formatarMesAno(maisRecente.data)}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                {maisRecente.descricao ? (
-                  <p
-                    className="transparenciaViewerDesc"
-                    style={{
-                      color: "#475569",
-                      padding: "14px 18px 18px",
-                      margin: 0,
-                      borderTop: "1px solid rgba(226,232,240,0.7)",
-                      background: "#ffffff",
-                    }}
-                  >
-                    {maisRecente.descricao}
-                  </p>
-                ) : null}
               </div>
             ) : (
               <div
                 className="transparenciaEmpty"
                 style={{
+                  margin: "0 26px 26px",
                   background: "#ffffff",
                   border: "1px solid rgba(226,232,240,0.9)",
                   borderRadius: 18,
@@ -245,54 +395,143 @@ export default function TransparenciaPage() {
               </div>
             )}
 
-            {relatoriosOrdenados.length > 0 ? (
-              <div className="transparenciaList" style={{ marginTop: 22 }}>
-                {relatoriosOrdenados.map((r, idx) => (
-                  <div
-                    className="transparenciaItem"
-                    key={`${r.arquivo}-${idx}`}
-                    style={{
-                      background: "#ffffff",
-                      border: "1px solid rgba(226,232,240,0.9)",
-                      borderRadius: 18,
-                      overflow: "hidden",
-                      boxShadow: "0 10px 24px rgba(15,23,42,0.06)",
-                    }}
-                  >
-                    <div
+            <div
+              style={{
+                padding: "0 26px 26px",
+              }}
+            >
+              <div
+                style={{
+                  background: "#ffffff",
+                  border: "1px solid rgba(226,232,240,0.95)",
+                  borderRadius: 24,
+                  padding: 24,
+                  boxShadow: "0 12px 30px rgba(15,23,42,0.05)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 16,
+                    flexWrap: "wrap",
+                    marginBottom: 18,
+                  }}
+                >
+                  <div>
+                    <h3
                       style={{
-                        padding: "18px 18px 14px",
-                        borderBottom: "1px solid rgba(226,232,240,0.7)",
-                        background:
-                          "linear-gradient(180deg, rgba(248,250,252,0.98) 0%, rgba(255,255,255,0.98) 100%)",
+                        margin: 0,
+                        color: "#0f172a",
+                        fontSize: 24,
+                        fontWeight: 800,
                       }}
                     >
-                      <div className="transparenciaItemLeft">
+                      Histórico de publicações
+                    </h3>
+                    <p
+                      style={{
+                        margin: "8px 0 0",
+                        color: "#64748b",
+                        fontSize: 15,
+                      }}
+                    >
+                      Consulte os relatórios disponibilizados pela Happening.
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    display: "grid",
+                    gap: 16,
+                  }}
+                >
+                  {relatoriosOrdenados.map((r, idx) => (
+                    <div
+                      key={`${r.arquivo}-${idx}`}
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: 18,
+                        padding: "18px 20px",
+                        borderRadius: 18,
+                        border: "1px solid rgba(226,232,240,0.95)",
+                        background: idx === 0 ? "#f8fdf9" : "#f8fafc",
+                      }}
+                    >
+                      <div style={{ minWidth: 220, flex: 1 }}>
                         <div
-                          className="transparenciaItemTitle"
-                          style={{ color: "#0f172a" }}
+                          style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            alignItems: "center",
+                            gap: 10,
+                            marginBottom: 6,
+                          }}
                         >
-                          {r.titulo}
+                          <div
+                            style={{
+                              color: "#0f172a",
+                              fontSize: 20,
+                              fontWeight: 800,
+                            }}
+                          >
+                            {r.titulo}
+                          </div>
+
+                          {idx === 0 ? (
+                            <span
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                padding: "6px 10px",
+                                borderRadius: 999,
+                                background: "rgba(16,185,129,0.12)",
+                                border: "1px solid rgba(16,185,129,0.18)",
+                                color: "#047857",
+                                fontSize: 12,
+                                fontWeight: 800,
+                              }}
+                            >
+                              Mais recente
+                            </span>
+                          ) : null}
                         </div>
 
                         <div
-                          className="transparenciaItemMeta"
-                          style={{ color: "#64748b" }}
+                          style={{
+                            color: "#64748b",
+                            fontSize: 14,
+                            marginBottom: 6,
+                          }}
                         >
                           {formatarMesAno(r.data)}
                         </div>
 
                         {r.descricao ? (
                           <div
-                            className="transparenciaItemDesc"
-                            style={{ color: "#475569" }}
+                            style={{
+                              color: "#475569",
+                              fontSize: 15,
+                              lineHeight: 1.6,
+                            }}
                           >
                             {r.descricao}
                           </div>
                         ) : null}
                       </div>
 
-                      <div className="transparenciaItemActions">
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 10,
+                        }}
+                      >
                         <a
                           className="btnPrim"
                           href={r.arquivo}
@@ -305,46 +544,25 @@ export default function TransparenciaPage() {
                         <a className="btnSec" href={r.arquivo} download>
                           Baixar
                         </a>
-
-                        <a className="btnSec" href={`#pdf-${idx}`}>
-                          Ver aqui
-                        </a>
                       </div>
                     </div>
+                  ))}
+                </div>
 
-                    <div
-                      className="transparenciaItemPreview"
-                      id={`pdf-${idx}`}
-                      style={{
-                        background:
-                          "linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%)",
-                        padding: 12,
-                      }}
-                    >
-                      <div
-                        style={{
-                          background: "#ffffff",
-                          borderRadius: 14,
-                          overflow: "hidden",
-                          border: "1px solid rgba(226,232,240,0.95)",
-                        }}
-                      >
-                        <iframe
-                          className="transparenciaIframeMini"
-                          src={r.arquivo}
-                          title={`Preview - ${r.titulo}`}
-                          style={{
-                            background: "#ffffff",
-                            border: "none",
-                            minHeight: 420,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                {historico.length === 0 ? (
+                  <p
+                    style={{
+                      marginTop: 18,
+                      color: "#64748b",
+                      fontSize: 14,
+                    }}
+                  >
+                    Assim que novas publicações forem adicionadas, elas passarão
+                    a compor este histórico.
+                  </p>
+                ) : null}
               </div>
-            ) : null}
+            </div>
           </div>
 
           <div
@@ -359,7 +577,7 @@ export default function TransparenciaPage() {
               style={{
                 background: "rgba(255,255,255,0.96)",
                 border: "1px solid rgba(226,232,240,0.95)",
-                boxShadow: "0 18px 48px rgba(15,23,42,0.10)",
+                boxShadow: "0 18px 48px rgba(15,23,42,0.08)",
                 color: "#0f172a",
                 backdropFilter: "blur(8px)",
               }}
@@ -373,9 +591,8 @@ export default function TransparenciaPage() {
               </p>
 
               <p style={{ color: "#475569" }}>
-                Nesta página, disponibilizamos os relatórios publicados para
-                consulta pública, permitindo acesso rápido aos documentos
-                oficiais de transparência e igualdade salarial.
+                Nesta página, disponibilizamos os relatórios oficiais para
+                consulta pública de forma simples, organizada e permanente.
               </p>
             </div>
 
@@ -384,7 +601,7 @@ export default function TransparenciaPage() {
               style={{
                 background: "rgba(255,255,255,0.96)",
                 border: "1px solid rgba(226,232,240,0.95)",
-                boxShadow: "0 18px 48px rgba(15,23,42,0.10)",
+                boxShadow: "0 18px 48px rgba(15,23,42,0.08)",
                 color: "#0f172a",
                 backdropFilter: "blur(8px)",
               }}
@@ -399,7 +616,7 @@ export default function TransparenciaPage() {
 
               <p style={{ color: "#475569" }}>
                 Novas publicações podem ser adicionadas periodicamente nesta
-                mesma página, formando um histórico para consulta.
+                mesma página, formando um histórico de consulta.
               </p>
             </div>
 
@@ -408,7 +625,7 @@ export default function TransparenciaPage() {
               style={{
                 background: "rgba(255,255,255,0.96)",
                 border: "1px solid rgba(226,232,240,0.95)",
-                boxShadow: "0 18px 48px rgba(15,23,42,0.10)",
+                boxShadow: "0 18px 48px rgba(15,23,42,0.08)",
                 color: "#0f172a",
                 backdropFilter: "blur(8px)",
               }}
