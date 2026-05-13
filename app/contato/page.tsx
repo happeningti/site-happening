@@ -49,8 +49,8 @@ const UNIDADES: Unidade[] = [
     nome: "Filial — Santa Juliana/MG",
     tipo: "Filial",
     endereco: "Santa Juliana/MG",
-    telefone: "+55 16 99337-4115",
-    whatsapp: "5516993374115",
+    telefone: "+55 17 99713-3779",
+    whatsapp: "5517997133779",
   },
   {
     nome: "Filial — Aroeira/MG",
