@@ -454,7 +454,7 @@ export default function CotacaoPage() {
             <textarea
               value={observacoes}
               onChange={(e) => setObservacoes(e.target.value)}
-              placeholder="Descreva detalhes importantes: volumes, medidas, coleta/entrega, urgência, etc."
+              placeholder="Descreva detalhes importantes: valor da nota fiscal, volumes, medidas, coleta/entrega, urgência, etc."
               style={{
                 width: "100%",
                 minHeight: 110,
