@@ -124,8 +124,8 @@ const VAGAS: Vaga[] = [
       "Transporte próprio",
     ],
     safra: "Safra 2026",
-    pcd: false,
-    ativa: false,
+    pcd: true,
+    ativa: true,
   },
 
   // ===== VAGAS RESERVA / FUTURAS =====
@@ -492,6 +492,26 @@ export default function TrabalheConoscoPage() {
                     >
                       📍 {v.local}
                     </div>
+
+                    {v.pcd ? (
+                      <div
+                        style={{
+                          marginTop: 10,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                          width: "fit-content",
+                          padding: "9px 14px",
+                          borderRadius: 14,
+                          background: "rgba(255,255,255,0.16)",
+                          border: "1px solid rgba(255,255,255,0.24)",
+                          fontSize: 13,
+                          fontWeight: 800,
+                        }}
+                      >
+                        ♿ Vaga extensiva para PCD
+                      </div>
+                    ) : null}
                   </div>
 
                   <div
@@ -659,6 +679,26 @@ export default function TrabalheConoscoPage() {
                   >
                     📍 {vagaDetalhe.local}
                   </div>
+
+                  {vagaDetalhe.pcd ? (
+                    <div
+                      style={{
+                        marginTop: 10,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        width: "fit-content",
+                        padding: "10px 14px",
+                        borderRadius: 14,
+                        background: "rgba(255,255,255,0.16)",
+                        border: "1px solid rgba(255,255,255,0.24)",
+                        fontSize: 14,
+                        fontWeight: 800,
+                      }}
+                    >
+                      ♿ Vaga extensiva para profissionais com deficiência (PCD)
+                    </div>
+                  ) : null}
                 </div>
 
                 <button
