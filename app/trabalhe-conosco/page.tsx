@@ -58,8 +58,8 @@ const VAGAS: Vaga[] = [
       "Transporte fornecido pela empresa",
     ],
     safra: "Safra 2026",
-    pcd: false,
-    ativa: false,
+    pcd: true,
+    ativa: true,
   },
   {
     id: "tecnico-seguranca-trabalho-tupaciguara",
