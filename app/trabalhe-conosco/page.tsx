@@ -62,37 +62,37 @@ const VAGAS: Vaga[] = [
     ativa: true,
   },
   {
-    id: "tecnico-seguranca-trabalho-tupaciguara",
-    titulo: "Técnico em Segurança do Trabalho",
+    id: "Auxiliar Mecânico",
+    titulo: "Auxiliar Mecânico",
     local: "Filial — Aroeira/MG (Tupaciguara-MG)",
     resumo:
-      "Segurança do trabalho, prevenção de acidentes e apoio às rotinas da filial.",
+      "Auxiliar na execução de manutenções",
     descricao:
-      "Vaga para atuação na unidade de Tupaciguara-MG, com foco em segurança do trabalho, prevenção de acidentes, orientação operacional e apoio às rotinas da filial.",
+      "Auxiliar na execução de manutenções preventivas e corretivas em caminhões e carretas",
     requisitos: [
       'CNH categoria "B"',
       "Residir em Tupaciguara/MG",
-      "Experiência na função",
-      "Curso e registro válidos",
+      "Ser proativo",
+      "Ter disponibilidade para trabalhar em diferenteis escalas"
+      
     ],
     responsabilidades: [
-      "Acompanhar rotinas de segurança do trabalho na unidade",
-      "Orientar equipes quanto ao cumprimento das normas de segurança",
-      "Apoiar ações preventivas e inspeções internas",
-      "Promover práticas seguras no ambiente de trabalho",
+      "Priorizar sempre a segurança",
+      "Auxiliar na execução de manutenções preventivas e corretivas em caminhões e carretas",
+     
     ],
     beneficios: [
       "Salário compatível com a função",
-      "Vale alimentação",
-      "Premiação de segurança",
+      "Ticket alimentação",
+      "Premiação Mensal",
       "Seguro de vida",
       "Plano de saúde",
       "Plano odontológico",
       "Transporte fornecido pela empresa",
     ],
     safra: "Safra 2026",
-    pcd: false,
-    ativa: false,
+    pcd: true,
+    ativa: true,
   },
   {
     id: "motoristas-canavieiros-porteirao",
@@ -130,17 +130,17 @@ const VAGAS: Vaga[] = [
 
   // ===== VAGAS RESERVA / FUTURAS =====
   {
-    id: "vaga-04",
-    titulo: "Nova vaga 04",
-    local: "Matriz — Sertãozinho/SP",
-    resumo: "Resumo curto da vaga 04.",
-    descricao: "Descrição completa da vaga 04.",
-    requisitos: ["Requisito 1", "Requisito 2"],
-    responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
-    beneficios: ["Benefício 1", "Benefício 2"],
-    safra: "Safra 2026",
-    pcd: false,
-    ativa: false,
+    id: "Serviços Gerais",
+    titulo: "Serviços Gerais ( Exclusiva para PCD",
+    local: "Filial — Aroeira/MG (Tupaciguara-MG)",
+    resumo: "Serviços Gerais",
+    descricao: "Serviçõs gerais",
+    requisitos: ["Organização e comprometimento", "Disponibilidade para trabalhar em equipe", "Laudo médico atualizado"],
+    //responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
+    //beneficios: ["Benefício 1", "Benefício 2"],
+    //safra: "Safra 2026",
+    pcd: true,
+    ativa: true,
   },
   {
     id: "vaga-05",
