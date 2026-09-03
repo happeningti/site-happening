@@ -131,7 +131,7 @@ const VAGAS: Vaga[] = [
   // ===== VAGAS RESERVA / FUTURAS =====
   {
     id: "Serviços Gerais",
-    titulo: "Serviços Gerais ( Exclusiva para PCD",
+    titulo: "Serviços Gerais ( Exclusiva para PCD )",
     local: "Filial — Aroeira/MG (Tupaciguara-MG)",
     resumo: "Serviços Gerais",
     descricao: "Serviçõs gerais",
