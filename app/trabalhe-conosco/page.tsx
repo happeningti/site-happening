@@ -7,7 +7,7 @@ type Vaga = {
   id: string;
   titulo: string;
   local: string;
-  resumo: string;
+  resumo?: string;
   descricao: string;
   imagem?: string;
   requisitos?: string[];
@@ -143,17 +143,17 @@ const VAGAS: Vaga[] = [
     ativa: true,
   },
   {
-    id: "vaga-05",
-    titulo: "Nova vaga 05",
-    local: "Filial — São Paulo/SP",
-    resumo: "Resumo curto da vaga 05.",
-    descricao: "Descrição completa da vaga 05.",
-    requisitos: ["Requisito 1", "Requisito 2"],
-    responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
-    beneficios: ["Benefício 1", "Benefício 2"],
-    safra: "Safra 2026",
-    pcd: false,
-    ativa: false,
+    id: "Motorista Truck",
+    titulo: "Motorista Truck",
+    local: "Filial — Matriz ( Sertãozinho-SP )" ,
+    //resumo: "Resumo curto da vaga 05.",
+    descricao: "Ter disponibilidade para viagens",
+    //requisitos: ["Requisito 1", "Requisito 2"],
+    //responsabilidades: ["Responsabilidade 1", "Responsabilidade 2"],
+    beneficios: ["Convênio telemedicina", "Convênio odontológico","Cesta básica"],
+    //safra: "Safra 2026",
+    pcd: true,
+    ativa: true,
   },
   {
     id: "vaga-06",
@@ -524,16 +524,18 @@ export default function TrabalheConoscoPage() {
                       gap: 14,
                     }}
                   >
-                    <p
-                      style={{
-                        margin: 0,
-                        color: "#334155",
-                        lineHeight: 1.7,
-                        minHeight: 64,
-                      }}
-                    >
-                      {v.resumo}
-                    </p>
+                    {v.resumo ? (
+                      <p
+                        style={{
+                          margin: 0,
+                          color: "#334155",
+                          lineHeight: 1.7,
+                          minHeight: 64,
+                        }}
+                      >
+                        {v.resumo}
+                      </p>
+                    ) : null}
 
                     <div
                       style={{
